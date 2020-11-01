@@ -1,0 +1,12 @@
+---
+title: "Read_HPI.rmd"
+author: "https://github.com/jrkkv5/FIN6572Fall2020/blob/master/National%20Debt/importNationalDebt.Rmd"
+date: "10/31/2020"
+output: html_document
+---
+
+```{r HPI}
+HPI_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPI_AT_state.csv")
+#Reads HPI into new dataframe
+```
+

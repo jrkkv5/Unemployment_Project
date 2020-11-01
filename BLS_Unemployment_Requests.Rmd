@@ -2074,25 +2074,28 @@ unemp_WY$state <- "WY"
 
 ```
 
-
 ``` {r format_dataframes}
-colnames(unemp_MO)[which(names(unemp_MO) == "value")] <- "MO_Unemployment"
-colnames(unemp_MO)[which(names(unemp_MO) == "periodName")] <- "month"
+#colnames(unemp_MO)[which(names(unemp_MO) == "value")] <- "MO_Unemployment"
+#colnames(unemp_MO)[which(names(unemp_MO) == "periodName")] <- "month"
 #renames columns with month and unemployment data for Missouri
 
-colnames(unemp_WA)[which(names(unemp_WA) == "value")] <- "WA_Unemployment"
-colnames(unemp_WA)[which(names(unemp_WA) == "periodName")] <- "month"
+#colnames(unemp_WA)[which(names(unemp_WA) == "value")] <- "WA_Unemployment"
+#colnames(unemp_WA)[which(names(unemp_WA) == "periodName")] <- "month"
 #renames columns with month and unemployment data for Washington
 
-colnames(unemp_WV)[which(names(unemp_WV) == "value")] <- "WV_Unemployment"
-colnames(unemp_WV)[which(names(unemp_WV) == "periodName")] <- "month"
+#colnames(unemp_WV)[which(names(unemp_WV) == "value")] <- "WV_Unemployment"
+#colnames(unemp_WV)[which(names(unemp_WV) == "periodName")] <- "month"
 #renames columns with month and unemployment data for West Virginia
 
-colnames(unemp_LA)[which(names(unemp_LA) == "value")] <- "LA_Unemployment"
-colnames(unemp_LA)[which(names(unemp_LA) == "periodName")] <- "month"
-#renames columns with month and unemployment data for Washington
+#colnames(unemp_LA)[which(names(unemp_LA) == "value")] <- "LA_Unemployment"
+#colnames(unemp_LA)[which(names(unemp_LA) == "periodName")] <- "month"
+
+
+#Commented out all old code
 
 ```
+
+
 ``` {r Overall_Unemployment}
 unemp_all <- rbind(unemp_AK, unemp_AL, unemp_AR, unemp_AZ, unemp_CA, unemp_CO, unemp_CT, unemp_DE, unemp_FL, unemp_GA, unemp_HI, unemp_IA, unemp_ID, unemp_IL, unemp_IN, unemp_KS, unemp_KY, unemp_LA, unemp_MA, unemp_MD, unemp_ME, unemp_MI, unemp_MN, unemp_MO, unemp_MS, unemp_MT, unemp_NC,unemp_ND, unemp_NE, unemp_NH, unemp_NJ, unemp_NM, unemp_NV, unemp_NY, unemp_OH, unemp_OK,  unemp_OR, unemp_PA, unemp_RI, unemp_SC, unemp_SD, unemp_TN, unemp_TX, unemp_UT, unemp_VA, unemp_VT, unemp_WA, unemp_WI, unemp_WV, unemp_WY)
 
@@ -2109,7 +2112,18 @@ unemp_all$quarter <- ifelse(unemp_all$period=="M03", "1",
                         NA  ))))
 
 unemp_scrubbed <- na.omit(unemp_all)
-#Adds quarterly variable to unempl_all df.  This should prepare it to be merged witht he HPI df.
+#Adds quarterly variable to unempl_all df.  This should prepare it to be merged with the HPI df.
+
+
+
+```
+``` {r annual_data}
+
+
+unemp_all$annual <- ifelse(unemp_all$period=="M12", "1",NA  )
+
+unemp_scrubbed_annual <- na.omit(unemp_all)
+#Adds quarterly variable to unempl_all df.  This should prepare it to be merged with the HPI df.
 
 
 

@@ -1,0 +1,21 @@
+---
+title: "writeCSV"
+author: "https://github.com/jrkkv5/FIN6572Fall2020/blob/master/National%20Debt/importNationalDebt.Rmd"
+date: "10/31/2020"
+output: html_document
+---
+
+```{r writeCSV}
+write.csv(unemp_all,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\allUnemploymentData.csv", row.names = FALSE)
+
+write.csv(unemp_scrubbed,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\unemploymentQuarterly.csv", row.names = FALSE)
+
+write.csv(HPI_Unemp_Combined,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentQuarterlyCombined.csv", row.names = FALSE)
+
+write.csv(unemp_scrubbed_annual,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentAnnualCombined.csv", row.names = FALSE)
+
+## Backs up all data into local file
+## replace file path below with a file path on your local computer to save backup of csv files
+## C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentAnnualCombined.csv with a file path on your local computer to save backup of csv files
+```
+
