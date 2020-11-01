@@ -1,0 +1,24 @@
+---
+title: "HPI_Unemp_Combined.rmd"
+author: "https://github.com/jrkkv5/FIN6572Fall2020/blob/master/National%20Debt/importNationalDebt.Rmd"
+date: "10/31/2020"
+output: html_document
+---
+
+
+```{r combine}
+
+
+unemp_scrubbed$year <- as.integer(unemp_scrubbed$year)
+unemp_scrubbed$quarter <- as.integer(unemp_scrubbed$quarter)
+#converts unemployment datatypes to integers for successful merge
+
+HPI_Unemp_Combined <- full_join(unemp_scrubbed, HPI_raw, by.x = "state", by.y = "qaurter")
+#combines HPI data with unemployment data
+
+HPI_Unemp_Combined <- na.omit(HPI_Unemp_Combined)
+#omits na entries for clean data
+
+
+```
+
