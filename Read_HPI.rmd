@@ -18,3 +18,9 @@ poverty_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Proje
 
 ```
 
+
+```{r HPI}
+Education <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\education.csv")
+#Reads HPI into new dataframe
+
+```

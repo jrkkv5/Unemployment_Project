@@ -2123,8 +2123,7 @@ unemp_scrubbed <- na.omit(unemp_all)
 unemp_all$annual <- ifelse(unemp_all$period=="M12", "1",NA  )
 
 unemp_scrubbed_annual <- na.omit(unemp_all)
-#Adds quarterly variable to unempl_all df.  This should prepare it to be merged with the HPI df.
-
+#Adds annual variable to unempl_all df.  This should prepare it to be merged with the HPI df.
 
 
 ```
