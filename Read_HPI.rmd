@@ -17,4 +17,15 @@ poverty_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Proje
 #source: https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-poverty-people.html
 
 ```
+```{r HPI}
+
+
+industry <- read.csv("C:\\Users\\nores\\OneDrive\\Desktop\\Fin 6572\\occupational numbers.csv")
+#Reads 
+#source: https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-poverty-people.html
+
+```
+
+
+
 
