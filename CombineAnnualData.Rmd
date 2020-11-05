@@ -1,0 +1,28 @@
+---
+title: "CombineAnnualData.rmd"
+author: "https://github.com/jrkkv5/FIN6572Fall2020/blob/master/National%20Debt/importNationalDebt.Rmd"
+date: "11/4/2020"
+output: html_document
+---
+
+``` {r annual_data_HPI}
+
+
+HPI_raw$annual <- ifelse(HPI_raw$quarter=="4", "1",NA  )
+
+HPI_annual <- na.omit(HPI_raw)
+#Adds annual variable to HPI df.
+
+
+```
+
+
+``` {r CombineAnnualData}
+
+HPI_Unemp_Combined_Annual <- full_join(unemp_scrubbed_annual, HPI_raw, by.x = "state", by.y = "qaurter")
+#combines HPI data with unemployment data
+
+HPI_Unemp_Combined <- na.omit(HPI_Unemp_Combined)
+#omits na entries for clean data
+
+```

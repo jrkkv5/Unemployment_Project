@@ -14,6 +14,8 @@ write.csv(HPI_Unemp_Combined,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\
 
 write.csv(unemp_scrubbed_annual,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentAnnualCombined.csv", row.names = FALSE)
 
+write.csv(HPI_Unemp_MHI_Combined_Annual,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentMHIAnnualCombined.csv", row.names = FALSE)
+
 ## Backs up all data into local file
 ## replace file path below with a file path on your local computer to save backup of csv files
 ## C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentAnnualCombined.csv with a file path on your local computer to save backup of csv files

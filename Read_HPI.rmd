@@ -8,5 +8,8 @@ output: html_document
 ```{r HPI}
 HPI_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPI_AT_state.csv")
 #Reads HPI into new dataframe
+
+MHI_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\MHI.csv")
+#Reads MHI into a new dataframe
 ```
 
