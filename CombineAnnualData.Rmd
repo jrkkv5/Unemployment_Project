@@ -19,10 +19,28 @@ HPI_annual <- na.omit(HPI_raw)
 
 ``` {r CombineAnnualData}
 
-HPI_Unemp_Combined_Annual <- full_join(unemp_scrubbed_annual, HPI_raw, by.x = "state", by.y = "qaurter")
+unemp_scrubbed_annual$year <- as.integer(unemp_scrubbed_annual$year)
+unemp_scrubbed_annual$quarter <- as.integer(unemp_scrubbed_annual$quarter)
+#converts unemployment datatypes to integers for successful merge
+
+HPI_Unemp_Combined_Annual <- full_join(unemp_scrubbed_annual, HPI_annual, by.x = "state", by.y = "year")
 #combines HPI data with unemployment data
 
-HPI_Unemp_Combined <- na.omit(HPI_Unemp_Combined)
+HPI_Unemp_Combined_Annual <- na.omit(HPI_Unemp_Combined_Annual)
+#omits na entries for clean data
+
+
+
+HPI_Unemp_MHI_Combined_Annual <- full_join(HPI_Unemp_Combined_Annual, MHI_raw, by.x = "state", by.y = "year")
+#combines MHI data with unemployment data and HPI data
+
+HPI_Unemp_MHI_Combined_Annual <- na.omit(HPI_Unemp_MHI_Combined_Annual)
+#omits na entries for clean data
+
+HPI_Unemp_MHI_poverty_Combined_Annual <- full_join(HPI_Unemp_MHI_Combined_Annual, poverty_raw, by.x = "state", by.y = "year")
+#combines MHI data with unemployment data and HPI data
+
+HPI_Unemp_MHI_poverty_Combined_Annual <- na.omit(HPI_Unemp_MHI_poverty_Combined_Annual)
 #omits na entries for clean data
 
 ```
