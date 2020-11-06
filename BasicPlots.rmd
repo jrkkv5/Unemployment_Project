@@ -1,0 +1,40 @@
+---
+title: "Basic Plots"
+author: "https://github.com/jrkkv5/FIN6572Fall2020/blob/master/National%20Debt/importNationalDebt.Rmd"
+date: "11/5/2020"
+output: html_document
+---
+
+``` {r testplot}
+test <- HPI_Population_Unemp_MHI_poverty_Combined_Annual[ HPI_Population_Unemp_MHI_poverty_Combined_Annual$state == "CA", ]
+
+scatter.smooth(test$year, test$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+
+scatter.smooth(x=test$year, y=test$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+
+scatter.smooth(x=test$year, y=test$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+
+
+scatter.smooth(x=test$year, y=test$MHI, main="Median Household Income by Year", xlab = "Year", ylab = "MHI")
+
+
+#test to show a scatterplot CA HPI data against year
+```
+
+
+``` {r test2}
+
+library(tidyverse)
+library(lubridate)
+
+swd <- HPI_Population_Unemp_MHI_poverty_Combined_Annual[ HPI_Population_Unemp_MHI_poverty_Combined_Annual$state == "CA", ]
+
+swc <- swd %>%
+  filter(Status == "Confirmed") %>% 
+  mutate(Date = dmy(Date))
+
+ggplot(swc, aes(x = Date)) +
+  geom_line(aes(y = population, color = "darkred"))
+
+
+```

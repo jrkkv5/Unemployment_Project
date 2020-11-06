@@ -2,7 +2,9 @@
 title: "CombineAnnualData.rmd"
 author: "https://github.com/jrkkv5/FIN6572Fall2020/blob/master/National%20Debt/importNationalDebt.Rmd"
 date: "11/4/2020"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ``` {r annual_data_HPI}
@@ -29,8 +31,6 @@ HPI_Unemp_Combined_Annual <- full_join(unemp_scrubbed_annual, HPI_annual, by.x =
 HPI_Unemp_Combined_Annual <- na.omit(HPI_Unemp_Combined_Annual)
 #omits na entries for clean data
 
-
-
 HPI_Unemp_MHI_Combined_Annual <- full_join(HPI_Unemp_Combined_Annual, MHI_raw, by.x = "state", by.y = "year")
 #combines MHI data with unemployment data and HPI data
 
@@ -43,4 +43,21 @@ HPI_Unemp_MHI_poverty_Combined_Annual <- full_join(HPI_Unemp_MHI_Combined_Annual
 HPI_Unemp_MHI_poverty_Combined_Annual <- na.omit(HPI_Unemp_MHI_poverty_Combined_Annual)
 #omits na entries for clean data
 
+
+
+HPI_Population_Unemp_MHI_poverty_Combined_Annual <- full_join(HPI_Unemp_MHI_poverty_Combined_Annual, population, by.x = "state", by.y = "year")
+#combines population data with unemployment data and HPI data
+
+HPI_Population_Unemp_MHI_poverty_Combined_Annual <- na.omit(HPI_Population_Unemp_MHI_poverty_Combined_Annual)
+#omits na entries for clean data
+
+```
+
+``` {r testframe}
+test <- HPI_Population_Unemp_MHI_poverty_Combined_Annual[ HPI_Population_Unemp_MHI_poverty_Combined_Annual$state == "AK", ]
+
+as.numeric(test$population)
+
+poplimit <- c(0 , 900000)
+plot(test$year, test$population, ylim = poplimit)
 ```
