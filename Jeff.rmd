@@ -1,0 +1,42 @@
+---
+title: "Jeff"
+author: "https://github.com/jrkkv5/FIN6572Fall2020/blob/master/National%20Debt/importNationalDebt.Rmd"
+date: "11/8/2020"
+output: html_document
+---
+
+``` {r basic analysis}
+
+library(readr)
+library(devtools)
+library(blsAPI)
+library(rjson)
+library(curl)
+library(dplyr)
+library(tidyverse)
+#Loads necessary packages
+
+merged_final <- read_csv("csv files/mergedFinal.csv")
+
+AR_base <- merged_final[ merged_final$state == "AR", ]
+
+scatter.smooth(AR_base$year, AR_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
+
+scatter.smooth(AR_base$year, AR_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+
+scatter.smooth(x=AR_base$year, y=AR_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+
+scatter.smooth(x=AR_base$year, y=AR_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+
+AR_base$RMHI <- as.integer(AR_base$RMHI)
+plot(x=AR_base$year, y=AR_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+#ERROR: Unable to properly plot graph for MHI or population
+
+
+AR_base$population <- as.integer(AR_base$population)
+plot(x=AR_base$year, y=AR_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
+#ERROR: Unable to properly plot graph for MHI or population
+
+
+#test to show a scatterplot CA HPI data against year
+```

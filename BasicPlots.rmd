@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ``` {r testplot}
-test <- HPI_Population_Unemp_MHI_poverty_Combined_Annual[ HPI_Population_Unemp_MHI_poverty_Combined_Annual$state == "CA", ]
+AR_base <- HPI_Population_Unemp_MHI_poverty_Combined_Annual[ HPI_Population_Unemp_MHI_poverty_Combined_Annual$state == "AR", ]
 
 scatter.smooth(test$year, test$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
 
@@ -14,27 +14,16 @@ scatter.smooth(x=test$year, y=test$value, main="Unemployment by Year", xlab = "Y
 
 scatter.smooth(x=test$year, y=test$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
 
+test$RMHI <- as.factor(test$RMHI)
+plot(x=test$year, y=test$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+#ERROR: Unable to properly plot graph for MHI or population
 
-scatter.smooth(x=test$year, y=test$MHI, main="Median Household Income by Year", xlab = "Year", ylab = "MHI")
+
+test$population <- as.integer(test$population)
+plot(x=test$year, y=test$population, main="Population by Year", xlab = "Year", ylab = "Population" )
+#ERROR: Unable to properly plot graph for MHI or population
 
 
 #test to show a scatterplot CA HPI data against year
 ```
 
-
-``` {r test2}
-
-library(tidyverse)
-library(lubridate)
-
-swd <- HPI_Population_Unemp_MHI_poverty_Combined_Annual[ HPI_Population_Unemp_MHI_poverty_Combined_Annual$state == "CA", ]
-
-swc <- swd %>%
-  filter(Status == "Confirmed") %>% 
-  mutate(Date = dmy(Date))
-
-ggplot(swc, aes(x = Date)) +
-  geom_line(aes(y = population, color = "darkred"))
-
-
-```

@@ -18,8 +18,13 @@ write.csv(HPI_Unemp_MHI_Combined_Annual,"C:\\Users\\ABowles0608\\Desktop\\FIN657
 
 write.csv(HPI_Unemp_MHI_poverty_Combined_Annual,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentMHIPovertyAnnualCombined.csv", row.names = FALSE)
 
+
+write.csv(merged_final,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\National Debt\\Unemployment_Project\\csv files\\mergedFinal.csv", row.names = FALSE)
+
 ## Backs up all data into local file
 ## replace file path below with a file path on your local computer to save backup of csv files
 ## C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentAnnualCombined.csv with a file path on your local computer to save backup of csv files
 ```
+
+
 

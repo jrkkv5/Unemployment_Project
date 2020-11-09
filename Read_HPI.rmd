@@ -14,10 +14,14 @@ MHI_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project c
 
 poverty_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\povertylevel.csv")
 #Reads Poverty level by state into new data frame
+
+population <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\National Debt\\Unemployment_Project\\csv files\\population_by_year.csv")
 #source: https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-poverty-people.html
 
 ```
-```{r HPI}
+
+
+```{r industry}
 
 
 industry <- read.csv("C:\\Users\\nores\\OneDrive\\Desktop\\Fin 6572\\occupational numbers.csv")
@@ -27,11 +31,3 @@ industry <- read.csv("C:\\Users\\nores\\OneDrive\\Desktop\\Fin 6572\\occupationa
 ```
 
 
-
-
-
-```{r HPI}
-Education <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\education.csv")
-#Reads HPI into new dataframe
-
-```

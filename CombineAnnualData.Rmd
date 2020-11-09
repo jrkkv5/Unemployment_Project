@@ -51,13 +51,12 @@ HPI_Population_Unemp_MHI_poverty_Combined_Annual <- full_join(HPI_Unemp_MHI_pove
 HPI_Population_Unemp_MHI_poverty_Combined_Annual <- na.omit(HPI_Population_Unemp_MHI_poverty_Combined_Annual)
 #omits na entries for clean data
 
+merged_final <- full_join(HPI_Population_Unemp_MHI_poverty_Combined_Annual, SP500, by.x = "state", by.y = "year")
+#combines SP500 data with unemployment data and HPI data
+
+merged_final <- na.omit(merged_final)
+#omits na entries for clean data
+
 ```
 
-``` {r testframe}
-test <- HPI_Population_Unemp_MHI_poverty_Combined_Annual[ HPI_Population_Unemp_MHI_poverty_Combined_Annual$state == "AK", ]
 
-as.numeric(test$population)
-
-poplimit <- c(0 , 900000)
-plot(test$year, test$population, ylim = poplimit)
-```
