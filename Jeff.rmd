@@ -5,8 +5,7 @@ date: "11/8/2020"
 output: html_document
 ---
 
-``` {r basic analysis}
-
+``` {r load_necessary_packages}
 library(readr)
 library(devtools)
 library(blsAPI)
@@ -17,26 +16,149 @@ library(tidyverse)
 #Loads necessary packages
 
 merged_final <- read_csv("csv files/mergedFinal.csv")
+#Reads final file into merged dataframe
 
-AR_base <- merged_final[ merged_final$state == "AR", ]
-
-scatter.smooth(AR_base$year, AR_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
-
-scatter.smooth(AR_base$year, AR_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
-
-scatter.smooth(x=AR_base$year, y=AR_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
-
-scatter.smooth(x=AR_base$year, y=AR_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
-
-AR_base$RMHI <- as.integer(AR_base$RMHI)
-plot(x=AR_base$year, y=AR_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
-#ERROR: Unable to properly plot graph for MHI or population
+#My states: CA, TX, NY, FL, PA, IL, OH
+```
 
 
-AR_base$population <- as.integer(AR_base$population)
-plot(x=AR_base$year, y=AR_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
-#ERROR: Unable to properly plot graph for MHI or population
+``` {r CA Basic Analysis}
 
+CA_base <- merged_final[ merged_final$state == "CA", ]
 
+scatter.smooth(CA_base$year, CA_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
+
+scatter.smooth(CA_base$year, CA_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+
+scatter.smooth(x=CA_base$year, y=CA_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+
+scatter.smooth(x=CA_base$year, y=CA_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+
+CA_base$RMHI <- as.integer(CA_base$RMHI)
+plot(x=CA_base$year, y=CA_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+
+CA_base$population <- as.integer(CA_base$population)
+plot(x=CA_base$year, y=CA_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
+ 
 #test to show a scatterplot CA HPI data against year
+```
+
+``` {r TX Basic Analysis}
+
+TX_base <- merged_final[ merged_final$state == "TX", ]
+
+scatter.smooth(TX_base$year, TX_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
+
+scatter.smooth(TX_base$year, TX_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+
+scatter.smooth(x=TX_base$year, y=TX_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+
+scatter.smooth(x=TX_base$year, y=TX_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+
+TX_base$RMHI <- as.integer(TX_base$RMHI)
+plot(x=TX_base$year, y=TX_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+
+TX_base$population <- as.integer(TX_base$population)
+plot(x=TX_base$year, y=TX_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
+
+```
+``` {r NY Basic Analysis}
+
+NY_base <- merged_final[ merged_final$state == "NY", ]
+
+scatter.smooth(NY_base$year, NY_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
+
+scatter.smooth(NY_base$year, NY_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+
+scatter.smooth(x=NY_base$year, y=NY_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+
+scatter.smooth(x=NY_base$year, y=NY_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+
+NY_base$RMHI <- as.integer(NY_base$RMHI)
+plot(x=NY_base$year, y=NY_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+
+NY_base$population <- as.integer(NY_base$population)
+plot(x=NY_base$year, y=NY_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
+
+```
+
+``` {r FL Basic Analysis}
+
+FL_base <- merged_final[ merged_final$state == "FL", ]
+
+scatter.smooth(FL_base$year, FL_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
+
+scatter.smooth(FL_base$year, FL_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+
+scatter.smooth(x=FL_base$year, y=FL_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+
+scatter.smooth(x=FL_base$year, y=FL_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+
+FL_base$RMHI <- as.integer(FL_base$RMHI)
+plot(x=FL_base$year, y=FL_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+
+FL_base$population <- as.integer(FL_base$population)
+plot(x=FL_base$year, y=FL_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
+
+```
+
+
+``` {r PA Basic Analysis}
+
+PA_base <- merged_final[ merged_final$state == "PA", ]
+
+scatter.smooth(PA_base$year, PA_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
+
+scatter.smooth(PA_base$year, PA_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+
+scatter.smooth(x=PA_base$year, y=PA_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+
+scatter.smooth(x=PA_base$year, y=PA_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+
+PA_base$RMHI <- as.integer(PA_base$RMHI)
+plot(x=PA_base$year, y=PA_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+
+PA_base$population <- as.integer(PA_base$population)
+plot(x=PA_base$year, y=PA_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
+
+```
+
+``` {r IL Basic Analysis}
+
+IL_base <- merged_final[ merged_final$state == "IL", ]
+
+scatter.smooth(IL_base$year, IL_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
+
+scatter.smooth(IL_base$year, IL_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+
+scatter.smooth(x=IL_base$year, y=IL_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+
+scatter.smooth(x=IL_base$year, y=IL_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+
+IL_base$RMHI <- as.integer(IL_base$RMHI)
+plot(x=IL_base$year, y=IL_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+
+IL_base$population <- as.integer(IL_base$population)
+plot(x=IL_base$year, y=IL_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
+
+```
+
+``` {r OH Basic Analysis}
+
+OH_base <- merged_final[ merged_final$state == "OH", ]
+
+scatter.smooth(OH_base$year, OH_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
+
+scatter.smooth(OH_base$year, OH_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+
+scatter.smooth(x=OH_base$year, y=OH_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+
+scatter.smooth(x=OH_base$year, y=OH_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+
+OH_base$RMHI <- as.integer(OH_base$RMHI)
+plot(x=OH_base$year, y=OH_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+
+OH_base$population <- as.integer(OH_base$population)
+plot(x=OH_base$year, y=OH_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
+
 ```

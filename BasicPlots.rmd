@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ``` {r testplot}
-AR_base <- HPI_Population_Unemp_MHI_poverty_Combined_Annual[ HPI_Population_Unemp_MHI_poverty_Combined_Annual$state == "AR", ]
+test <- HPI_Population_Unemp_MHI_poverty_Combined_Annual[ HPI_Population_Unemp_MHI_poverty_Combined_Annual$state == "AR", ]
 
 scatter.smooth(test$year, test$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
 

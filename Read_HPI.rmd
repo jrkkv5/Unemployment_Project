@@ -15,7 +15,7 @@ MHI_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project c
 poverty_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\povertylevel.csv")
 #Reads Poverty level by state into new data frame
 
-population <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\National Debt\\Unemployment_Project\\csv files\\population_by_year.csv")
+population <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\National Debt\\Unemployment_Project\\csv files\\population_by_year2.csv")
 #source: https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-poverty-people.html
 
 ```
