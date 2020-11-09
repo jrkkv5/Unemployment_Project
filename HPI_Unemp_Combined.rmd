@@ -18,7 +18,7 @@ HPI_Unemp_Combined <- full_join(unemp_scrubbed, HPI_raw, by.x = "state", by.y = 
 
 HPI_Unemp_Combined <- na.omit(HPI_Unemp_Combined)
 #omits na entries for clean data
-
+#Corey
 
 ```
 
