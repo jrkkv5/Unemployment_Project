@@ -18,7 +18,10 @@ library(tidyverse)
 
 merged_final <- read_csv("csv files/mergedFinal.csv")
 
-AR_base <- merged_final[ merged_final$state == "AR", ]
+CA_observations <- merged_final[ merged_final$state == "CA", ]
+CA_base <- CA_observations[ CA_observations$year < 2014, ] # Creates training set for model
+CA_sampleset <-  CA_observations[ CA_observations$year > 2013, ] # Creates set to test model
+
 #Update code for your states and run regression from 1984-2014, create some basic plots, etc.
 
 ```

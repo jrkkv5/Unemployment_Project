@@ -24,7 +24,9 @@ merged_final <- read_csv("csv files/mergedFinal.csv")
 
 ``` {r CA Basic Analysis}
 
-CA_base <- merged_final[ merged_final$state == "CA", ]
+CA_observations <- merged_final[ merged_final$state == "CA", ]
+CA_base <- CA_observations[ CA_observations$year < 2014, ] # Creates training set for model
+CA_sampleset <-  CA_observations[ CA_observations$year > 2013, ] # Creates set to test model
 
 scatter.smooth(CA_base$year, CA_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
 
@@ -39,7 +41,28 @@ plot(x=CA_base$year, y=CA_base$RMHI, main="Median Household Income by Year", xla
 
 CA_base$population <- as.integer(CA_base$population)
 plot(x=CA_base$year, y=CA_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
- 
+
+
+cor(CA_base$RMHI, CA_base$value)
+cor(CA_base$HPI, CA_base$value)
+cor(CA_base$poverty, CA_base$value)
+cor(CA_base$population, CA_base$value)
+cor(CA_base$sp500, CA_base$value)
+#run base correlations between categories and dependent variable
+
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(CA_base$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(CA_base$value)$out))  # box plot for 'Unemployment'
+boxplot(CA_base$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(CA_base$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+
+
+CA_linearModel <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = CA_base)
+summary(CA_linearModel)
+anova(CA_linearModel)
+#run multiple linear model for data
+
+CA_linearModelSignificant <- lm(value ~ poverty + population, data = CA_base)
+summary(CA_linearModelSignificant)
 #test to show a scatterplot CA HPI data against year
 ```
 
