@@ -1,0 +1,24 @@
+---
+title: "Corey"
+author: "https://github.com/jrkkv5/FIN6572Fall2020/blob/master/National%20Debt/importNationalDebt.Rmd"
+date: "11/8/2020"
+output: html_document
+---
+
+``` {r basic analysis}
+library(readr)
+library(devtools)
+library(blsAPI)
+library(rjson)
+library(curl)
+library(dplyr)
+library(tidyverse)
+#Loads necessary packages
+
+
+merged_final <- read_csv("csv files/mergedFinal.csv")
+
+AR_base <- merged_final[ merged_final$state == "AR", ]
+#Update code for your states and run regression from 1984-2014, create some basic plots, etc.
+
+```
