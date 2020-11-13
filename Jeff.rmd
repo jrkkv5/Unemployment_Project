@@ -18,6 +18,10 @@ library(tidyverse)
 merged_final <- read_csv("csv files/mergedFinal.csv")
 #Reads final file into merged dataframe
 
+merged_final$log_pop = log(merged_final$population)
+
+merged_final$log_RMHI = log(merged_final$RMHI)
+
 #My states: CA, TX, NY, FL, PA, IL, OH
 ```
 
@@ -56,21 +60,25 @@ boxplot(CA_base$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.sta
 #create box plot for poverty level and unemployment level
 
 
-CA_linearModel <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = CA_base)
-summary(CA_linearModel)
-anova(CA_linearModel)
+CA_Test <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = CA_base)
+summary(CA_Test)
+anova(CA_Test)
 #run multiple linear model for data
 
 CA_linearModelSignificant <- lm(value ~ poverty + population, data = CA_base)
 summary(CA_linearModelSignificant)
 #test to show a scatterplot CA HPI data against year
+
+CA_linearModel <- lm(value ~ poverty + RMHI + HPI + log(population) + sp500, data = CA_base)
+summary(CA_linearModel)
+anova(CA_linearModel)
 ```
 
 ``` {r TX Basic Analysis}
 
 TX_base <- merged_final[ merged_final$state == "TX", ]
 
-scatter.smooth(TX_base$year, TX_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
+scatter.smooth(TX_base$year, TX_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/3)
 
 scatter.smooth(TX_base$year, TX_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
 
