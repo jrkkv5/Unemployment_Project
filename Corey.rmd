@@ -18,10 +18,66 @@ library(tidyverse)
 
 merged_final <- read_csv("csv files/mergedFinal.csv")
 
-CA_observations <- merged_final[ merged_final$state == "CA", ]
-CA_base <- CA_observations[ CA_observations$year < 2014, ] # Creates training set for model
-CA_sampleset <-  CA_observations[ CA_observations$year > 2013, ] # Creates set to test model
-
 #Update code for your states and run regression from 1984-2014, create some basic plots, etc.
 
+```
+`````` {r MN Basic Analysis}
+
+MN_base <- merged_final[ merged_final$state == "MN", ]
+
+scatter.smooth(MN_base$year, MN_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
+
+scatter.smooth(MN_base$year, MN_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+
+scatter.smooth(x=MN_base$year, y=MN_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+
+scatter.smooth(x=MN_base$year, y=MN_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+
+MN_base$RMHI <- as.integer(MN_base$RMHI)
+plot(x=MN_base$year, y=MN_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+
+MN_base$population <- as.integer(MN_base$population)
+plot(x=MN_base$year, y=MN_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
+ 
+#test to show a scatterplot MN HPI data against year
+```
+`````` {r AL Basic Analysis}
+
+AL_base <- merged_final[ merged_final$state == "AL", ]
+
+scatter.smooth(AL_base$year, AL_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
+
+scatter.smooth(AL_base$year, AL_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+
+scatter.smooth(x=AL_base$year, y=AL_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+
+scatter.smooth(x=AL_base$year, y=AL_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+
+AL_base$RMHI <- as.integer(AL_base$RMHI)
+plot(x=AL_base$year, y=AL_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+
+AL_base$population <- as.integer(AL_base$population)
+plot(x=ALbase$year, y=AL_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
+ 
+#test to show a scatterplot MN HPI data against year
+```
+`````` {r LA Basic Analysis}
+
+LA_base <- merged_final[ merged_final$state == "LA", ]
+
+scatter.smooth(LA_base$year, LA_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
+
+scatter.smooth(LA_base$year, LA_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+
+scatter.smooth(x=LA_base$year, y=LA_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+
+scatter.smooth(x=LA_base$year, y=LA_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+
+LA_base$RMHI <- as.integer(LA_base$RMHI)
+plot(x=LA_base$year, y=LA_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+
+LA_base$population <- as.integer(LA_base$population)
+plot(x=LA_base$year, y=LA_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
+ 
+#test to show a scatterplot MN HPI data against year
 ```
