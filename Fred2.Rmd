@@ -5,7 +5,8 @@ date: "11/8/2020"
 output: html_document
 ---
 
-```{r}
+```{r library}
+#Loading necessary packages
 library(readr)
 library(devtools)
 library(blsAPI)
