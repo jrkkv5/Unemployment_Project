@@ -276,6 +276,12 @@ IL_data <- merged_final[ merged_final$state == "IL", ]
 #Descriptive statistics
 stat.desc(IL_data)
 ```
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(IL_data, class)
+sapply(IL_data, is.factor)
+cor(IL_data[sapply(IL_data, function(x) !is.character(x))])
+```
 
 ```{r IL Histogram Unemployment}
 hist(IL_data$value,
@@ -378,6 +384,14 @@ TX_data <- merged_final[ merged_final$state == "TX", ]
 stat.desc(TX_data)
 ```
 
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(TX_data, class)
+sapply(TX_data, is.factor)
+cor(TX_data[sapply(TX_data, function(x) !is.character(x))])
+```
+
+
 ```{r TX Histogram Unemployment}
 hist(TX_data$value,
      main="Histogram of Unemployment Across All Years",
@@ -476,10 +490,17 @@ MO_data <- merged_final[ merged_final$state == "MO", ]
 stat.desc(MO_data)
 ```
 
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(MO_data, class)
+sapply(MO_data, is.factor)
+cor(MO_data[sapply(MO_data, function(x) !is.character(x))])
+```
+
+
 ```{r MO Histogram Unemployment}
 hist(MO_data$value,
      main="Histogram of Unemployment Across All 50 States",
-     xlim=c(4,11),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
@@ -487,7 +508,6 @@ hist(MO_data$value,
 ```{r MO Histogram Poverty}
 hist(MO_data$poverty,
      main="Histogram of Poverty Across All 50 States",
-     xlim=c(9,16),
      xlab="Poverty Rate",
      breaks = 5)
 ```
@@ -574,10 +594,16 @@ WA_data <- merged_final[ merged_final$state == "WA", ]
 stat.desc(WA_data)
 ```
 
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(WA_data, class)
+sapply(WA_data, is.factor)
+cor(WA_data[sapply(WA_data, function(x) !is.character(x))])
+```
+
 ```{r WA Histogram Unemployment}
 hist(WA_data$value,
      main="Histogram of Unemployment Across All 50 States",
-     xlim=c(4,11),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
@@ -585,7 +611,6 @@ hist(WA_data$value,
 ```{r WA Histogram Poverty}
 hist(WA_data$poverty,
      main="Histogram of Poverty Across All 50 States",
-     xlim=c(9,16),
      xlab="Poverty Rate",
      breaks = 5)
 ```
@@ -672,10 +697,17 @@ OR_data <- merged_final[ merged_final$state == "OR", ]
 stat.desc(OR_data)
 ```
 
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(OR_data, class)
+sapply(OR_data, is.factor)
+cor(OR_data[sapply(OR_data, function(x) !is.character(x))])
+```
+
+
 ```{r OR Histogram Unemployment}
 hist(OR_data$value,
      main="Histogram of Unemployment Across All 50 States",
-     xlim=c(4,11),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
@@ -683,7 +715,6 @@ hist(OR_data$value,
 ```{r OR Histogram Poverty}
 hist(OR_data$poverty,
      main="Histogram of Poverty Across All 50 States",
-     xlim=c(9,16),
      xlab="Poverty Rate",
      breaks = 5)
 ```
@@ -770,10 +801,17 @@ CO_data <- merged_final[ merged_final$state == "CO", ]
 stat.desc(CO_data)
 ```
 
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(OR_data, class)
+sapply(OR_data, is.factor)
+cor(OR_data[sapply(OR_data, function(x) !is.character(x))])
+```
+
+
 ```{r CO Histogram Unemployment}
 hist(CO_data$value,
      main="Histogram of Unemployment Across All 50 States",
-     xlim=c(4,11),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
@@ -781,7 +819,6 @@ hist(CO_data$value,
 ```{r CO Histogram Poverty}
 hist(CO_data$poverty,
      main="Histogram of Poverty Across All 50 States",
-     xlim=c(9,16),
      xlab="Poverty Rate",
      breaks = 5)
 ```
@@ -868,10 +905,17 @@ WV_data <- merged_final[ merged_final$state == "WV", ]
 stat.desc(WV_data)
 ```
 
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(WV_data, class)
+sapply(WV_data, is.factor)
+cor(WV_data[sapply(WV_data, function(x) !is.character(x))])
+```
+
+
 ```{r WV Histogram Unemployment}
 hist(WV_data$value,
      main="Histogram of Unemployment Across All 50 States",
-     xlim=c(4,11),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
@@ -879,7 +923,6 @@ hist(WV_data$value,
 ```{r WV Histogram Poverty}
 hist(WV_data$poverty,
      main="Histogram of Poverty Across All 50 States",
-     xlim=c(9,16),
      xlab="Poverty Rate",
      breaks = 5)
 ```
@@ -966,10 +1009,17 @@ ME_data <- merged_final[ merged_final$state == "ME", ]
 stat.desc(ME_data)
 ```
 
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(WV_data, class)
+sapply(WV_data, is.factor)
+cor(WV_data[sapply(WV_data, function(x) !is.character(x))])
+```
+
+
 ```{r ME Histogram Unemployment}
 hist(ME_data$value,
      main="Histogram of Unemployment Across All 50 States",
-     xlim=c(4,11),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
@@ -977,7 +1027,6 @@ hist(ME_data$value,
 ```{r ME Histogram Poverty}
 hist(ME_data$poverty,
      main="Histogram of Poverty Across All 50 States",
-     xlim=c(9,16),
      xlab="Poverty Rate",
      breaks = 5)
 ```
@@ -1054,6 +1103,364 @@ summary(ME_linearModelSignificant)
 
 #test to show a scatterplot ME HPI data against year
 ```
+
+
+
+
+
+
+
+
+
+
+```{r IL Holt Analysis}
+
+IL_TS <- ts(IL_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+IL_TData <- window(IL_TS, end = c(2004))
+IL_VData <- window(IL_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r IL Holt Analysis User}
+IL_HUser <- ets(IL_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(IL_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r IL Holt Analysis Computer}
+IL_HCmp <- ets(IL_TData, model = "AAN")
+summary(IL_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+```{r IL Holt Set Forecast}
+IL_nV <- length(IL_VData)
+IL_fUser <- forecast(IL_HUser, h = IL_nV)
+IL_fCmp <- forecast(IL_HCmp, h = IL_nV)
+```
+
+
+```{r IL Holt Analysis User Accuracy}
+accuracy(IL_fUser,IL_VData)
+```
+
+
+```{r IL Holt Analysis Computer Accuracy}
+accuracy(IL_fCmp,IL_VData)
+```
+
+``` {r IL Holt Forecast}
+IL_HFinal <- ets(IL_TS, model = "AAN")
+forecast(IL_HFinal, h=1
+```
+
+
+
+
+```{r TX Holt Analysis}
+
+TX_TS <- ts(TX_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+TX_TData <- window(TX_TS, end = c(2004))
+TX_VData <- window(TX_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r TX Holt Analysis User}
+TX_HUser <- ets(TX_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(TX_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r TX Holt Analysis Computer}
+TX_HCmp <- ets(TX_TData, model = "AAN")
+summary(TX_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+```{r TX Holt Set Forecast}
+TX_nV <- length(TX_VData)
+TX_fUser <- forecast(TX_HUser, h = TX_nV)
+TX_fCmp <- forecast(TX_HCmp, h = TX_nV)
+```
+
+
+```{r TX Holt Analysis User Accuracy}
+accuracy(TX_fUser,TX_VData)
+```
+
+
+```{r TX Holt Analysis Computer Accuracy}
+accuracy(TX_fCmp,TX_VData)
+```
+
+``` {r TX Holt Forecast}
+TX_HFinal <- ets(TX_TS, model = "AAN")
+forecast(TX_HFinal, h=1
+```
+
+
+
+
+```{r MO Holt Analysis}
+
+MO_TS <- ts(MO_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+MO_TData <- window(MO_TS, end = c(2004))
+MO_VData <- window(MO_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r MO Holt Analysis User}
+MO_HUser <- ets(MO_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(MO_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r MO Holt Analysis Computer}
+MO_HCmp <- ets(MO_TData, model = "AAN")
+summary(MO_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+```{r MO Holt Set Forecast}
+MO_nV <- length(MO_VData)
+MO_fUser <- forecast(MO_HUser, h = MO_nV)
+MO_fCmp <- forecast(MO_HCmp, h = MO_nV)
+```
+
+
+```{r MO Holt Analysis User Accuracy}
+accuracy(MO_fUser,MO_VData)
+```
+
+
+```{r MO Holt Analysis Computer Accuracy}
+accuracy(MO_fCmp,MO_VData)
+```
+
+``` {r MO Holt Forecast}
+MO_HFinal <- ets(MO_TS, model = "AAN")
+forecast(MO_HFinal, h=1
+```
+
+```{r WA Holt Analysis}
+
+WA_TS <- ts(WA_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+WA_TData <- window(WA_TS, end = c(2004))
+WA_VData <- window(WA_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r WA Holt Analysis User}
+WA_HUser <- ets(WA_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(WA_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r WA Holt Analysis Computer}
+WA_HCmp <- ets(WA_TData, model = "AAN")
+summary(WA_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+```{r WA Holt Set Forecast}
+WA_nV <- length(WA_VData)
+WA_fUser <- forecast(WA_HUser, h = WA_nV)
+WA_fCmp <- forecast(WA_HCmp, h = WA_nV)
+```
+
+
+```{r WA Holt Analysis User Accuracy}
+accuracy(WA_fUser,WA_VData)
+```
+
+
+```{r WA Holt Analysis Computer Accuracy}
+accuracy(WA_fCmp,WA_VData)
+```
+
+``` {r WA Holt Forecast}
+WA_HFinal <- ets(WA_TS, model = "AAN")
+forecast(WA_HFinal, h=1
+```
+
+
+```{r OR Holt Analysis}
+
+OR_TS <- ts(OR_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+OR_TData <- window(OR_TS, end = c(2004))
+OR_VData <- window(OR_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r OR Holt Analysis User}
+OR_HUser <- ets(OR_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(OR_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r OR Holt Analysis Computer}
+OR_HCmp <- ets(OR_TData, model = "AAN")
+summary(OR_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+```{r OR Holt Set Forecast}
+OR_nV <- length(OR_VData)
+OR_fUser <- forecast(OR_HUser, h = OR_nV)
+OR_fCmp <- forecast(OR_HCmp, h = OR_nV)
+```
+
+
+```{r OR Holt Analysis User Accuracy}
+accuracy(OR_fUser,OR_VData)
+```
+
+
+```{r OR Holt Analysis Computer Accuracy}
+accuracy(OR_fCmp,OR_VData)
+```
+
+``` {r OR Holt Forecast}
+OR_HFinal <- ets(OR_TS, model = "AAN")
+forecast(OR_HFinal, h=1
+```
+
+
+```{r CO Holt Analysis}
+
+CO_TS <- ts(CO_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+CO_TData <- window(CO_TS, end = c(2004))
+CO_VData <- window(CO_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r CO Holt Analysis User}
+CO_HUser <- ets(CO_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(CO_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r CO Holt Analysis Computer}
+CO_HCmp <- ets(CO_TData, model = "AAN")
+summary(CO_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+```{r CO Holt Set Forecast}
+CO_nV <- length(CO_VData)
+CO_fUser <- forecast(CO_HUser, h = CO_nV)
+CO_fCmp <- forecast(CO_HCmp, h = CO_nV)
+```
+
+
+```{r CO Holt Analysis User Accuracy}
+accuracy(CO_fUser,CO_VData)
+```
+
+
+```{r CO Holt Analysis Computer Accuracy}
+accuracy(CO_fCmp,CO_VData)
+```
+
+``` {r CO Holt Forecast}
+CO_HFinal <- ets(CO_TS, model = "AAN")
+forecast(CO_HFinal, h=1
+```
+
+
+
+```{r WV Holt Analysis}
+
+WV_TS <- ts(WV_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+WV_TData <- window(WV_TS, end = c(2004))
+WV_VData <- window(WV_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r WV Holt Analysis User}
+WV_HUser <- ets(WV_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(WV_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r WV Holt Analysis Computer}
+WV_HCmp <- ets(WV_TData, model = "AAN")
+summary(WV_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+```{r WV Holt Set Forecast}
+WV_nV <- length(WV_VData)
+WV_fUser <- forecast(WV_HUser, h = WV_nV)
+WV_fCmp <- forecast(WV_HCmp, h = WV_nV)
+```
+
+
+```{r WV Holt Analysis User Accuracy}
+accuracy(WV_fUser,WV_VData)
+```
+
+
+```{r WV Holt Analysis Computer Accuracy}
+accuracy(WV_fCmp,WV_VData)
+```
+
+``` {r WV Holt Forecast}
+WV_HFinal <- ets(WV_TS, model = "AAN")
+forecast(WV_HFinal, h=1
+```
+
+
+
+```{r ME Holt Analysis}
+
+ME_TS <- ts(ME_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+ME_TData <- window(ME_TS, end = c(2004))
+ME_VData <- window(ME_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r ME Holt Analysis User}
+ME_HUser <- ets(ME_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(ME_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r ME Holt Analysis Computer}
+ME_HCmp <- ets(ME_TData, model = "AAN")
+summary(ME_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+```{r ME Holt Set Forecast}
+ME_nV <- length(ME_VData)
+ME_fUser <- forecast(ME_HUser, h = ME_nV)
+ME_fCmp <- forecast(ME_HCmp, h = ME_nV)
+```
+
+
+```{r ME Holt Analysis User Accuracy}
+accuracy(ME_fUser,ME_VData)
+```
+
+
+```{r ME Holt Analysis Computer Accuracy}
+accuracy(ME_fCmp,ME_VData)
+```
+
+``` {r ME Holt Forecast}
+ME_HFinal <- ets(ME_TS, model = "AAN")
+forecast(ME_HFinal, h=1
+```
+
 
 
 

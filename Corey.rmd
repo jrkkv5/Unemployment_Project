@@ -166,3 +166,470 @@ CT_linearModel <- lm(value ~ poverty + RMHI + HPI + log(population) + sp500, dat
 summary(CT_linearModel)
 anova(CT_linearModel)
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+IL Graphs and Histograms 
+
+```{r IL Histogram Unemployment}
+hist(IL_data$value,
+     main="Histogram of Unemployment Across All Years
+     ",
+     xlim=c(4,11),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+Histograms graphically summarize the distribution of a data set. In Illinois, from 1984 to 2018, The annual unemployment rates ranged from 4.0-11.0%. The histogram displays a positively skewed distribution. An unemployment rate that fell within the first two intervals, 4.0-4.9% & 5.0-5.9% occurred 18 out of the 36 years examined. 
+
+```{r IL Histogram Poverty}
+hist(IL_data$poverty,
+     main="Histogram of Poverty Across All Years",
+     xlim=c(9,16),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+In Illinois, from 1984 to 2018, the poverty levels ranged from 9.0-16.0%. The histogram displays a slightly negatively skewed distribution meaning relatively higher poverty rates occurred more often than lower rates. Between 12.0-12.9% was the most frequently recorded interval during this time period. In 14 of the 36 years examined, the poverty rate in Illinois was between 13-15.9%. 
+
+```{r IL scatter unemployment}
+scatter.smooth(IL_data$year, IL_data$value, main="IL Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r IL scatter HPI}
+scatter.smooth(IL_data$year, IL_data$HPI, main="IL HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r IL scatter poverty}
+scatter.smooth(x=IL_data$year, y=IL_data$poverty, main="IL % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+
+```{r IL scatter log RMHI}
+#IL_data$log_RMHI <- as.integer(IL_data$log_RMHI)
+scatter.smooth(x=IL_data$year, y=IL_data$log_RMHI, main="IL Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r IL scatter log population}
+#IL_data$log_pop <- as.integer(IL_data$log_pop)
+scatter.smooth(x=IL_data$year, y=IL_data$log_pop, main="IL Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r IL boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(IL_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(IL_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r IL boxplot poverty}
+boxplot(IL_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(IL_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+
+
+
+
+TX Graphs and Histograms
+```{r TX Analysis}
+TX_data <- merged_final[ merged_final$state == "TX", ]
+```
+
+```{r TX Histogram Unemployment}
+hist(TX_data$value,
+     main="Histogram of Unemployment Across All Years",
+     xlim=c(3,9),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+In Texas, from 1984 to 2018, the annual unemployment rates ranged from 3.0-8.9%. The most common interval, or range of annual unemployment rates was between 5.0-5.9% which occurred 10 times in the 36 year period. Texas only experienced one year with an unemployment rate of 8.0% or higher. 
+```{r TX Histogram Poverty}
+hist(TX_data$poverty,
+     main="Histogram of Poverty Across All Years",
+     xlim=c(13,20),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+In Texas, from 1984 to 2018, the annual poverty rates ranged from 13.0-20.0%. The histogram is nearly symmetrical meaning most of the values occurred in the near middle of the range. 27 of the 36 years were characterized by poverty rates ranging from 15.0-17.9%. Only 5 years experienced lower rates and only 4 experienced higher rates of poverty.    
+```{r TX scatter unemployment}
+scatter.smooth(TX_data$year, TX_data$value, main="TX Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r TX scatter HPI}
+scatter.smooth(TX_data$year, TX_data$HPI, main="TX HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r TX scatter poverty}
+scatter.smooth(x=TX_data$year, y=TX_data$poverty, main="TX % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r TX scatter log RMHI}
+#TX_data$log_RMHI <- as.integer(TX_data$log_RMHI)
+scatter.smooth(x=TX_data$year, y=TX_data$log_RMHI, main="TX Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r TX scatter log population}
+#TX_data$log_pop <- as.integer(TX_data$log_pop)
+scatter.smooth(x=TX_data$year, y=TX_data$log_pop, main="TX Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r TX boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(TX_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(TX_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r TX boxplot poverty}
+boxplot(TX_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(TX_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+
+
+
+MO Graphs and Histograms
+```{r MO Analysis}
+MO_data <- merged_final[ merged_final$state == "MO", ]
+```
+
+```{r MO Histogram Unemployment}
+hist(MO_data$value,
+     main="Histogram of Unemployment Across All Years",
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+In Missouri, from 1984 to 2018, the annual unemployment rates ranged from 2.0-9.9% The most frequent range of unemployment rates was between 5.0-5.9% which occurred 13 out of the 36 years. The next most frequent ranges were between 3.0-3.9% & 4.0-4.9% which both only appeared 6 times each.
+
+```{r MO Histogram Poverty}
+hist(MO_data$poverty,
+     main="Histogram of Poverty Across All Years",
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+In Missouri, from 1984-2014, the annual poverty rates ranged from 8.0-17.9%. 20 of the 36 years were characterized by poverty rates between 12.0-15.9%. Only two years displayed higher poverty rates. 
+
+```{r MO scatter unemployment}
+scatter.smooth(MO_data$year, MO_data$value, main="MO Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r MO scatter HPI}
+scatter.smooth(MO_data$year, MO_data$HPI, main="MO HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r MO scatter poverty}
+scatter.smooth(x=MO_data$year, y=MO_data$poverty, main="MO % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r MO scatter log RMHI}
+#MO_data$log_RMHI <- as.integer(MO_data$log_RMHI)
+scatter.smooth(x=MO_data$year, y=MO_data$log_RMHI, main="MO Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r MO scatter log population}
+#MO_data$log_pop <- as.integer(MO_data$log_pop)
+scatter.smooth(x=MO_data$year, y=MO_data$log_pop, main="MO Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r MO boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(MO_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(MO_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r MO boxplot poverty}
+boxplot(MO_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(MO_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+
+
+
+
+WA Graphs and Histograms 
+```{r WA Analysis}
+WA_data <- merged_final[ merged_final$state == "WA", ]
+```
+
+```{r WA Histogram Unemployment}
+hist(WA_data$value,
+     main="Histogram of Unemployment Across All Years",
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+In Washington, from 1984-2018,the annual unemployment rates ranged from 4.0-10.9%.  The histogram displays a positively skewed distribution meaning relatively low poverty rates occurred more than higher rates. There is a small presence of higher poverty rates and only 1 year that experienced a poverty rate above 10%.
+```{r WA Histogram Poverty}
+hist(WA_data$poverty,
+     main="Histogram of Poverty Across All Years",
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+In Washington, from 1984 to 2018, The annual poverty rates ranged from 8.0-12.9%. The histogram appears to be slightly negatively skewed. 18 of the 36 years were characterized by poverty rates the occurred in the two highest intervals, 11.0-11.9% and 12.0-12.9%.
+
+```{r WA scatter unemployment}
+scatter.smooth(WA_data$year, WA_data$value, main="WA Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r WA scatter HPI}
+scatter.smooth(WA_data$year, WA_data$HPI, main="WA HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r WA scatter poverty}
+scatter.smooth(x=WA_data$year, y=WA_data$poverty, main="WA % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r WA scatter log RMHI}
+#WA_data$log_RMHI <- as.integer(WA_data$log_RMHI)
+scatter.smooth(x=WA_data$year, y=WA_data$log_RMHI, main="WA Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r WA scatter log population}
+#WA_data$log_pop <- as.integer(WA_data$log_pop)
+scatter.smooth(x=WA_data$year, y=WA_data$log_pop, main="WA Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+
+```{r WA boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(WA_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(WA_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r WA boxplot poverty}
+boxplot(WA_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(WA_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+
+
+
+
+
+
+
+OR Graphs and Histograms
+```{r OR Analysis}
+OR_data <- merged_final[ merged_final$state == "OR", ]
+```
+
+```{r OR Histogram Unemployment}
+hist(OR_data$value,
+     main="Histogram of Unemployment Across All Years",
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+In Oregon, from 1984 to 2018, the annual unemployment rates ranged from 2.0%-11.9%.The histogram did not produce a distribution with a skew worth acknowledging, however, the two most frequent ranges were 4.0-4.9% & 5.0-5.9% consecutively. There was only one year with an unemployment rate of 10.0% or higher.
+```{r OR Histogram Poverty}
+hist(OR_data$poverty,
+     main="Histogram of Poverty Across All Years",
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+In Oregon, from 1984 to 2018, the annual unemployment rates ranged from 9.0%-14.9%. The most frequent range of unemployment rates was 11.0-11.9% which occurred 15 of the 36 years.  
+```{r OR scatter unemployment}
+scatter.smooth(OR_data$year, OR_data$value, main="OR Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r OR scatter HPI}
+scatter.smooth(OR_data$year, OR_data$HPI, main="OR HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r OR scatter poverty}
+scatter.smooth(x=OR_data$year, y=OR_data$poverty, main="OR % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r OR scatter log RMHI}
+#OR_data$log_RMHI <- as.integer(OR_data$log_RMHI)
+scatter.smooth(x=OR_data$year, y=OR_data$log_RMHI, main="OR Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r OR scatter log population}
+#OR_data$log_pop <- as.integer(OR_data$log_pop)
+scatter.smooth(x=OR_data$year, y=OR_data$log_pop, main="OR Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r OR boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(OR_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(OR_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r OR boxplot poverty}
+boxplot(OR_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(OR_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+
+
+
+
+
+CO Graphs and Histograms
+```{r CO Analysis}
+CO_data <- merged_final[ merged_final$state == "CO", ]
+```
+
+```{r CO Histogram Unemployment}
+hist(CO_data$value,
+     main="Histogram of Unemployment Across All Years",
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+In Colorado, from 1984 to 2018, the annual unemployment rates ranged from 2.0% to 8.9%. 11 of the 36 years were characterized by unemployment rates between the range of 5.0-5.9%. 
+```{r CO Histogram Poverty}
+hist(CO_data$poverty,
+     main="Histogram of Poverty Across All Years",
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+In Colorado, from 1984 to 2018, the poverty rates ranged from 8.0% to 13.9%. The histogram displays a slightly positively skewed distribution. 24 of the 36 years were characterized by poverty rates in the three ranges with the lowest values, 8.0-8.9%, 9.0-9.9%, and 10.0-10.9%.  
+```{r CO scatter unemployment}
+scatter.smooth(CO_data$year, CO_data$value, main="CO Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r CO scatter HPI}
+scatter.smooth(CO_data$year, CO_data$HPI, main="CO HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r CO scatter poverty}
+scatter.smooth(x=CO_data$year, y=CO_data$poverty, main="CO % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r CO scatter log RMHI}
+#CO_data$log_RMHI <- as.integer(CO_data$log_RMHI)
+scatter.smooth(x=CO_data$year, y=CO_data$log_RMHI, main="CO Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r CO scatter log population}
+#CO_data$log_pop <- as.integer(CO_data$log_pop)
+scatter.smooth(x=CO_data$year, y=CO_data$log_pop, main="CO Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r CO boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(CO_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(CO_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r CO boxplot poverty}
+boxplot(CO_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(CO_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+
+
+
+
+
+WV Graphs and Histograms
+```{r WV Analysis}
+WV_data <- merged_final[ merged_final$state == "WV", ]
+```
+
+```{r WV Histogram Unemployment}
+hist(WV_data$value,
+     main="Histogram of Unemployment Across All Years",
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+In West Virginia,from 1984 to 2018, the unemployment rates ranged from 4.0-15.9%. The histogram displays a positively skewed distribution. 15 of the 36 years were characterized by unemployment rates ranging in lowest interval, 4.0-5.9%. 
+```{r WV Histogram Poverty}
+hist(WV_data$poverty,
+     main="Histogram of Poverty Across All Years",
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+In West Virginia, from 1984 to 2018, the annual poverty rates ranged from 14.0% to 23.9%. This is the highest range out of all 8 states examined. Although this range has larger values comparatively, the histogram displays a positively skewed distribution. 25 out of the 36 years were characterized by unemployment rates that fell into the first two intervals, 14.0-15.9% & 16-17.9%.  
+```{r WV scatter unemployment}
+scatter.smooth(WV_data$year, WV_data$value, main="WV Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r WV scatter HPI}
+scatter.smooth(WV_data$year, WV_data$HPI, main="WV HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r WV scatter poverty}
+scatter.smooth(x=WV_data$year, y=WV_data$poverty, main="WV % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r WV scatter log RMHI}
+#WV_data$log_RMHI <- as.integer(WV_data$log_RMHI)
+scatter.smooth(x=WV_data$year, y=WV_data$log_RMHI, main="WV Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r WV scatter log population}
+#WV_data$log_pop <- as.integer(WV_data$log_pop)
+scatter.smooth(x=WV_data$year, y=WV_data$log_pop, main="WV Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r WV boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(WV_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(WV_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r WV boxplot poverty}
+boxplot(WV_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(WV_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+
+
+
+
+
+ME Graphs and Histograms
+```{r ME Analysis}
+ME_data <- merged_final[ merged_final$state == "ME", ]
+```
+
+```{r ME Histogram Unemployment}
+hist(ME_data$value,
+     main="Histogram of Unemployment Across All Years",
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+In Maine, from 1984-2018, the annual unemployment rate ranged from 3.0-8.9%. The histogram displays a positively skewed distribution. 18 of the 36 years were characterized by annual unemployment rates in lowest two intervals, 3.0%-3.9% & 4.0-4.9%.
+```{r ME Histogram Poverty}
+hist(ME_data$poverty,
+     main="Histogram of Poverty Across All Years",
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+In Maine, from 1984-2018, the annual poverty rates ranged from 9.0%-15.9%. The distribution displayed by the histogram is not symmetrical, however, the interval at each end of the range experienced only one occurrence signifying outliers, to a degree. 
+
+```{r ME scatter unemployment}
+scatter.smooth(ME_data$year, ME_data$value, main="ME Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r ME scatter HPI}
+scatter.smooth(ME_data$year, ME_data$HPI, main="ME HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r ME scatter poverty}
+scatter.smooth(x=ME_data$year, y=ME_data$poverty, main="ME % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+
+```{r ME scatter log RMHI}
+#ME_data$log_RMHI <- as.integer(ME_data$log_RMHI)
+scatter.smooth(x=ME_data$year, y=ME_data$log_RMHI, main="ME Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r ME scatter log population}
+#ME_data$log_pop <- as.integer(ME_data$log_pop)
+scatter.smooth(x=ME_data$year, y=ME_data$log_pop, main="ME Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r ME boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(ME_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(ME_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r ME boxplot poverty}
+boxplot(ME_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(ME_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
