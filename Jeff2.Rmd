@@ -20,6 +20,7 @@ library(pastecs)
 library(ggplot2)
 library(corrplot)
 library(lmtest)
+library(forecast)
 
 #Update code for your states and run regression from 1984-2014, create some basic plots, etc.
 ```
@@ -282,4 +283,16 @@ summary(TX_linearModelSignificant)
 
 #test to show a scatterplot TX HPI data against year
 ```
+```{r IL Timeseries Analysis}
 
+IL_TS <- ts(IL_data$value, start = c(1984,1), end = c(2018,1), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+IL_TS_reg <- tslm(IL_TS ~ trend)
+#Stores regression model of timeseries data.
+summary(IL_TS_reg)
+
+forecast(IL_TS_reg, 3)
+#note 3 denots the number of forecasts.
+
+```
