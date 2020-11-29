@@ -5,26 +5,294 @@ date: "11/24/2020"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r packages}
+library(devtools)
+library(blsAPI)
+library(rjson)
+library(curl)
+library(RCurl)
+library(knitr)
+library(readr)
+library(dplyr)
+library(tidyverse)
+```
+First we need to load the libraries that we will be using into our report. The above code should load the proper libraries. R Studio will prompt you to install the packages if necessary.
+
+
+Pull the data via the API: 
+```{r import_AL}
+unemp_AL = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST010000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="01f3421bc9504301b5c0de6951908ef3")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_AL = rbind(unemp_AL,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_AL, order(year, period))
+unemp_AL = unemp_AL[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of AL for applicable years
+```
+The above is a sample of the code we used to pull Unemployment data from the United States Bureau of Labor Statistics (BLS) for the state of Alabama.  In actuality we replicated this code to pull data for all 50 states by modifying the series id in the above section of code. A full breakdown of the code used to pull all 50 states can be found in the BLD_Unemployment_Requests.Rmd document shown in this repository.
+
+More information about the code can be found at the following URL: https://www.bls.gov/developers/api_r.htm.  All credit for the original source code goes to the author Mike Silva.
+
+``` {r add_state_variable}
+unemp_AL$state <- "AL"
+unemp_AK$state <- "AK"
+unemp_AZ$state <- "AZ"
+unemp_AR$state <- "AR"
+unemp_CA$state <- "CA"
+unemp_CO$state <- "CO"
+unemp_CT$state <- "CT"
+unemp_DE$state <- "DE"
+unemp_FL$state <- "FL"
+unemp_GA$state <- "GA"
+unemp_HI$state <- "HI"
+unemp_ID$state <- "ID"
+unemp_IL$state <- "IL"
+unemp_IN$state <- "IN"
+unemp_IA$state <- "IA"
+unemp_KS$state <- "KS"
+unemp_KY$state <- "KY"
+unemp_LA$state <- "LA"
+unemp_ME$state <- "ME"
+unemp_MD$state <- "MD"
+unemp_MA$state <- "MA"
+unemp_MI$state <- "MI"
+unemp_MN$state <- "MN"
+unemp_MS$state <- "MS"
+unemp_MO$state <- "MO"
+unemp_MT$state <- "MT"
+unemp_NE$state <- "NE"
+unemp_NV$state <- "NV"
+unemp_NH$state <- "NH"
+unemp_NJ$state <- "NJ"
+unemp_NM$state <- "NM"
+unemp_NY$state <- "NY"
+unemp_NC$state <- "NC"
+unemp_ND$state <- "ND"
+unemp_OH$state <- "OH"
+unemp_OK$state <- "OK"
+unemp_OR$state <- "OR"
+unemp_PA$state <- "PA"
+unemp_RI$state <- "RI"
+unemp_SC$state <- "SC"
+unemp_SD$state <- "SD"
+unemp_TN$state <- "TN"
+unemp_TX$state <- "TX"
+unemp_UT$state <- "UT"
+unemp_VT$state <- "VT"
+unemp_VA$state <- "VA"
+unemp_WV$state <- "WV"
+unemp_WA$state <- "WA"
+unemp_WI$state <- "WI"
+unemp_WY$state <- "WY"
+
+kable(unemp_AL[1:6,], caption = "Table of Unemployment in Alabama")
+
 ```
 
-## R Markdown
+After importing all of the unemployment data from the BLS website using the sample code shown in the previous section we created a new variable to hold the state abbreviation for all 50 of the states.  This was a necessary step to take before merging all of the data into a single dataframe and analyzing the various states.  The kable function shows us an example of the first 6 entries that were pulled from the unemp_AL table.  As you can see each row was appended to include the state abbreviation.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+``` {r Overall_Unemployment}
+unemp_all <- rbind(unemp_AK, unemp_AL, unemp_AR, unemp_AZ, unemp_CA, unemp_CO, unemp_CT, unemp_DE, unemp_FL, unemp_GA, unemp_HI, unemp_IA, unemp_ID, unemp_IL, unemp_IN, unemp_KS, unemp_KY, unemp_LA, unemp_MA, unemp_MD, unemp_ME, unemp_MI, unemp_MN, unemp_MO, unemp_MS, unemp_MT, unemp_NC,unemp_ND, unemp_NE, unemp_NH, unemp_NJ, unemp_NM, unemp_NV, unemp_NY, unemp_OH, unemp_OK,  unemp_OR, unemp_PA, unemp_RI, unemp_SC, unemp_SD, unemp_TN, unemp_TX, unemp_UT, unemp_VA, unemp_VT, unemp_WA, unemp_WI, unemp_WV, unemp_WY)
 
-```{r cars}
-summary(cars)
+#Joins unemployment from all states in question into a single dataframe
 ```
 
-## Including Plots
+Once we added a new variable to classify the state within each of our 50 dataframes, we used the rbind function to merge all of the dataframes into a single dataframe titled unemp_all.  The rbind function allows us to bind the the rows of data from our state dataframes based upon the common columns that are included.
 
-You can also embed plots, for example:
+```{r HPI}
+HPI_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPI_AT_state.csv")
+#Reads HPI into new dataframe
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+MHI_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\MHI.csv")
+#Reads MHI into a new dataframe
+
+poverty_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\povertylevel.csv")
+#Reads Poverty level by state into new data frame
+
+population <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\National Debt\\Unemployment_Project\\csv files\\population_by_year2.csv")
+#source: https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-poverty-people.html
+
+```
+The rest of our data was imported using csv files that were pulled from various government websites.  The above code reads the csv files from a local drive into R Studio.  The additional variables that we brought into our dataset are the housing price index (HPI), median household income (MHI), adjusted median household income (RMHI), poverty rate, population, and change in the S&P 500 index.
+
+``` {r annual_data}
+
+
+unemp_all$annual <- ifelse(unemp_all$period=="M12", "1",NA  )
+
+unemp_scrubbed_annual <- na.omit(unemp_all)
+#Adds annual variable to unempl_all df.  This should prepare it to be merged with the HPI df.
+
+#kable(unemp_scrubbed_annual[1:6,], caption = "Table Showing Unemployment on an Annual Basis")
+```
+Many of the other variables we located were only accessible on an annual basis.  It was therefore necessary for us to convert our unemployment data into annual figures.  Using the master dataframe we created in the previous section and the ifelse function we created a new column to hold a variable to denote the annual unemployment rate for each year.  We used the relational operator == to set the annual column to 1 if the period column was equal to M12.  After that we used the na.omit function to cleanup the data and store the new data in a scrubbed dataframe.
+
+``` {r annual_data}
+
+kable(unemp_all[1:12,], caption = "Table Showing Unemployment on an Annual Basis")
+```
+The table above shows the dataframe prior to cleanup with a bunch of missing observations in the annual column.
+
+``` {r scrubbed_table}
+
+kable(unemp_scrubbed_annual[1:6,], caption = "Scrubbed Table")
+```
+The table above shows the dataframe after the observations with null variables in the annual column were removed.
+
+``` {r annual_data_HPI}
+
+
+HPI_raw$annual <- ifelse(HPI_raw$quarter=="4", "1",NA  )
+
+HPI_annual <- na.omit(HPI_raw)
+#Adds annual variable to HPI df.
+
+
+```
+The housing price index (HPI) data was available on a quarterly basis. Similar to the Unemployment data, we used the ifelse function and == to set quarter 4 equal to 1 and the na.omit function to cleanup our HPI data.  
+
+
+Now that all of our data has been scrubbed and is in similar format, we are ready to merge it into a single dataframe that we will use for our analysis.
+``` {r CombineAnnualData}
+
+unemp_scrubbed_annual$year <- as.integer(unemp_scrubbed_annual$year)
+#converts unemployment datatypes to integers for successful merge
+
+HPI_Unemp_Combined_Annual <- full_join(unemp_scrubbed_annual, HPI_annual, by.x = "state", by.y = "year")
+#combines HPI data with unemployment data
+
+HPI_Unemp_Combined_Annual <- na.omit(HPI_Unemp_Combined_Annual)
+#omits na entries for clean data
+
+HPI_Unemp_MHI_Combined_Annual <- full_join(HPI_Unemp_Combined_Annual, MHI_raw, by.x = "state", by.y = "year")
+#combines MHI data with unemployment data and HPI data
+
+HPI_Unemp_MHI_Combined_Annual <- na.omit(HPI_Unemp_MHI_Combined_Annual)
+#omits na entries for clean data
+
+HPI_Unemp_MHI_poverty_Combined_Annual <- full_join(HPI_Unemp_MHI_Combined_Annual, poverty_raw, by.x = "state", by.y = "year")
+#combines MHI data with unemployment data and HPI data
+
+HPI_Unemp_MHI_poverty_Combined_Annual <- na.omit(HPI_Unemp_MHI_poverty_Combined_Annual)
+#omits na entries for clean data
+
+
+HPI_Population_Unemp_MHI_poverty_Combined_Annual <- full_join(HPI_Unemp_MHI_poverty_Combined_Annual, population, by.x = "state", by.y = "year")
+#combines population data with unemployment data and HPI data
+
+HPI_Population_Unemp_MHI_poverty_Combined_Annual <- na.omit(HPI_Population_Unemp_MHI_poverty_Combined_Annual)
+#omits na entries for clean data
+
+merged_final <- full_join(HPI_Population_Unemp_MHI_poverty_Combined_Annual, SP500, by.x = "state", by.y = "year")
+#combines SP500 data with unemployment data and HPI data
+
+merged_final <- na.omit(merged_final)
+#omits na entries for clean data
+
+```
+First, the annual variable needs to be reformatted as an integer.  When the Unemployment data was brought in from the API, it was imported as a character.  We used the as.integer function to convert the year column to an integer before merging it with the other dataframes.  The rest of the dataframes were already in the correct datatype.
+
+The full_join function was used to combine all of the dataframes based on the year and state columns.  
+
+``` {r log variables}
+merged_final <- read_csv("csv files/mergedFinal.csv")
+#Reads final file into merged dataframe
+
+merged_final$log_pop = log(merged_final$population)
+
+merged_final$log_RMHI = log(merged_final$RMHI)
+```
+As a final step in scrubbing our data, we created new variables to log the population and median household income variables and store it in our dataframe. By taking the logarithmic values, these variables become more comparable to the existing variables we have within our dataset.
+
+Below you can see the table output once all of our data has been merged.
+``` {r fulljoin_table}
+
+kable(merged_final[1:6,], caption = "Table Including All Variables")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r writeCSV}
+write.csv(unemp_all,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\allUnemploymentData.csv", row.names = FALSE)
+
+write.csv(unemp_scrubbed,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\unemploymentQuarterly.csv", row.names = FALSE)
+
+write.csv(HPI_Unemp_Combined,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentQuarterlyCombined.csv", row.names = FALSE)
+
+write.csv(unemp_scrubbed_annual,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentAnnualCombined.csv", row.names = FALSE)
+
+write.csv(HPI_Unemp_MHI_Combined_Annual,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentMHIAnnualCombined.csv", row.names = FALSE)
+
+write.csv(HPI_Unemp_MHI_poverty_Combined_Annual,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentMHIPovertyAnnualCombined.csv", row.names = FALSE)
+
+
+write.csv(merged_final,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\National Debt\\Unemployment_Project\\csv files\\mergedFinal.csv", row.names = FALSE)
+
+## Backs up all data into local file
+## replace file path below with a file path on your local computer to save backup of csv files
+## C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentAnnualCombined.csv with a file path on your local computer to save backup of csv files
+```
+
+The above section of code backs up our combined dataframes to the local drive.  It needs to be modified based on the users local drive, but it is always a good idea to backup your data.
