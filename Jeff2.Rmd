@@ -294,5 +294,80 @@ summary(IL_TS_reg)
 
 forecast(IL_TS_reg, 3)
 #note 3 denots the number of forecasts.
+ plot(IL_TS)
+```
+
+```{r IL Holt Analysis}
+
+IL_TS <- ts(IL_data$value, start = c(1984), end = c(2017), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+IL_TData <- window(IL_TS, end = c(2013))
+IL_VData <- window(IL_TS, start = c(2014))
+#Partitions the training and validation sets
+
+IL_HUser <- ets(IL_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(IL_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+
+IL_HCmp <- ets(IL_TData, model = "AAN")
+summary(IL_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+
+IL_nV <- length(IL_VData)
+IL_fUser <- forecast(IL_HUser, h = IL_nV)
+IL_fCmp <- forecast(IL_HCmp, h = IL_nV)
+accuracy(IL_fUser,IL_VData)
+accuracy(IL_fCmp,IL_VData)
 
 ```
+``` {r IL Holt Forecast}
+
+IL_HFinal <- ets(IL_TS, model = "AAN")
+forecast(IL_HFinal, h=2)
+#print(IL_data$value, year == "2018")
+```
+
+```{r TX Holt Analysis}
+
+TX_TS <- ts(TX_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+TX_TData <- window(TX_TS, end = c(2004))
+TX_VData <- window(TX_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r TX Holt Analysis User}
+TX_HUser <- ets(TX_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(TX_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r TX Holt Analysis Computer}
+TX_HCmp <- ets(TX_TData, model = "AAN")
+summary(TX_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+```{r TX Holt Set Forecast}
+TX_nV <- length(TX_VData)
+TX_fUser <- forecast(TX_HUser, h = TX_nV)
+TX_fCmp <- forecast(TX_HCmp, h = TX_nV)
+```
+
+
+```{r TX Holt Analysis User Accuracy}
+accuracy(TX_fUser,TX_VData)
+```
+
+
+```{r TX Holt Analysis Computer Accuracy}
+accuracy(TX_fCmp,TX_VData)
+```
+
+``` {r TX Holt Forecast}
+TX_HFinal <- ets(TX_TS, model = "AAN")
+forecast(TX_HFinal, h=1)
+```
+
+
