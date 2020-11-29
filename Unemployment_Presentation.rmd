@@ -479,7 +479,6 @@ stat.desc(MO_data)
 ```{r MO Histogram Unemployment}
 hist(MO_data$value,
      main="Histogram of Unemployment Across All 50 States",
-     xlim=c(4,11),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
@@ -487,7 +486,6 @@ hist(MO_data$value,
 ```{r MO Histogram Poverty}
 hist(MO_data$poverty,
      main="Histogram of Poverty Across All 50 States",
-     xlim=c(9,16),
      xlab="Poverty Rate",
      breaks = 5)
 ```
@@ -577,7 +575,6 @@ stat.desc(WA_data)
 ```{r WA Histogram Unemployment}
 hist(WA_data$value,
      main="Histogram of Unemployment Across All 50 States",
-     xlim=c(4,11),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
@@ -585,7 +582,6 @@ hist(WA_data$value,
 ```{r WA Histogram Poverty}
 hist(WA_data$poverty,
      main="Histogram of Poverty Across All 50 States",
-     xlim=c(9,16),
      xlab="Poverty Rate",
      breaks = 5)
 ```
@@ -675,7 +671,6 @@ stat.desc(OR_data)
 ```{r OR Histogram Unemployment}
 hist(OR_data$value,
      main="Histogram of Unemployment Across All 50 States",
-     xlim=c(4,11),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
@@ -683,7 +678,6 @@ hist(OR_data$value,
 ```{r OR Histogram Poverty}
 hist(OR_data$poverty,
      main="Histogram of Poverty Across All 50 States",
-     xlim=c(9,16),
      xlab="Poverty Rate",
      breaks = 5)
 ```
@@ -773,7 +767,6 @@ stat.desc(CO_data)
 ```{r CO Histogram Unemployment}
 hist(CO_data$value,
      main="Histogram of Unemployment Across All 50 States",
-     xlim=c(4,11),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
@@ -781,7 +774,6 @@ hist(CO_data$value,
 ```{r CO Histogram Poverty}
 hist(CO_data$poverty,
      main="Histogram of Poverty Across All 50 States",
-     xlim=c(9,16),
      xlab="Poverty Rate",
      breaks = 5)
 ```
@@ -871,7 +863,6 @@ stat.desc(WV_data)
 ```{r WV Histogram Unemployment}
 hist(WV_data$value,
      main="Histogram of Unemployment Across All 50 States",
-     xlim=c(4,11),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
@@ -879,7 +870,6 @@ hist(WV_data$value,
 ```{r WV Histogram Poverty}
 hist(WV_data$poverty,
      main="Histogram of Poverty Across All 50 States",
-     xlim=c(9,16),
      xlab="Poverty Rate",
      breaks = 5)
 ```
@@ -969,7 +959,6 @@ stat.desc(ME_data)
 ```{r ME Histogram Unemployment}
 hist(ME_data$value,
      main="Histogram of Unemployment Across All 50 States",
-     xlim=c(4,11),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
@@ -977,7 +966,6 @@ hist(ME_data$value,
 ```{r ME Histogram Poverty}
 hist(ME_data$poverty,
      main="Histogram of Poverty Across All 50 States",
-     xlim=c(9,16),
      xlab="Poverty Rate",
      breaks = 5)
 ```
