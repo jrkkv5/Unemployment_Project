@@ -21,7 +21,6 @@ library(ggplot2)
 library(corrplot)
 library(lmtest)
 
-#Loads necessary packages
 #Update code for your states and run regression from 1984-2014, create some basic plots, etc.
 ```
 
