@@ -237,9 +237,9 @@ The full_join function was used to combine all of the dataframes based on the ye
 merged_final <- read_csv("csv files/mergedFinal.csv")
 #Reads final file into merged dataframe
 
-merged_final$log_pop = log(merged_final$population)
+merged_final$log_pop = as.numeric(log(merged_final$population))
 
-merged_final$log_RMHI = log(merged_final$RMHI)
+merged_final$log_RMHI = as.numeric(log(merged_final$RMHI))
 ```
 As a final step in scrubbing our data, we created new variables to log the population and median household income variables and store it in our dataframe. By taking the logarithmic values, these variables become more comparable to the existing variables we have within our dataset.
 
@@ -270,49 +270,92 @@ Below are some of the highlights along with commentary for the states we have ch
 
 ```{r IL Analysis}
 IL_data <- merged_final[ merged_final$state == "IL", ]
+```
 
-scatter.smooth(IL_data$year, IL_data$value, main="IL Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/3)
+```{r IL Histogram Unemployment}
+hist(IL_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlim=c(4,11),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
 
-scatter.smooth(IL_data$year, IL_data$HPI, main="IL HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+```{r IL Histogram Poverty}
+hist(IL_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlim=c(9,16),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
 
-scatter.smooth(x=IL_data$year, y=IL_data$value, main="IL Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+```{r IL scatter unemployment}
+scatter.smooth(IL_data$year, IL_data$value, main="IL Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
 
-scatter.smooth(x=IL_data$year, y=IL_data$poverty, main="IL % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+```{r IL scatter HPI}
+scatter.smooth(IL_data$year, IL_data$HPI, main="IL HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
 
+```{r IL scatter poverty}
+scatter.smooth(x=IL_data$year, y=IL_data$poverty, main="IL % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r IL scatter RMHI}
 IL_data$RMHI <- as.integer(IL_data$RMHI)
-plot(x=IL_data$year, y=IL_data$RMHI, main="IL Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+scatter.smooth(x=IL_data$year, y=IL_data$RMHI, main="IL Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
 
+```{r IL scatter population}
 IL_data$population <- as.integer(IL_data$population)
-plot(x=IL_data$year, y=IL_data$population, main="IL Population by Year", xlab = "Year", ylab = "Population" )
+scatter.smooth(x=IL_data$year, y=IL_data$population, main="IL Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
 
-IL_data$log_RMHI <- as.integer(IL_data$log_RMHI)
-plot(x=IL_data$year, y=IL_data$log_RMHI, main="IL Median Household Income by Year", xlab = "Year", ylab = "log_RMHI" )
+```{r IL scatter log RMHI}
+#IL_data$log_RMHI <- as.integer(IL_data$log_RMHI)
+scatter.smooth(x=IL_data$year, y=IL_data$log_RMHI, main="IL Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
 
-IL_data$log_pop <- as.integer(IL_data$log_pop)
-plot(x=IL_data$year, y=IL_data$log_pop, main="IL Population by Year", xlab = "Year", ylab = "log_Population" )
+```{r IL scatter log population}
+#IL_data$log_pop <- as.integer(IL_data$log_pop)
+scatter.smooth(x=IL_data$year, y=IL_data$log_pop, main="IL Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
 
+```{r IL correlations}
 cor(IL_data$RMHI, IL_data$value)
 cor(IL_data$HPI, IL_data$value)
 cor(IL_data$poverty, IL_data$value)
 cor(IL_data$population, IL_data$value)
 cor(IL_data$sp500, IL_data$value)
+cor(IL_data$log_pop, IL_data$value)
+cor(IL_data$log_RMHI, IL_data$value)
 #run base correlations between categories and dependent variable
+```
 
+```{r IL boxplot unemployment}
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
 boxplot(IL_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(IL_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r IL boxplot poverty}
 boxplot(IL_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(IL_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
+```
 
+```{r IL linear regression all}
 #run multiple linear model for data
 IL_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = IL_data)
 summary(IL_reg1)
 anova(IL_reg1)
+```
 
+```{r IL linear regression log all}
 IL_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = IL_data)
 summary(IL_reg2)
 anova(IL_reg2)
+```
 
-IL_linearModelSignificant <- lm(value ~ poverty + population, data = IL_data)
+```{r IL linear significant variables}
+IL_linearModelSignificant <- lm(value ~ poverty + log_pop, data = IL_data)
 summary(IL_linearModelSignificant)
 
 #test to show a scatterplot IL HPI data against year
@@ -323,53 +366,97 @@ summary(IL_linearModelSignificant)
 
 ```{r TX Analysis}
 TX_data <- merged_final[ merged_final$state == "TX", ]
+```
 
-scatter.smooth(TX_data$year, TX_data$value, main="TX Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/3)
+```{r TX Histogram Unemployment}
+hist(TX_data$value,
+     main="Histogram of Unemployment Across All Years",
+     xlim=c(3,9),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
 
-scatter.smooth(TX_data$year, TX_data$HPI, main="TX HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+```{r TX Histogram Poverty}
+hist(TX_data$poverty,
+     main="Histogram of Poverty Across All Years",
+     xlim=c(13,20),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
 
-scatter.smooth(x=TX_data$year, y=TX_data$value, main="TX Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+```{r TX scatter unemployment}
+scatter.smooth(TX_data$year, TX_data$value, main="TX Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
 
-scatter.smooth(x=TX_data$year, y=TX_data$poverty, main="TX % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+```{r TX scatter HPI}
+scatter.smooth(TX_data$year, TX_data$HPI, main="TX HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
 
+```{r TX scatter poverty}
+scatter.smooth(x=TX_data$year, y=TX_data$poverty, main="TX % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r TX scatter RMHI}
 TX_data$RMHI <- as.integer(TX_data$RMHI)
-plot(x=TX_data$year, y=TX_data$RMHI, main="TX Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+scatter.smooth(x=TX_data$year, y=TX_data$RMHI, main="TX Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
 
+```{r TX scatter population}
 TX_data$population <- as.integer(TX_data$population)
-plot(x=TX_data$year, y=TX_data$population, main="TX Population by Year", xlab = "Year", ylab = "Population" )
+scatter.smooth(x=TX_data$year, y=TX_data$population, main="TX Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
 
-TX_data$log_RMHI <- as.integer(TX_data$log_RMHI)
-plot(x=TX_data$year, y=TX_data$log_RMHI, main="TX Median Household Income by Year", xlab = "Year", ylab = "log_RMHI" )
+```{r TX scatter log RMHI}
+#TX_data$log_RMHI <- as.integer(TX_data$log_RMHI)
+scatter.smooth(x=TX_data$year, y=TX_data$log_RMHI, main="TX Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
 
-TX_data$log_pop <- as.integer(TX_data$log_pop)
-plot(x=TX_data$year, y=TX_data$log_pop, main="TX Population by Year", xlab = "Year", ylab = "log_Population" )
+```{r TX scatter log population}
+#TX_data$log_pop <- as.integer(TX_data$log_pop)
+scatter.smooth(x=TX_data$year, y=TX_data$log_pop, main="TX Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
 
+```{r TX correlations}
 cor(TX_data$RMHI, TX_data$value)
 cor(TX_data$HPI, TX_data$value)
 cor(TX_data$poverty, TX_data$value)
 cor(TX_data$population, TX_data$value)
 cor(TX_data$sp500, TX_data$value)
+cor(TX_data$log_pop, TX_data$value)
+cor(TX_data$log_RMHI, TX_data$value)
 #run base correlations between categories and dependent variable
+```
 
+```{r TX boxplot unemployment}
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
 boxplot(TX_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(TX_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r TX boxplot poverty}
 boxplot(TX_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(TX_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
+```
 
+```{r TX linear regression all}
 #run multiple linear model for data
 TX_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = TX_data)
 summary(TX_reg1)
 anova(TX_reg1)
+```
 
+```{r TX linear regression log all}
 TX_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = TX_data)
 summary(TX_reg2)
 anova(TX_reg2)
+```
 
-TX_linearModelSignificant <- lm(value ~ poverty + population, data = TX_data)
+```{r TX linear significant variables}
+TX_linearModelSignificant <- lm(value ~ poverty + log_pop, data = TX_data)
 summary(TX_linearModelSignificant)
 
 #test to show a scatterplot TX HPI data against year
 ```
+
 
 
 

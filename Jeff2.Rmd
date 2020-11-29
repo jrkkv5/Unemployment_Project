@@ -162,3 +162,124 @@ summary(TX_linearModelSignificant)
 #test to show a scatterplot TX HPI data against year
 ```
 
+
+
+```{r main data analysis}
+#my states:WA, MO
+merged_final.F <- read_csv("csv files/mergedFinal.csv")
+
+#Logging
+merged_final.F$log_pop = log(merged_final$population)
+merged_final.F$log_RMHI = log(merged_final$RMHI)
+
+#Descriptive Statistics
+stat.desc(merged_final.F)
+
+#Pairwise Correlations
+sapply(merged_final.F, class)
+sapply(merged_final.F, is.factor)
+cor(merged_final.F[sapply(merged_final.F, function(x) !is.character(x))])
+
+```
+
+```{r MO Analysis}
+MO_data <- merged_final.F[ merged_final.F$state == "MO", ]
+```
+
+```{r MO scatter log population}
+MO_data$log_pop <- as.integer(MO_data$log_pop)
+plot(x=MO_data$year, y=MO_data$log_pop, main="IL Log Population by Year", xlab = "Year", ylab = "log_Population",ylim = c(14,16))
+```
+```{r TX Analysis}
+TX_data <- merged_final[ merged_final$state == "TX", ]
+```
+
+```{r TX Histogram Unemployment}
+hist(TX_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlim=c(4,11),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r TX Histogram Poverty}
+hist(TX_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlim=c(9,16),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r TX scatter unemployment}
+scatter.smooth(TX_data$year, TX_data$value, main="TX Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r TX scatter HPI}
+scatter.smooth(TX_data$year, TX_data$HPI, main="TX HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r TX scatter poverty}
+scatter.smooth(x=TX_data$year, y=TX_data$poverty, main="TX % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r TX scatter RMHI}
+TX_data$RMHI <- as.integer(TX_data$RMHI)
+scatter.smooth(x=TX_data$year, y=TX_data$RMHI, main="TX Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r TX scatter population}
+TX_data$population <- as.integer(TX_data$population)
+scatter.smooth(x=TX_data$year, y=TX_data$population, main="TX Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r TX scatter log RMHI}
+#TX_data$log_RMHI <- as.integer(TX_data$log_RMHI)
+scatter.smooth(x=TX_data$year, y=TX_data$log_RMHI, main="TX Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r TX scatter log population}
+#TX_data$log_pop <- as.integer(TX_data$log_pop)
+scatter.smooth(x=TX_data$year, y=TX_data$log_pop, main="TX Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r TX correlations}
+cor(TX_data$RMHI, TX_data$value)
+cor(TX_data$HPI, TX_data$value)
+cor(TX_data$poverty, TX_data$value)
+cor(TX_data$population, TX_data$value)
+cor(TX_data$sp500, TX_data$value)
+cor(TX_data$log_pop, TX_data$value)
+cor(TX_data$log_RMHI, TX_data$value)
+#run base correlations between categories and dependent variable
+```
+
+```{r TX boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(TX_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(TX_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r TX boxplot poverty}
+boxplot(TX_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(TX_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r TX linear regression all}
+#run multiple linear model for data
+TX_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = TX_data)
+summary(TX_reg1)
+anova(TX_reg1)
+```
+
+```{r TX linear regression log all}
+TX_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = TX_data)
+summary(TX_reg2)
+anova(TX_reg2)
+```
+
+```{r TX linear significant variables}
+TX_linearModelSignificant <- lm(value ~ poverty + log_pop, data = TX_data)
+summary(TX_linearModelSignificant)
+
+#test to show a scatterplot TX HPI data against year
+```
+
