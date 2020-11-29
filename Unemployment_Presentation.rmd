@@ -272,6 +272,11 @@ Below are some of the highlights along with commentary for the states we have ch
 IL_data <- merged_final[ merged_final$state == "IL", ]
 ```
 
+```{r IL Descriptive Statistics}
+#Descriptive statistics
+stat.desc(IL_data)
+```
+
 ```{r IL Histogram Unemployment}
 hist(IL_data$value,
      main="Histogram of Unemployment Across All 50 States",
@@ -366,6 +371,11 @@ summary(IL_linearModelSignificant)
 
 ```{r TX Analysis}
 TX_data <- merged_final[ merged_final$state == "TX", ]
+```
+
+```{r TX Descriptive Statistics}
+#Descriptive statistics
+stat.desc(TX_data)
 ```
 
 ```{r TX Histogram Unemployment}
