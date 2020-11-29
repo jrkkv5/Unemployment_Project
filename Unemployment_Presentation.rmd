@@ -276,6 +276,12 @@ IL_data <- merged_final[ merged_final$state == "IL", ]
 #Descriptive statistics
 stat.desc(IL_data)
 ```
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(IL_data, class)
+sapply(IL_data, is.factor)
+cor(IL_data[sapply(IL_data, function(x) !is.character(x))])
+```
 
 ```{r IL Histogram Unemployment}
 hist(IL_data$value,
@@ -378,6 +384,14 @@ TX_data <- merged_final[ merged_final$state == "TX", ]
 stat.desc(TX_data)
 ```
 
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(TX_data, class)
+sapply(TX_data, is.factor)
+cor(TX_data[sapply(TX_data, function(x) !is.character(x))])
+```
+
+
 ```{r TX Histogram Unemployment}
 hist(TX_data$value,
      main="Histogram of Unemployment Across All Years",
@@ -476,6 +490,14 @@ MO_data <- merged_final[ merged_final$state == "MO", ]
 stat.desc(MO_data)
 ```
 
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(MO_data, class)
+sapply(MO_data, is.factor)
+cor(MO_data[sapply(MO_data, function(x) !is.character(x))])
+```
+
+
 ```{r MO Histogram Unemployment}
 hist(MO_data$value,
      main="Histogram of Unemployment Across All 50 States",
@@ -570,6 +592,13 @@ WA_data <- merged_final[ merged_final$state == "WA", ]
 ```{r WA Descriptive Statistics}
 #Descriptive statistics
 stat.desc(WA_data)
+```
+
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(WA_data, class)
+sapply(WA_data, is.factor)
+cor(WA_data[sapply(WA_data, function(x) !is.character(x))])
 ```
 
 ```{r WA Histogram Unemployment}
@@ -668,6 +697,14 @@ OR_data <- merged_final[ merged_final$state == "OR", ]
 stat.desc(OR_data)
 ```
 
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(OR_data, class)
+sapply(OR_data, is.factor)
+cor(OR_data[sapply(OR_data, function(x) !is.character(x))])
+```
+
+
 ```{r OR Histogram Unemployment}
 hist(OR_data$value,
      main="Histogram of Unemployment Across All 50 States",
@@ -763,6 +800,14 @@ CO_data <- merged_final[ merged_final$state == "CO", ]
 #Descriptive statistics
 stat.desc(CO_data)
 ```
+
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(OR_data, class)
+sapply(OR_data, is.factor)
+cor(OR_data[sapply(OR_data, function(x) !is.character(x))])
+```
+
 
 ```{r CO Histogram Unemployment}
 hist(CO_data$value,
@@ -860,6 +905,14 @@ WV_data <- merged_final[ merged_final$state == "WV", ]
 stat.desc(WV_data)
 ```
 
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(WV_data, class)
+sapply(WV_data, is.factor)
+cor(WV_data[sapply(WV_data, function(x) !is.character(x))])
+```
+
+
 ```{r WV Histogram Unemployment}
 hist(WV_data$value,
      main="Histogram of Unemployment Across All 50 States",
@@ -955,6 +1008,14 @@ ME_data <- merged_final[ merged_final$state == "ME", ]
 #Descriptive statistics
 stat.desc(ME_data)
 ```
+
+```{r Pairwise Correlations}
+#pairwise correlations
+sapply(WV_data, class)
+sapply(WV_data, is.factor)
+cor(WV_data[sapply(WV_data, function(x) !is.character(x))])
+```
+
 
 ```{r ME Histogram Unemployment}
 hist(ME_data$value,
