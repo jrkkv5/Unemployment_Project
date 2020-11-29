@@ -435,4 +435,4 @@ RI_linearModel <- lm(value ~ poverty + RMHI + HPI + log(population) + sp500, dat
 summary(RI_linearModel)
 anova(RI_linearModel)
 ```
-
+11/29/2020
