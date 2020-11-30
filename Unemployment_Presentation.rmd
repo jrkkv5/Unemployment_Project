@@ -262,7 +262,6 @@ MI, NJ, GA, NC, VA, MA, IN, WA, TN, MO, WI, MD, AZ
 Population > 10,000,000
 CA, TX, NY, FL, PA, IL, OH
 
-
 Each member of our group performed some basic analysis on the states within one of the bins. After performing our initial analysis we chose to focus on 2 states within each bin.  The states we chose to focus on are: TX, IL, MO, WA, OR, CO, WV, ME
 
 The dependent variable, value, has a mean of 5.44 and a standard deviation of 1.97. Connecticut and Virginia had the lowest unemployment rate in 2000 at 1.8, while West Virginia was the highest in 1984 at 14.4. The mean HPI was 260.15, with a standard deviation of 119.68. The lowest HPI was found in Wyoming in 1987 at 79.25, while the highest was in Massachusetts in 2018 at 796.86. Poverty rate had a mean of 12.85 and a standard deviation of 3.69. In 1989, Connecticut had the lowest rate of 2.9, and Mississippi had the highest at 27.2 in 1988. The sp500 index mean was 9.48, and the standard deviation was 15.70. In 2008, the lowest index was seen at -38.4, while the highest index was seen in 1995 at 34.11. The logged population mean was 15.06, and the standard deviation was 1.01. Wyoming had the lowest logged population at 13.025 in 1990, California having the highest in 2018 at 17.49. Logged real median household income had a mean of 10.95 and a standard deviation of 0.17. In 2013, Mississippi had the lowest log_RMHI at 10.46, while Massachusetts had the highest in 2018 at 11.37. 
