@@ -265,6 +265,7 @@ CA, TX, NY, FL, PA, IL, OH
 
 Each member of our group performed some basic analysis on the states within one of the bins. After performing our initial analysis we chose to focus on 2 states within each bin.  The states we chose to focus on are: TX, IL, MO, WA, OR, CO, WV, ME
 
+The dependent variable, value, has a mean of 5.44 and a standard deviation of 1.97. Connecticut and Virginia had the lowest unemployment rate in 2000 at 1.8, while West Virginia was the highest in 1984 at 14.4. The mean HPI was 260.15, with a standard deviation of 119.68. The lowest HPI was found in Wyoming in 1987 at 79.25, while the highest was in Massachusetts in 2018 at 796.86. Poverty rate had a mean of 12.85 and a standard deviation of 3.69. In 1989, Connecticut had the lowest rate of 2.9, and Mississippi had the highest at 27.2 in 1988. The sp500 index mean was 9.48, and the standard deviation was 15.70. In 2008, the lowest index was seen at -38.4, while the highest index was seen in 1995 at 34.11. The logged population mean was 15.06, and the standard deviation was 1.01. Wyoming had the lowest logged population at 13.025 in 1990, California having the highest in 2018 at 17.49. Logged real median household income had a mean of 10.95 and a standard deviation of 0.17. In 2013, Mississippi had the lowest log_RMHI at 10.46, while Massachusetts had the highest in 2018 at 11.37. 
 
 Below are some of the highlights along with commentary for the states we have chosen to focus on 
 
@@ -276,12 +277,16 @@ IL_data <- merged_final[ merged_final$state == "IL", ]
 #Descriptive statistics
 stat.desc(IL_data)
 ```
+
+The dependent variable, unemployment, has a mean of 6.44 and a standard deviation of 1.81. The lowest unemployment rate was in 1998 and 1999 at 4.1, while the highest was in 2009 at 11.00. The mean HPI was 256.07, with a standard deviation of 79.06. The lowest HPI was in 1984 at 112.80, while the highest was in 2018 at 371.21. Poverty rate had a mean of 12.54 and a standard deviation of 1.58. In 1999, lowest rate was seen of 9.9, and the highest was 15.6 in 1992. The sp500 index mean was 9.48, and the standard deviation was 15.70. In 2008, the lowest index was seen at -38.4, while the highest index was seen in 1995 at 34.11. The logged population mean was 16.32, and the standard deviation was 0.046. The lowest logged population at 16.248 in 1986, and the highest in 2013 at 16.373. Logged real median household income had a mean of 11.02 and a standard deviation of 0.066. In 1984, Illinois had the lowest log_RMHI at 10.91, while had the highest in 2018 at 11.16. 
+
 ```{r Pairwise Correlations}
 #pairwise correlations
 sapply(IL_data, class)
 sapply(IL_data, is.factor)
 cor(IL_data[sapply(IL_data, function(x) !is.character(x))])
 ```
+
 
 ```{r IL Histogram Unemployment}
 hist(IL_data$value,
@@ -383,6 +388,8 @@ TX_data <- merged_final[ merged_final$state == "TX", ]
 #Descriptive statistics
 stat.desc(TX_data)
 ```
+
+The dependent variable, unemployment, has a mean of 5.70 and a standard deviation of 1.35. The lowest unemployment rate was in 2000 at 3.5, while the highest was in 1986 at 8.5. The mean HPI was 185.77, with a standard deviation of 61.34. The lowest HPI was in 1988 at 113.77, while the highest was in 2018 at 334.92. Poverty rate had a mean of 16.46 and a standard deviation of 1.37. In 2017, lowest rate was seen of 13.2 and the highest was 19.1 in 1994. The sp500 index mean was 9.48, and the standard deviation was 15.70. In 2008, the lowest index was seen at -38.4, while the highest index was seen in 1995 at 34.11. The logged population mean was 16.88, and the standard deviation was 0.17. The lowest logged population at 16.59 in 1984, and the highest in 2018 at 17.17. Logged real median household income had a mean of 10.91 and a standard deviation of 0.056. In 1992, Texas had the lowest log_RMHI at 10.80, while had the highest in 2017 at 11.03. 
 
 ```{r Pairwise Correlations}
 #pairwise correlations
@@ -490,6 +497,8 @@ MO_data <- merged_final[ merged_final$state == "MO", ]
 stat.desc(MO_data)
 ```
 
+The dependent variable, unemployment, has a mean of 5.40 and a standard deviation of 1.63. The lowest unemployment rate was in 1999 at 2.8, while the highest was in 2009 at 9.4. The mean HPI was 223.98, with a standard deviation of 65.74. The lowest HPI was in 1984 at 118.94, while the highest was in 2018 at 334.60. Poverty rate had a mean of 12.81 and a standard deviation of 2.27. In 2000, lowest rate was seen of 9.2, and the highest was 17.5 in 2013. The sp500 index mean was 9.48, and the standard deviation was 15.70. In 2008, the lowest index was seen at -38.4, while the highest index was seen in 1995 at 34.11. The logged population mean was 15.54, and the standard deviation was 0.070. The lowest logged population at 15.42 in 1984, and the highest in 2018 at 15.63. Logged real median household income had a mean of 10.91 and a standard deviation of 0.090. In 1984, Missouri had the lowest log_RMHI at 10.78, while had the highest in 2000 at 11.10. 
+
 ```{r Pairwise Correlations}
 #pairwise correlations
 sapply(MO_data, class)
@@ -594,6 +603,8 @@ WA_data <- merged_final[ merged_final$state == "WA", ]
 stat.desc(WA_data)
 ```
 
+
+
 ```{r Pairwise Correlations}
 #pairwise correlations
 sapply(WA_data, class)
@@ -696,6 +707,8 @@ OR_data <- merged_final[ merged_final$state == "OR", ]
 #Descriptive statistics
 stat.desc(OR_data)
 ```
+
+The dependent variable, unemployment, has a mean of 6.46 and a standard deviation of 1.90. The lowest unemployment rate was in 2017 at 3.9, while the highest was in 2009 at 10.8. The mean HPI was 287.78, with a standard deviation of 137.46. The lowest HPI was in 1985 at 97.18, while the highest was in 2018 at 566.63. Poverty rate had a mean of 12.25 and a standard deviation of 1.40. In 1990, lowest rate was seen of 9.2, and the highest was 15.0 in 1998. The sp500 index mean was 9.48, and the standard deviation was 15.70. In 2008, the lowest index was seen at -38.4, while the highest index was seen in 1995 at 34.11. The logged population mean was 15.04, and the standard deviation was 0.14. The lowest logged population at 14.796 in 1984, and the highest in 2018 at 15.25. Logged real median household income had a mean of 10.96 and a standard deviation of 0.071. In 1985, Oregon had the lowest log_RMHI at 10.80, while had the highest in 2018 at 11.14. 
 
 ```{r Pairwise Correlations}
 #pairwise correlations
@@ -803,9 +816,9 @@ stat.desc(CO_data)
 
 ```{r Pairwise Correlations}
 #pairwise correlations
-sapply(OR_data, class)
-sapply(OR_data, is.factor)
-cor(OR_data[sapply(OR_data, function(x) !is.character(x))])
+sapply(CO_data, class)
+sapply(CO_data, is.factor)
+cor(CO_data[sapply(CO_data, function(x) !is.character(x))])
 ```
 
 
@@ -1011,9 +1024,9 @@ stat.desc(ME_data)
 
 ```{r Pairwise Correlations}
 #pairwise correlations
-sapply(WV_data, class)
-sapply(WV_data, is.factor)
-cor(WV_data[sapply(WV_data, function(x) !is.character(x))])
+sapply(ME_data, class)
+sapply(ME_data, is.factor)
+cor(ME_data[sapply(ME_data, function(x) !is.character(x))])
 ```
 
 
