@@ -1,6 +1,6 @@
 ---
 title: "Unemployment Report"
-author: "https://github.com/jrkkv5/FIN6572Fall2020/blob/master/National%20Debt/importNationalDebt.Rmd"
+Author: "Jeff Krueger, Corey Lund, Fred Mwangi, and Nemanja Orescanin"
 date: "11/29/2020"
 output: html_document
 ---
@@ -20,6 +20,7 @@ library(pastecs)
 library(ggplot2)
 library(corrplot)
 library(lmtest)
+library(forecast)
 #loads the necessary packages
 
 ```
