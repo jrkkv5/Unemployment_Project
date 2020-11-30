@@ -206,11 +206,11 @@ In Illinois, from 1984 to 2018, the poverty levels ranged from 9.0-16.0%. The hi
 ```{r IL scatter unemployment}
 scatter.smooth(IL_data$year, IL_data$value, main="IL Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
 ```
-
+A scatterplot displays the relationship between two numeric variables. This plot demonstrates the relationship between the annual unemployment rate and the year, from 1984 to 2018. In Illinois, there is no linear relationship, however, there is an observable cyclical pattern. The annual unemployment rate was lowest around 1999 and peaked in 2008. 
 ```{r IL scatter HPI}
 scatter.smooth(IL_data$year, IL_data$HPI, main="IL HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
-
+This plot represents the relationship between Illinois' median housing price index (HPI) and the year. From 1984 to 2008 the relationship appeared to be linear, until the HPI dipped from 2008-2013. Since then, the HPI has began to increase in a linear relationship again. This pattern is displayed consistently when observing the proceeding states and, through inference, can partially be attributed to the housing crisis that occurred in 2008 and 2009. 
 ```{r IL scatter poverty}
 scatter.smooth(x=IL_data$year, y=IL_data$poverty, main="IL % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
 ```
@@ -264,11 +264,11 @@ In Texas, from 1984 to 2018, the annual poverty rates ranged from 13.0-20.0%. Th
 ```{r TX scatter unemployment}
 scatter.smooth(TX_data$year, TX_data$value, main="TX Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
 ```
-
+This plot displays the annual unemployment rate in Texas from 1984-2018. There is no linearity to the plot. However, there is a cyclical nature to the unemployment rate over time. The lowest value occurred in 2000. Texas and West Virginia were the only states examined that had a higher unemployment rate before 2008-2009. This occurred in 1986 while the unemployment rate reached over 8%.
 ```{r TX scatter HPI}
 scatter.smooth(TX_data$year, TX_data$HPI, main="TX HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
-
+The median housing price index displayed a somewhat linear increase from 1984-2008 before flatting out for the next 5 years. By 2013, the positive linear relationship re-established itself. 
 ```{r TX scatter poverty}
 scatter.smooth(x=TX_data$year, y=TX_data$poverty, main="TX % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
 ```
@@ -320,10 +320,11 @@ In Missouri, from 1984-2014, the annual poverty rates ranged from 8.0-17.9%. 20 
 ```{r MO scatter unemployment}
 scatter.smooth(MO_data$year, MO_data$value, main="MO Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
 ```
-
+The annual unemployment rate in Missouri generally decreased from 1984-1999. It generally increased from 2000-2009 before sharply declining from 2010-2018. There is no observable patter or relationship based off of this plot. 
 ```{r MO scatter HPI}
 scatter.smooth(MO_data$year, MO_data$HPI, main="MO HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
+The housing price index in Missouri consistently increased in a linear fashion from 1984 to 2008. The next several years were characterized by a steady decline until 2013 where the HPI restarted it's consistent increase year over year. 
 
 ```{r MO scatter poverty}
 scatter.smooth(x=MO_data$year, y=MO_data$poverty, main="MO % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
@@ -376,11 +377,11 @@ In Washington, from 1984 to 2018, The annual poverty rates ranged from 8.0-12.9%
 ```{r WA scatter unemployment}
 scatter.smooth(WA_data$year, WA_data$value, main="WA Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
 ```
-
+The annual unemployment rate in Washington appears to be cyclical. The up and down pattern repeated itself 3-4 times before its intensity increased in 2008 when the unemployment rate spiked. The following years were characterized by a decline back to levels near the floor of the original pattern.   
 ```{r WA scatter HPI}
 scatter.smooth(WA_data$year, WA_data$HPI, main="WA HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
-
+The housing price index in Washington consistently increased from 1984-2003 before experiencing a sharper increase from 2003-2008. After what is characteristic of a correction, between 2008-2012, the HPI began to repeat it's consistent increase year over year from 2013-2018. 
 ```{r WA scatter poverty}
 scatter.smooth(x=WA_data$year, y=WA_data$poverty, main="WA % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
 ```
@@ -435,11 +436,11 @@ In Oregon, from 1984 to 2018, the annual unemployment rates ranged from 9.0%-14.
 ```{r OR scatter unemployment}
 scatter.smooth(OR_data$year, OR_data$value, main="OR Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
 ```
-
+The annual unemployment rates in Oregon displayed a cyclical pattern. Like every state state observed, other than Texas, the unemployment rates peaked in 2008-2009.  The sharp decline that proceeded led to Oregon's lowest unemployment levels (2016-2018) in the 36 year time period.  
 ```{r OR scatter HPI}
 scatter.smooth(OR_data$year, OR_data$HPI, main="OR HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
-
+The housing price index in Oregon consistently increased from 1984-2003 before experiencing a sharper increase from 2004-2008. The rapid increase was halted in 2008 where it began to fall until 2013 where it reached the levels of 2004. This was the new floor as the HPI began to increase in a linear fashion from 2013-2018.
 ```{r OR scatter poverty}
 scatter.smooth(x=OR_data$year, y=OR_data$poverty, main="OR % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
 ```
@@ -491,11 +492,11 @@ In Colorado, from 1984 to 2018, the poverty rates ranged from 8.0% to 13.9%. The
 ```{r CO scatter unemployment}
 scatter.smooth(CO_data$year, CO_data$value, main="CO Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
 ```
-
+The annual unemployment levels in Colorado loosely exhibits the cyclic nature seen in other states such as Oregon, Washington, and Illinois. The highest rates of unemployment occurred in 2010, a little later than the other states observed excluding Texas. The lowest unemployment rate occurred in 2000.    
 ```{r CO scatter HPI}
 scatter.smooth(CO_data$year, CO_data$HPI, main="CO HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
-
+The housing price index for Colorado showed a steady increase from 1984 to 2006. The proceeding 6 years were characterized by a steady decline until 2011. From 2011-2018 the the HPI increased at a faster rate than it did from 1984-2006.  
 ```{r CO scatter poverty}
 scatter.smooth(x=CO_data$year, y=CO_data$poverty, main="CO % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
 ```
@@ -547,11 +548,11 @@ In West Virginia, from 1984 to 2018, the annual poverty rates ranged from 14.0% 
 ```{r WV scatter unemployment}
 scatter.smooth(WV_data$year, WV_data$value, main="WV Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
 ```
-
+The annual unemployment rate in West Virginia looks much different than the other states observed. In 1984, the unemployment rate was by far the highest during the 36 year time period. Although it did double between 2006-2010, the unemployment rate in 2010 was only a little over 8% compared to 1984 which peaked over 15%. 
 ```{r WV scatter HPI}
 scatter.smooth(WV_data$year, WV_data$HPI, main="WV HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
-
+The housing price index in West Virginia is similar to the other states observed. It displayed a linear distribution, before spiking from 2003-2008. The decline from 2008-2010 was less intense and shorter lasting than many of the other states before continuing the original upward trend.
 ```{r WV scatter poverty}
 scatter.smooth(x=WV_data$year, y=WV_data$poverty, main="WV % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
 ```
@@ -604,7 +605,7 @@ In Maine, from 1984-2018, the annual poverty rates ranged from 9.0%-15.9%. The d
 ```{r ME scatter unemployment}
 scatter.smooth(ME_data$year, ME_data$value, main="ME Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
 ```
-
+The annual unemployment rate in Maine displays the cyclical nature that has been observed in many of the other states. The up and down pattern floors around 3% while the peak came in 2008-2009. 
 ```{r ME scatter HPI}
 scatter.smooth(ME_data$year, ME_data$HPI, main="ME HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
@@ -612,7 +613,7 @@ scatter.smooth(ME_data$year, ME_data$HPI, main="ME HPI by Year", xlab = "Year", 
 ```{r ME scatter poverty}
 scatter.smooth(x=ME_data$year, y=ME_data$poverty, main="ME % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
 ```
-
+The housing price index in Maine increased from 1984-1989 before slightly decreasing until 1995. This was followed by a consistent increase that peaked in 2008. After the short period of decline the HPI bounced and continued to rise until the end of the time period in 2018, like many of the states examined. 
 
 ```{r ME scatter log RMHI}
 #ME_data$log_RMHI <- as.integer(ME_data$log_RMHI)
