@@ -745,25 +745,25 @@ hist(IL_data$poverty,
 ```{r IL scatter unemployment}
 scatter.smooth(IL_data$year, IL_data$value, main="IL Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
 ```
-
+The scatter plot for the state of Illinois shows how the unemployment tends to fluctuate greatly between 1984-2019. Of course when it comes to the huge spike that we see beginning in 2009-2011, that is due to the depression that we faced and the stock market crash that we experienced during that time. I think this scatter plot does a great job illustrating how the unemployment of the state is directly correlated to the way the economy of the entire country is doing. The better the economy is doing the lower the unemployment rate is for the state. 
 ```{r IL scatter HPI}
 scatter.smooth(IL_data$year, IL_data$HPI, main="IL HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
-
+THe housing price index scatter plot does a great job showing how the housing sector has continued to become much more expensive as we continue going from 1984-2019. The housing price index scatter plot does a great job illustrating how the economy greatly affects the housing price index. As we can see with the housing price index and the unemployment rate, the stock market crash in 2009 affected both greatly. Other than that drop off the housing price index has continue to grow prior to and following the crash. 
 ```{r IL scatter poverty}
 scatter.smooth(x=IL_data$year, y=IL_data$poverty, main="IL % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
 ```
-
+The scatter plot for the poverty, proportion of the population below the poverty line, in Illinois is much different than the scatter plot for the housing price index. The proportion of the population under the poverty line is always fluctuating and does not have a distinguishing direction of which it is headed. Like with the scatter plot for the housing price index and unemployment the 2009 stock market crash negatively affected the proportion of the population below the poverty line. I think when it comes to poverty that many regulations or increases in taxation could lean to a greater proportion of the population being under the poverty line, but also the economic factors do play a gigantic role in which direction poverty will head. 
 ```{r IL scatter RMHI}
 IL_data$RMHI <- as.integer(IL_data$RMHI)
 scatter.smooth(x=IL_data$year, y=IL_data$RMHI, main="IL Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
 ```
-
+The scatter plot for the median household income in Illinois points a direct picture to the economy within the United States. Any time the economy heads in a negative direction or other negative factors within the border occur then the household income will be affected. The stock market crash caused a drastic drop in the median household income, but if we look back to the 2001, we can also see that the 9/11 attacks also affected median household income within Illinois. All of the regulations and legal matters that developed around the terrorist attacks affected all the states and the median household income within them. 
 ```{r IL scatter population}
 IL_data$population <- as.integer(IL_data$population)
 scatter.smooth(x=IL_data$year, y=IL_data$population, main="IL Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
 ```
-
+ 
 ```{r IL scatter log RMHI}
 #IL_data$log_RMHI <- as.integer(IL_data$log_RMHI)
 scatter.smooth(x=IL_data$year, y=IL_data$log_RMHI, main="IL Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
@@ -773,7 +773,7 @@ scatter.smooth(x=IL_data$year, y=IL_data$log_RMHI, main="IL Log Median Household
 #IL_data$log_pop <- as.integer(IL_data$log_pop)
 scatter.smooth(x=IL_data$year, y=IL_data$log_pop, main="IL Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
 ```
-
+The log of the population and the population both show the same traits. The population of Illinois was increasing from 1988-2015 and since then has continued to decrease ever so slightly. This could be due to many different factors within the state that have caused certain populations of the individuals within the state to move elsewhere. 
 ```{r IL correlations}
 cor(IL_data$RMHI, IL_data$value)
 cor(IL_data$HPI, IL_data$value)
@@ -805,12 +805,12 @@ The correlation between the log of median household income and unemployment in I
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
 boxplot(IL_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(IL_data$value)$out))  # box plot for 'Unemployment'
 ```
-
+The box plot does a great job depicting the unemployment level within the state. AS the box plot shows the median poverty between 1984-2019 is roughly six percent. The outliers do exist such as 4% and 11% and that is due to economic factors that affected not only the state of Illinois, but also the other 49 states within the United States. 
 ```{r IL boxplot poverty}
 boxplot(IL_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(IL_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
-
+The box plot for the poverty level shows the median poverty level being about 12.5%. Like with the unemployment rate, the poverty level does contain outliers as well and that is due to the same reasons as would be the unemployment rate. The unemployment rate and the poverty level have a strong positive relationship. The relationship suggests that as unemployment increases so does the poverty level within the state. 
 ```{r IL linear regression all}
 #run multiple linear model for data
 IL_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = IL_data)
@@ -862,30 +862,30 @@ hist(TX_data$poverty,
 ```{r TX scatter unemployment}
 scatter.smooth(TX_data$year, TX_data$value, main="TX Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
 ```
-
+The scatter plot for Texas shows fluctuations with the unemployment rate throughout the years. The unemployment did sky rocket to the same rate between 1984-1993 when the stock market crashed in 2008-2009. But since the crash it has dwindled down to close to 4% and that should start to increase due to the pandemic occurring with Covid in 2020. 
 ```{r TX scatter HPI}
 scatter.smooth(TX_data$year, TX_data$HPI, main="TX HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
-
+The housing price index scatter plot has a strong positive direction ever since 1990. The pricing index did take a hit during the stock market crash of 2008-2009, but other than that has continued to gradually increase throughout the years. 
 ```{r TX scatter poverty}
 scatter.smooth(x=TX_data$year, y=TX_data$poverty, main="TX % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
 ```
-
+The poverty, proportion of the population under the poverty line, has been quite consistent throughout the years, but has started to decrease after the stock market crash of 2008-2009. Since then it has continued to dwindle down and signify that the state is in a much better standing and that jobs are availible to keep the tenants within the state above the poverty line. 
 ```{r TX scatter RMHI}
 TX_data$RMHI <- as.integer(TX_data$RMHI)
 scatter.smooth(x=TX_data$year, y=TX_data$RMHI, main="TX Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
 ```
-
+The scatter plot for the median household income portrays the effects that the stock market and economic implications have on income. The two dwindling parts of the scatter plot show the economic recession that took place in the United States in 1990 and the stock market crash of 2008. Both the recession of 1990 and the stock market crash of 2008 both negatively affected the median household income in the state of Texas. 
 ```{r TX scatter population}
 TX_data$population <- as.integer(TX_data$population)
 scatter.smooth(x=TX_data$year, y=TX_data$population, main="TX Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
 ```
-
+The scatter plot for the population shows a continued increase in the population within the state ever since 1984.
 ```{r TX scatter log RMHI}
 #TX_data$log_RMHI <- as.integer(TX_data$log_RMHI)
 scatter.smooth(x=TX_data$year, y=TX_data$log_RMHI, main="TX Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
 ```
-
+The log of the median household income shows the same effects as some of the other variables that are affected by economic conditions. As shown in the scatter plot, the main reaons for the decrease within the median household income are due to the recession in 1990 and the stock market crash in 2008-2009. 
 ```{r TX scatter log population}
 #TX_data$log_pop <- as.integer(TX_data$log_pop)
 scatter.smooth(x=TX_data$year, y=TX_data$log_pop, main="TX Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
@@ -918,12 +918,12 @@ The correlation between the log of the median household income and unemployment 
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
 boxplot(TX_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(TX_data$value)$out))  # box plot for 'Unemployment'
 ```
-
+The box plot for unemployment shows the median unemployment to be able 5.8 percent and the prevalence of outliers within the state show that economic factors do play a role for the outliers that are existent within the data. 
 ```{r TX boxplot poverty}
 boxplot(TX_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(TX_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
-
+The box plot for the poverty, proportion of the population below the poverty line, shows that most of the years the proportion of the population below the poverty level was between 16% and 17.5%. When the economy is doing well and growth for businesses is occurring within the state that would cause a rate as low as 13% and on the contrary if economic conditions are worse the poverty rate shoots back up to 19%. 
 ```{r TX linear regression all}
 #run multiple linear model for data
 TX_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = TX_data)
@@ -972,11 +972,11 @@ hist(MO_data$poverty,
 ```{r MO scatter unemployment}
 scatter.smooth(MO_data$year, MO_data$value, main="MO Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
 ```
-
+The scatter plot for the unemployment within the state of Missouri shows many fluctuations throughout the years. These fluctuations can be due to many economic factors that were prevalent within the United States. These economic factors would increase the recession in 1990 and also the stock market crash in 2008-2009 that cause a huge jump in the unemployment rate, not only in Missouri, but also the rest of the United States. 
 ```{r MO scatter HPI}
 scatter.smooth(MO_data$year, MO_data$HPI, main="MO HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
-
+The scatter plot for the housing price index in the state of Missouri shows a pretty consistent trend. Other than the stock market crash that affected the housing price all throughout the United States, the housing prices have continued to grow since 1984.
 ```{r MO scatter poverty}
 scatter.smooth(x=MO_data$year, y=MO_data$poverty, main="MO % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
 ```
@@ -985,12 +985,12 @@ scatter.smooth(x=MO_data$year, y=MO_data$poverty, main="MO % of People Below Pov
 MO_data$RMHI <- as.integer(MO_data$RMHI)
 scatter.smooth(x=MO_data$year, y=MO_data$RMHI, main="MO Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
 ```
-
+The scatter plot for the median household income is affected greatly by economic factors. As the scatter plot shows within the state of Missouri, the recession of 1990 and the years prior to 2008-2009 there was a decline. Prior to the stock market crash of 2008-2009, the median household income continued to decrease until the stock market crash occurred and made the median household income dwindle even further. Since the crash, the median household income has continued to increase steadily towards the median household income between 1998 and 2002. 
 ```{r MO scatter population}
 MO_data$population <- as.integer(MO_data$population)
 scatter.smooth(x=MO_data$year, y=MO_data$population, main="MO Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
 ```
-
+The scatter plot for the population within the state of Missouri has been consistent since 1994. The population has consistently increased each since since 1984 up to this point. 
 ```{r MO scatter log RMHI}
 #MO_data$log_RMHI <- as.integer(MO_data$log_RMHI)
 scatter.smooth(x=MO_data$year, y=MO_data$log_RMHI, main="MO Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
@@ -1029,12 +1029,12 @@ The correlation of the log of the median household income and unemployment in Mi
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
 boxplot(MO_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(MO_data$value)$out))  # box plot for 'Unemployment'
 ```
-
+The box plot for the state of Missouri shows the median unemployment to be around 5.2 percent. THe first and third quartile are 4.25% and 6%. Between the first and third quartile we find about 75% of the unemployment rates between 1984-2019 within the state of Missouri. 
 ```{r MO boxplot poverty}
 boxplot(MO_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(MO_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
-
+The box plot for the state of Missouri shows a median or second quartile of 13% and 75% of the poverty proportion can be found between 11.5% and 15%/ 
 ```{r MO linear regression all}
 #run multiple linear model for data
 MO_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = MO_data)
@@ -1083,25 +1083,25 @@ hist(WA_data$poverty,
 ```{r WA scatter unemployment}
 scatter.smooth(WA_data$year, WA_data$value, main="WA Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
 ```
-
+The unemployment for the state of Washington shows many fluctuations in terms of the unemployment within the state ever since 1984. Just like with the previous state the recession of 1990 and the stock market crash of 2008-2009 greatly affected the unemployment rate within the state. Prior to 1984 the unemployment rate was quite high, but was drastically declining until the 1990 recession within the United States. 
 ```{r WA scatter HPI}
 scatter.smooth(WA_data$year, WA_data$HPI, main="WA HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
-
+The housing price index within the state of Washington has gradually increased from 1984-2005. From 2005 to 2008 it was quite stagnant, until the stock market crash in 2008-2009 caused it to dwindle down a fair amount. Since then the housing price index has continued to grow within the state.
 ```{r WA scatter poverty}
 scatter.smooth(x=WA_data$year, y=WA_data$poverty, main="WA % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
 ```
-
+The poverty, proportion of the population below the poverty line, within the state of Washington fluctuates up and down throughout the years. Downturns in the economy or stock market crashes like the one in 2008-2009 cause the growing fluctuations within the state, and the increases in economic output cause the fluctuations to go down.
 ```{r WA scatter RMHI}
 WA_data$RMHI <- as.integer(WA_data$RMHI)
 scatter.smooth(x=WA_data$year, y=WA_data$RMHI, main="WA Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
 ```
-
+The median household income with the state of Washington has many fluctuations such as did the poverty within the state. As the scatter plot shows, downturns in the economic activity of the United States cause the median household income within the state to decrease. As we can see with the income of the state, it is much greater than that of the states in the Midwest, due to the cost of living being much higher along the coast than in the middle of the country. 
 ```{r WA scatter population}
 WA_data$population <- as.integer(WA_data$population)
 scatter.smooth(x=WA_data$year, y=WA_data$population, main="WA Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
 ```
-
+Unlike Illinois, the scatter plot for Washington shows a gradually increasing population within the state ever since 1984.
 ```{r WA scatter log RMHI}
 #WA_data$log_RMHI <- as.integer(WA_data$log_RMHI)
 scatter.smooth(x=WA_data$year, y=WA_data$log_RMHI, main="WA Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
@@ -1140,12 +1140,12 @@ The correlation between the log of the median household income and unemployment 
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
 boxplot(WA_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(WA_data$value)$out))  # box plot for 'Unemployment'
 ```
-
+The box plot for the state of Washing shows the median or second quartile to be at 6.25 percent and that between the first and third quartile is a range of 5.5% to 7.5 percent. Within the quartile we find roughly 75% of the unemployment rates in the state between the years of 1984-2019.
 ```{r WA boxplot poverty}
 boxplot(WA_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(WA_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
-
+The box plot for the poverty, proportion of the population below the poverty line, within the state of Washington shows the second quartile to be at 11%. For roughly 75% of the unemployment rates between the years 1984-2019 we finf the unemployment rates to be between 9.75% and 11.75%. The outliers within the poverty ratio are due to downturns of the economy within the United States.
 ```{r WA linear regression all}
 #run multiple linear model for data
 WA_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = WA_data)
