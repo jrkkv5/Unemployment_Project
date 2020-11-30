@@ -6,6 +6,11 @@ output:
   pdf_document: default
   html_document: default
 ---
+title: "Unemployment Report"
+author: "Jeff Krueger, Corey Lund, Fred Mwangi, and Nemanja Orescanin"
+date: "11/29/2020"
+output: html_document
+---
 
 ```{r packages}
 library(devtools)
@@ -87,26 +92,28 @@ cor(IL_data[sapply(IL_data, function(x) !is.character(x))])
 
 ```{r IL Histogram Unemployment}
 hist(IL_data$value,
-     main="Histogram of Unemployment Across All 50 States",
+     main="Histogram of Unemployment from 1984-2018",
      xlim=c(4,11),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
+Histograms graphically summarize the distribution of a data set. In Illinois, from 1984 to 2018, The annual unemployment rates ranged from 4.0-11.0%. The histogram displays a positively skewed distribution. An unemployment rate that fell within the first two intervals, 4.0-4.9% & 5.0-5.9% occurred 18 out of the 36 years examined. 
 
 ```{r IL Histogram Poverty}
 hist(IL_data$poverty,
-     main="Histogram of Poverty Across All 50 States",
+     main="Histogram of Poverty from 1984-2018",
      xlim=c(9,16),
      xlab="Poverty Rate",
      breaks = 5)
 ```
+In Illinois, from 1984 to 2018, the poverty levels ranged from 9.0-16.0%. The histogram displays a slightly negatively skewed distribution meaning relatively higher poverty rates occurred more often than lower rates. Between 12.0-12.9% was the most frequently recorded interval during this time period. In 14 of the 36 years examined, the poverty rate in Illinois was between 13-15.9%. 
 
 ```{r IL scatter unemployment}
-scatter.smooth(IL_data$year, IL_data$value, main="IL Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+scatter.smooth(IL_data$year, IL_data$value, main="IL Unemployment by Year", xlab = "Year", ylab = "Unemployment", span = 2/8)
 ```
 
 ```{r IL scatter HPI}
-scatter.smooth(IL_data$year, IL_data$HPI, main="IL HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+scatter.smooth(IL_data$year, IL_data$HPI, main="IL HPI by Year", xlab = "Year", ylab = "HPI", span = 2/8)
 ```
 
 ```{r IL scatter poverty}
@@ -143,14 +150,28 @@ cor(IL_data$log_pop, IL_data$value)
 cor(IL_data$log_RMHI, IL_data$value)
 #run base correlations between categories and dependent variable
 ```
+A correlation function is used to illustrate the relationship between our independent variable and our dependent variable. The closer the correlation is to 1 or -1 the stronger the correlation between the two variables. For a correlation of 1, it signifies that there is a perfect positive correlation. For a -1 correlation there is a perfect inverse relationship between the two variables. 
 
+The correlation between the RMHI and our dependent variable, unemployment, in Illinois is 0.03109792. The correlation shows that there is a weak positive correlation between median household income 
+
+The correlation between HPI (Housing Price Index) and our dependent variable, unemployment, in Illinois is -0.08115831. The correlation shows that there is a weak negative relationship between the housing price index and unemployment. 
+
+The correlation between poverty, the percentage of the population under the poverty line, and unemployment in Illinois is 0.6975789. This correlation shows a much stronger positive relationship between the two variables. As unemployment increases there is a much stronger possibility that the percentage of the population under the poverty line increasing as well. 
+
+The correlation between the population and unemployment in Illinois is 0.02011968. The correlation between population and unemployment is a weak positive correlation. The correlation is extremely close to 0, which signified that there is no direct correlation between the two variables. 
+
+The correlation between the s&p 500 and unemployment in Illinois is 0.03109792. The correlation between the S&P 500 and unemployment is a weak positive correlation. With the correlation being extremely close to 0 it signifies that there is not much of a correlation between the two variables. 
+
+The correlation between the log of the population and unemployment in Illinois is 0.01123117. The correlation between the log of the population and unemployment is extremely close to 0, which signifies there is almost no correlation between the two variables.  
+
+The correlation between the log of median household income and unemployment in Illinois is -0.6602776. The correlation between the log of median household income and unemployment is a strong negative correlation. A strong negative correlation suggests that the two variables move in inverse directions of each other. In this case, -0.66 suggests that there is enough evidence to suggest that in most cases the two variables move in inverse directions of each other due to the proximity of -0.66 to -1 which is a perfect negative relationship.
 ```{r IL boxplot unemployment}
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(IL_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(IL_data$value)$out))  # box plot for 'Unemployment'
+boxplot(IL_data$value, main="Unemployment in IL", sub=paste("Outlier rows: ", boxplot.stats(IL_data$value)$out))  # box plot for 'Unemployment'
 ```
 
 ```{r IL boxplot poverty}
-boxplot(IL_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(IL_data$poverty)$out))  # box plot for 'Poverty'
+boxplot(IL_data$poverty, main="IL Poverty", sub=paste("Outlier rows: ", boxplot.stats(IL_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
 
@@ -170,8 +191,6 @@ anova(IL_reg2)
 ```{r IL linear significant variables}
 IL_linearModelSignificant <- lm(value ~ poverty + log_pop, data = IL_data)
 summary(IL_linearModelSignificant)
-
-#test to show a scatterplot IL HPI data against year
 ```
 
 
@@ -198,26 +217,28 @@ cor(TX_data[sapply(TX_data, function(x) !is.character(x))])
 
 ```{r TX Histogram Unemployment}
 hist(TX_data$value,
-     main="Histogram of Unemployment Across All Years",
+     main="Histogram of Unemployment from 1984-2018",
      xlim=c(3,9),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
+In Texas, from 1984 to 2018, the annual unemployment rates ranged from 3.0-8.9%. The most common interval, or range of annual unemployment rates was between 5.0-5.9% which occurred 10 times in the 36 year period. Texas only experienced one year with an unemployment rate of 8.0% or higher. 
 
 ```{r TX Histogram Poverty}
 hist(TX_data$poverty,
-     main="Histogram of Poverty Across All Years",
+     main="Histogram of Poverty from 1984-2018",
      xlim=c(13,20),
      xlab="Poverty Rate",
      breaks = 5)
 ```
+In Texas, from 1984 to 2018, the annual poverty rates ranged from 13.0-20.0%. The histogram is nearly symmetrical meaning most of the values occurred in the near middle of the range. 27 of the 36 years were characterized by poverty rates ranging from 15.0-17.9%. Only 5 years experienced lower rates and only 4 experienced higher rates of poverty.  
 
 ```{r TX scatter unemployment}
-scatter.smooth(TX_data$year, TX_data$value, main="TX Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+scatter.smooth(TX_data$year, TX_data$value, main="TX Unemployment by Year", xlab = "Year", ylab = "Unemployment", span = 2/8)
 ```
 
 ```{r TX scatter HPI}
-scatter.smooth(TX_data$year, TX_data$HPI, main="TX HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+scatter.smooth(TX_data$year, TX_data$HPI, main="TX HPI by Year", xlab = "Year", ylab = "HPI", span = 2/8)
 ```
 
 ```{r TX scatter poverty}
@@ -254,14 +275,26 @@ cor(TX_data$log_pop, TX_data$value)
 cor(TX_data$log_RMHI, TX_data$value)
 #run base correlations between categories and dependent variable
 ```
+The correlation between the RMHI and our dependent variable, unemployment, in Texas is -0.5663074. The correlation between median household income and unemployment is a decently strong negative correlation. This is much stronger correlation than was the vase with the previous state of Illinois.
 
+The correlation between the housing price index and unemployment in Texas is -0.4234252 which is a negative correlation. It illustrates a correlation that points towards an inverse relationship between the housing price index and unemployment. 
+
+The correlation between poverty, the proportion of the population under the poverty line, and unemployment in Texas is 0.6719098. The correlation between poverty and unemployment shows a decently strong correlation between the two variables. The positive correlation shows that the variables move in the same direction dependent on the value of the variables.  
+
+The correlation between population and unemployment in Texas is -0.3861266. The correlation between population and unemployment points to a weak inverse relationship. This means that as population goes up, then the unemployment tends to go down. The correlation is not as close to -1 as it is to 0, which shows that there are instances where there is no direct relationship between the two variables. 
+
+The correlation between the S&P 500 and unemployment in Texas is 0.09162901. The correlation between S&P 500 and unemployment is a weak positive correlation. With the correlation being this close to zero it shows that in most cases there is no direct correlation between the two variables. 
+
+The correlation between the log of the population and unemployment in Texas is -0.3941111. The correlation between the log of population and unemployment shows that there is an inverse relationship between the two variables. THe correlation is not the strongest, but does illustrate that in certain cases the two variables do have an inverse relationship. 
+
+The correlation between the log of the median household income and unemployment in Texas is -0.5626285. THe correlation between the log of the median household income and unemployment shows a strong inverse relationship. An inverse relationship suggests that the two variables tend to go in opposite directions of each other. So, for instance, as median household income goes up,then the unemployment tends to go down.   
 ```{r TX boxplot unemployment}
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(TX_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(TX_data$value)$out))  # box plot for 'Unemployment'
+boxplot(TX_data$value, main="TX Unemployment", sub=paste("Outlier rows: ", boxplot.stats(TX_data$value)$out))  # box plot for 'Unemployment'
 ```
 
 ```{r TX boxplot poverty}
-boxplot(TX_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(TX_data$poverty)$out))  # box plot for 'Poverty'
+boxplot(TX_data$poverty, main="TX Poverty", sub=paste("Outlier rows: ", boxplot.stats(TX_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
 
@@ -282,7 +315,6 @@ anova(TX_reg2)
 TX_linearModelSignificant <- lm(value ~ poverty + log_pop, data = TX_data)
 summary(TX_linearModelSignificant)
 
-#test to show a scatterplot TX HPI data against year
 ```
 
 ```{r MO Analysis}
@@ -306,24 +338,26 @@ cor(MO_data[sapply(MO_data, function(x) !is.character(x))])
 
 ```{r MO Histogram Unemployment}
 hist(MO_data$value,
-     main="Histogram of Unemployment Across All 50 States",
+     main="Histogram of Unemployment from 1984-2018",
      xlab="Unemployment Rate",
      breaks = 5)
 ```
+In Missouri, from 1984 to 2018, the annual unemployment rates ranged from 2.0-9.9% The most frequent range of unemployment rates was between 5.0-5.9% which occurred 13 out of the 36 years. The next most frequent ranges were between 3.0-3.9% & 4.0-4.9% which both only appeared 6 times each.
 
 ```{r MO Histogram Poverty}
 hist(MO_data$poverty,
-     main="Histogram of Poverty Across All 50 States",
+     main="Histogram of Poverty from 1984-2018",
      xlab="Poverty Rate",
      breaks = 5)
 ```
+In Missouri, from 1984-2014, the annual poverty rates ranged from 8.0-17.9%. 20 of the 36 years were characterized by poverty rates between 12.0-15.9%. Only two years displayed higher poverty rates.
 
 ```{r MO scatter unemployment}
-scatter.smooth(MO_data$year, MO_data$value, main="MO Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+scatter.smooth(MO_data$year, MO_data$value, main="MO Unemployment by Year", xlab = "Year", ylab = "Unemployment", span = 2/8)
 ```
 
 ```{r MO scatter HPI}
-scatter.smooth(MO_data$year, MO_data$HPI, main="MO HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+scatter.smooth(MO_data$year, MO_data$HPI, main="MO HPI by Year", xlab = "Year", ylab = "HPI", span = 2/8)
 ```
 
 ```{r MO scatter poverty}
@@ -361,13 +395,27 @@ cor(MO_data$log_RMHI, MO_data$value)
 #run base correlations between categories and dependent variable
 ```
 
+THe correlation between the median household income and unemployment in Missouri is -0.4832073. The correlation between the median household income and unemployment is that of a medium strength negative relationship. A negative relationship between the two variables suggests that the two variables move inversely of one another with a medium stength relationship.
+
+The correlation between the housing price index and unemployment in Missouri is 0.05064891. The correlation between the housing price index and unemployment is that of a small positive relationship. The relationship between the two variables is quite small with it being so close to 0, but does suggest that the two variables do move in the same direction of one another. 
+
+The correlation between poverty, the proportion of the population below the poverty line, and unemployment in Missouri is 0.603927. The correlation between poverty and unemployment is that of a large positive correlation. A large positive correlation suggests that the two variables tend to mimic each other. As poverty increases so does the unemployment rate.
+
+The correlation between the population and unemployment in Missouri is 0.08687034. The correlation between the population and unemployment is a small positive correlation. The small positive correlation suggests a weak relationship between the two variables, but does suggest that they move in the same direction of one another. 
+
+The correlation between the S&P 500 and unemployment in Missouri is -0.09530716. The correlation between the S&P 500 and unemployment is that of a small negative correlation. THe relationship between the two variables is a weak relationship, but does suggest that they move inversely of one another. 
+
+The correlation of the log of the population and unemployment in Missouri is 0.08057646. The correlation between the log of the population and unemployment is that of a small positive relationship. The stregth of the correlation is quite weak, but does suggest that the two variables move in the same direction of one another.
+
+The correlation of the log of the median household income and unemployment in Missouri is -0.4725887. The correlation between the log of the median household income and unemployment suggest a medium positive correlation. The relationship between the two variables is a medium positive relationship suggesting the two variables tend to move in the same direction of one another. 
+
 ```{r MO boxplot unemployment}
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(MO_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(MO_data$value)$out))  # box plot for 'Unemployment'
+boxplot(MO_data$value, main="MO Unemployment", sub=paste("Outlier rows: ", boxplot.stats(MO_data$value)$out))  # box plot for 'Unemployment'
 ```
 
 ```{r MO boxplot poverty}
-boxplot(MO_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(MO_data$poverty)$out))  # box plot for 'Poverty'
+boxplot(MO_data$poverty, main="MO Poverty", sub=paste("Outlier rows: ", boxplot.stats(MO_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
 
@@ -387,8 +435,6 @@ anova(MO_reg2)
 ```{r MO linear significant variables}
 MO_linearModelSignificant <- lm(value ~ poverty + log_pop, data = MO_data)
 summary(MO_linearModelSignificant)
-
-#test to show a scatterplot MO HPI data against year
 ```
 
 ```{r WA Analysis}
@@ -409,24 +455,26 @@ cor(WA_data[sapply(WA_data, function(x) !is.character(x))])
 
 ```{r WA Histogram Unemployment}
 hist(WA_data$value,
-     main="Histogram of Unemployment Across All 50 States",
+     main="Histogram of Unemployment from 1984-2018",
      xlab="Unemployment Rate",
      breaks = 5)
 ```
+In Washington, from 1984-2018,the annual unemployment rates ranged from 4.0-10.9%.  The histogram displays a positively skewed distribution meaning relatively low poverty rates occurred more than higher rates. There is a small presence of higher poverty rates and only 1 year that experienced a poverty rate above 10%.
 
 ```{r WA Histogram Poverty}
 hist(WA_data$poverty,
-     main="Histogram of Poverty Across All 50 States",
+     main="Histogram of Poverty from 1984-2018",
      xlab="Poverty Rate",
      breaks = 5)
 ```
+In Washington, from 1984 to 2018, The annual poverty rates ranged from 8.0-12.9%. The histogram appears to be slightly negatively skewed. 18 of the 36 years were characterized by poverty rates the occurred in the two highest intervals, 11.0-11.9% and 12.0-12.9%.
 
 ```{r WA scatter unemployment}
-scatter.smooth(WA_data$year, WA_data$value, main="WA Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+scatter.smooth(WA_data$year, WA_data$value, main="WA Unemployment by Year", xlab = "Year", ylab = "Unemployment", span = 2/8)
 ```
 
 ```{r WA scatter HPI}
-scatter.smooth(WA_data$year, WA_data$HPI, main="WA HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+scatter.smooth(WA_data$year, WA_data$HPI, main="WA HPI by Year", xlab = "Year", ylab = "HPI", span = 2/8)
 ```
 
 ```{r WA scatter poverty}
@@ -463,14 +511,27 @@ cor(WA_data$log_pop, WA_data$value)
 cor(WA_data$log_RMHI, WA_data$value)
 #run base correlations between categories and dependent variable
 ```
+The correlation between the median household income and unemployment in Washington is -0.381975. The correlation between the median household income and unemployment is that of a medium negative correlation. The relationship between the two variables has medium strength and suggests that they move inversely of one another. 
+
+The correlation between the housing price index and unemployment in Washington is -0.1978439. The correlation between the housing price index and unemployment is that of a small negative correlation. A small negative correlation between the two variables suggests a weak inverse relationship between the housing price index and unemployment.
+
+The correlation between poverty, the proportion of the population below the poverty line, and unemployment in Washington is 0.5519993. The correlation between poverty and unemployment is that of a large positive correlation. A large positive correlation suggests a strong positive relationship between the two variables that tend to move in the direction of one another. 
+
+The correlation between the population and unemployment in Washington is -0.1159072. The correlation between the population and unemployment is that of a small negative correlation. A small negative correlation suggests a weak inverse relationship between the two variables.  
+
+The correlation between the S&P 500 and unemployment in Washington is -0.02637235. The correlation between the S&P 500 and unemployment is that of a small negative correlation. A small negative correlation suggests a weak inverse relationship between the two variables. 
+
+The correlation between the log of the population and unemployment in Washington is -0.1258998. The correlation between the log of the population and unemployment is that of a small negative correlation. The small negative correlation suggests a weak inverse relationship between the two variables. 
+
+The correlation between the log of the median household income and unemployment in Washington is -0.375168. THe correlation between the log of the median household income and unemployment is that of a medium negative Correlation. A medium negative correlation suggests a somewhat strong inverse relationship between the two variables. 
 
 ```{r WA boxplot unemployment}
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(WA_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(WA_data$value)$out))  # box plot for 'Unemployment'
+boxplot(WA_data$value, main="WA Unemployment", sub=paste("Outlier rows: ", boxplot.stats(WA_data$value)$out))  # box plot for 'Unemployment'
 ```
 
 ```{r WA boxplot poverty}
-boxplot(WA_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(WA_data$poverty)$out))  # box plot for 'Poverty'
+boxplot(WA_data$poverty, main="WA Poverty", sub=paste("Outlier rows: ", boxplot.stats(WA_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
 
@@ -490,8 +551,6 @@ anova(WA_reg2)
 ```{r WA linear significant variables}
 WA_linearModelSignificant <- lm(value ~ poverty + log_pop, data = WA_data)
 summary(WA_linearModelSignificant)
-
-#test to show a scatterplot WA HPI data against year
 ```
 
 ```{r OR Analysis}
@@ -515,24 +574,26 @@ cor(OR_data[sapply(OR_data, function(x) !is.character(x))])
 
 ```{r OR Histogram Unemployment}
 hist(OR_data$value,
-     main="Histogram of Unemployment Across All 50 States",
+     main="Histogram of Unemployment from 1984-2018",
      xlab="Unemployment Rate",
      breaks = 5)
 ```
+In Oregon, from 1984 to 2018, the annual unemployment rates ranged from 2.0%-11.9%.The histogram did not produce a distribution with a skew worth acknowledging, however, the two most frequent ranges were 4.0-4.9% & 5.0-5.9% consecutively. There was only one year with an unemployment rate of 10.0% or higher.
 
 ```{r OR Histogram Poverty}
 hist(OR_data$poverty,
-     main="Histogram of Poverty Across All 50 States",
+     main="Histogram of Poverty from 1984-2018",
      xlab="Poverty Rate",
      breaks = 5)
 ```
+In Oregon, from 1984 to 2018, the annual unemployment rates ranged from 9.0%-14.9%. The most frequent range of unemployment rates was 11.0-11.9% which occurred 15 of the 36 years. 
 
 ```{r OR scatter unemployment}
-scatter.smooth(OR_data$year, OR_data$value, main="OR Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+scatter.smooth(OR_data$year, OR_data$value, main="OR Unemployment by Year", xlab = "Year", ylab = "Unemployment", span = 2/8)
 ```
 
 ```{r OR scatter HPI}
-scatter.smooth(OR_data$year, OR_data$HPI, main="OR HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+scatter.smooth(OR_data$year, OR_data$HPI, main="OR HPI by Year", xlab = "Year", ylab = "HPI", span = 2/8)
 ```
 
 ```{r OR scatter poverty}
@@ -570,13 +631,27 @@ cor(OR_data$log_RMHI, OR_data$value)
 #run base correlations between categories and dependent variable
 ```
 
+The correlation between the median household income and unemployment in Oregon is -0.3950978. The correlation between the median household income and unemployment is that of an inverse relationship. The inverse relationship is not the strongest, but does shows that in theory that as the median household income goes up, then the unemployment would go down. Of course, When it comes to scenarios such as a pandemic or depression, this could cause the relationship to become much more skewed, then it would be in most cases. 
+
+The correlation between the housing price index and unemployment in Oregon is -0.07066041. The correlation between the housing price index and unemployment is an extremely weak relationship. With the correlation being that close to 0, it shows that there is a possibility of their being no correlation between the two variables. 
+
+The correlation between poverty, the percentage of the population below the poverty line, and unemployment in Oregon is 0.4477392.  The correlation between poverty and unemployment is a decently strong positive relationship. This correlation suggests that the two variables tend to head in the same direction. As one goes up the other tends to do the same. 
+
+The correlation between the population and unemployment in Oregon is 0.03283668. The correlation between population and unemployment is a weak positive correlation. With the correlation being so close to 0, the correlation suggests that there is no relationship between the two variables.
+
+The correlation between the S&P 500 and unemployment in Oregon is -0.09391935. The correlation between the S&P 500 and unemployment is a weak negative relationship. A negative correlation suggests an inverse relationship between the two variables. But, the inverse relationship is extremely weak due to the closeness of the correlation being to 0. 
+
+The correlation between the log of the population and unemployment in Oregon is 0.03392033. The correlation between the log of the population and unemployment is a weak positive correlation. With the correlation being so close to 0, it shows that relationship between the two variables is weak and does not exactly distinguish the direction that the two variables can go. 
+
+The correlation between the log of the median household income and unemployment in Oregon is -0.3887452. The correlation between the log of the median household income and unemployment is a seemingly significant negative relationship. The negative relationship of correlation suggests that the two variables tend to move in opposite directions of each other. 
+
 ```{r OR boxplot unemployment}
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(OR_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(OR_data$value)$out))  # box plot for 'Unemployment'
+boxplot(OR_data$value, main="OR Unemployment", sub=paste("Outlier rows: ", boxplot.stats(OR_data$value)$out))  # box plot for 'Unemployment'
 ```
 
 ```{r OR boxplot poverty}
-boxplot(OR_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(OR_data$poverty)$out))  # box plot for 'Poverty'
+boxplot(OR_data$poverty, main="OR Poverty", sub=paste("Outlier rows: ", boxplot.stats(OR_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
 
@@ -596,8 +671,6 @@ anova(OR_reg2)
 ```{r OR linear significant variables}
 OR_linearModelSignificant <- lm(value ~ poverty + log_pop, data = OR_data)
 summary(OR_linearModelSignificant)
-
-#test to show a scatterplot OR HPI data against year
 ```
 
 ```{r CO Analysis}
@@ -621,24 +694,26 @@ cor(CO_data[sapply(CO_data, function(x) !is.character(x))])
 
 ```{r CO Histogram Unemployment}
 hist(CO_data$value,
-     main="Histogram of Unemployment Across All 50 States",
+     main="Histogram of Unemployment from 1984-2018",
      xlab="Unemployment Rate",
      breaks = 5)
 ```
+In Colorado, from 1984 to 2018, the annual unemployment rates ranged from 2.0% to 8.9%. 11 of the 36 years were characterized by unemployment rates between the range of 5.0-5.9%. 
 
 ```{r CO Histogram Poverty}
 hist(CO_data$poverty,
-     main="Histogram of Poverty Across All 50 States",
+     main="Histogram of Poverty Across from 1984-2018",
      xlab="Poverty Rate",
      breaks = 5)
 ```
+In Colorado, from 1984 to 2018, the poverty rates ranged from 8.0% to 13.9%. The histogram displays a slightly positively skewed distribution. 24 of the 36 years were characterized by poverty rates in the three ranges with the lowest values, 8.0-8.9%, 9.0-9.9%, and 10.0-10.9%.
 
 ```{r CO scatter unemployment}
-scatter.smooth(CO_data$year, CO_data$value, main="CO Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+scatter.smooth(CO_data$year, CO_data$value, main="CO Unemployment by Year", xlab = "Year", ylab = "Unemployment", span = 2/8)
 ```
 
 ```{r CO scatter HPI}
-scatter.smooth(CO_data$year, CO_data$HPI, main="CO HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+scatter.smooth(CO_data$year, CO_data$HPI, main="CO HPI by Year", xlab = "Year", ylab = "HPI", span = 2/8)
 ```
 
 ```{r CO scatter poverty}
@@ -675,14 +750,26 @@ cor(CO_data$log_pop, CO_data$value)
 cor(CO_data$log_RMHI, CO_data$value)
 #run base correlations between categories and dependent variable
 ```
+The correlation between the median household income and unemployment in Colorado is -0.3744386. The correlation between the median household income and unemployment is a medium negative correlation. The correlation suggests an inverse relationship between the two variables. 
 
+The correlation between the housing price index and unemployment in Colorado is -0.216168. The correlation between the housing price index and unemployment shows a weak negative correlation between the variables. The negative correlation illustrates the possibility of there being an inverse relationship between the two variables. The closeness of the correlation to 0 does show that there is a possibility that maybe the variables do not have any correlation at all. Of course with all of the depressions that have occurred and the pandemic this year, this could skew the correlation and downplay the relationship between the two variables. 
+
+The correlation between poverty, the proportion of the population below the poverty line, and unemployment in Colorado is 0.7235819. The correlation between poverty and unemployment is a large positive correlation. A strong positive correlation suggests that there is a relationship between the two variables and it suggests that the two variables tend to move in the same direction of one another. 
+
+The correlation between the population and unemployment in Colorado is -0.09548704. The correlation between the population and unemployment is a small negative correlation. The relationship between the two variables is quite small due to the correlation being so close to 0. 
+
+THe correlation between the S&P 500 and unemployment is 0.0164226. The correlation between the S%P 500 and unemployment is an extremely small correlation. With the correlation being so close to 0, it signifies that the relationship between the two variables is not that common. Likewise, the correlation shows that there is a chance that there is no direct relationship between the two variables. 
+
+The correlation between the log of the population and unemployment in Colorado is -0.1058047. The correlation between the log of the population and unemployment is a weak negative correlation. Just like in the case of the S&P 500, the weak correlation does not show a strong inverse relationship between the two variables. 
+
+The correlation between the log of the median household income and unemployment in Colorado is -0.3621963. THe correlation between the log of the median household income and unemployment is that of a medium negative correlation. The correlation between these two variables in Colorado is much stronger than the S&P 500 and the log of the median household income. With the negative relationship, it suggests that the two variables tend to move in an inverse fashion. 
 ```{r CO boxplot unemployment}
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(CO_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(CO_data$value)$out))  # box plot for 'Unemployment'
+boxplot(CO_data$value, main="CO Unemployment", sub=paste("Outlier rows: ", boxplot.stats(CO_data$value)$out))  # box plot for 'Unemployment'
 ```
 
 ```{r CO boxplot poverty}
-boxplot(CO_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(CO_data$poverty)$out))  # box plot for 'Poverty'
+boxplot(CO_data$poverty, main="CO Poverty", sub=paste("Outlier rows: ", boxplot.stats(CO_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
 
@@ -702,8 +789,6 @@ anova(CO_reg2)
 ```{r CO linear significant variables}
 CO_linearModelSignificant <- lm(value ~ poverty + log_pop, data = CO_data)
 summary(CO_linearModelSignificant)
-
-#test to show a scatterplot CO HPI data against year
 ```
 
 ```{r WV Analysis}
@@ -725,24 +810,26 @@ cor(WV_data[sapply(WV_data, function(x) !is.character(x))])
 
 ```{r WV Histogram Unemployment}
 hist(WV_data$value,
-     main="Histogram of Unemployment Across All 50 States",
+     main="Histogram of Unemployment from 1984-2018",
      xlab="Unemployment Rate",
      breaks = 5)
 ```
+In West Virginia,from 1984 to 2018, the unemployment rates ranged from 4.0-15.9%. The histogram displays a positively skewed distribution. 15 of the 36 years were characterized by unemployment rates ranging in lowest interval, 4.0-5.9%. 
 
 ```{r WV Histogram Poverty}
 hist(WV_data$poverty,
-     main="Histogram of Poverty Across All 50 States",
+     main="Histogram of Poverty from 1984-2018",
      xlab="Poverty Rate",
      breaks = 5)
 ```
+In West Virginia, from 1984 to 2018, the annual poverty rates ranged from 14.0% to 23.9%. This is the highest range out of all 8 states examined. Although this range has larger values comparatively, the histogram displays a positively skewed distribution. 25 out of the 36 years were characterized by unemployment rates that fell into the first two intervals, 14.0-15.9% & 16-17.9%.  
 
 ```{r WV scatter unemployment}
-scatter.smooth(WV_data$year, WV_data$value, main="WV Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+scatter.smooth(WV_data$year, WV_data$value, main="WV Unemployment by Year", xlab = "Year", ylab = "Unemployment", span = 2/8)
 ```
 
 ```{r WV scatter HPI}
-scatter.smooth(WV_data$year, WV_data$HPI, main="WV HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+scatter.smooth(WV_data$year, WV_data$HPI, main="WV HPI by Year", xlab = "Year", ylab = "HPI", span = 2/8)
 ```
 
 ```{r WV scatter poverty}
@@ -779,14 +866,27 @@ cor(WV_data$log_pop, WV_data$value)
 cor(WV_data$log_RMHI, WV_data$value)
 #run base correlations between categories and dependent variable
 ```
+The correlation between the median household income and unemployment in West Virginia is -0.6170457. The correlation between the median household income and unemployment is that of a large negative correlation. A large negative correlation suggests that in most cases the variables tend to move in inverse directions. 
+
+The correlation between the housing price index and unemployment in West Virginia is -0.7138695. The correlation between the housing price index and unemployment is that of a large negative correlation. Just like with the median household income, the housing price index suggests an inverse relationship between unemployment. 
+
+The correlation between poverty, the proportion of the population below the poverty line, and unemployment in West Virginia is 0.6996082. The correlation between poverty and unemployment is that of a large positive correlation. A large positive correlation suggests that the two variables tend to move in the same direction unlike the median household income and the housing price index.
+
+The correlation between the population and unemployment is 0.5144306. The correlation between the population and unemployment is that of a large positive correlation. Just like with poverty, the correlation suggests that the two variables tend to move in the same direction of one another. 
+
+The correlation between the S&P 500 and unemployment in West Virginia is 0.1979507. The correlation between the S&P 500 and unemployment is a small positive correlation. The correlation shows that there is a small positive relationship between the two variables signifying that the two variables tend to move in the same direction.  
+
+The correlation between the log of the population and unemployment in West Virginia is 0.509377. The correlation between the log of the population and unemployment is that of a large positive Correlation. The positive correlation suggests that the two variables mimic one another. 
+
+The correlation between the log of the median household income and unemployment in West Virginia is -0.6322822. THe correlation between the log of the median household income and unemployment is a large negative correlation. The large negative correlation suggests that as the log of the median household income increases, the unemployment tends to decrease. 
 
 ```{r WV boxplot unemployment}
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(WV_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(WV_data$value)$out))  # box plot for 'Unemployment'
+boxplot(WV_data$value, main="WV Unemployment", sub=paste("Outlier rows: ", boxplot.stats(WV_data$value)$out))  # box plot for 'Unemployment'
 ```
 
 ```{r WV boxplot poverty}
-boxplot(WV_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(WV_data$poverty)$out))  # box plot for 'Poverty'
+boxplot(WV_data$poverty, main="WV Poverty", sub=paste("Outlier rows: ", boxplot.stats(WV_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
 
@@ -806,8 +906,6 @@ anova(WV_reg2)
 ```{r WV linear significant variables}
 WV_linearModelSignificant <- lm(value ~ poverty + log_pop, data = WV_data)
 summary(WV_linearModelSignificant)
-
-#test to show a scatterplot WV HPI data against year
 ```
 
 ```{r ME Analysis}
@@ -829,24 +927,26 @@ cor(ME_data[sapply(ME_data, function(x) !is.character(x))])
 
 ```{r ME Histogram Unemployment}
 hist(ME_data$value,
-     main="Histogram of Unemployment Across All 50 States",
+     main="Histogram of Unemployment from 1984-2018",
      xlab="Unemployment Rate",
      breaks = 5)
 ```
+In Maine, from 1984-2018, the annual unemployment rate ranged from 3.0-8.9%. The histogram displays a positively skewed distribution. 18 of the 36 years were characterized by annual unemployment rates in lowest two intervals, 3.0%-3.9% & 4.0-4.9%.
 
 ```{r ME Histogram Poverty}
 hist(ME_data$poverty,
-     main="Histogram of Poverty Across All 50 States",
+     main="Histogram of Poverty  from 1984-2018",
      xlab="Poverty Rate",
      breaks = 5)
 ```
+In Maine, from 1984-2018, the annual poverty rates ranged from 9.0%-15.9%. The distribution displayed by the histogram is not symmetrical, however, the interval at each end of the range experienced only one occurrence signifying outliers, to a degree. 
 
 ```{r ME scatter unemployment}
-scatter.smooth(ME_data$year, ME_data$value, main="ME Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+scatter.smooth(ME_data$year, ME_data$value, main="ME Unemployment by Year", xlab = "Year", ylab = "Unemployment", span = 2/8)
 ```
 
 ```{r ME scatter HPI}
-scatter.smooth(ME_data$year, ME_data$HPI, main="ME HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+scatter.smooth(ME_data$year, ME_data$HPI, main="ME HPI by Year", xlab = "Year", ylab = "HPI", span = 2/8)
 ```
 
 ```{r ME scatter poverty}
@@ -883,14 +983,27 @@ cor(ME_data$log_pop, ME_data$value)
 cor(ME_data$log_RMHI, ME_data$value)
 #run base correlations between categories and dependent variable
 ```
+The correlation between the median household income and unemployment is Maine is -0.1586851. THe correlation between the median household income and unemployment is a small negative relationship. The negative relationship suggests that the two variables tend to move inversely of one another. 
+
+The correlation between the housing price index and unemployment in Maine is -0.02225343. The correlation between the two variables is that of a small negative relationship. The relation between the two variables is a small correlation that points to the two variables moving inversely of one another. 
+
+The correlation between poverty, the proportion of the population below the poverty line, and unemployment in Maine is 0.3808906. The correlation between poverty and unemployment is that of a medium positive correlation. The positive correlation suggests that the two variables tend to mimic one another with the direction that they proceed.
+
+The correlation between the population and unemployment in Maine is 0.06660653. The correlation between the population and unemployment is that of a small positive correlation. A small positive correlation suggests that there is a weak positive relationship between the population and unemployment, but the two variables do tend to move in the same direction of one another. 
+
+The correlation between the S&P 500 and unemployment in Maine is 0.03233341. The correlation between the S&P 500 and unemployment is a small positive correlation. The small positive correlation is quite close to 0, but does still show the small possibility that the two variables move in the same direction of one another. 
+
+The correlation between the log of the population and unemployment in Maine is 0.06676556. The correlation between the log of the population and unemployment is quite similar to that of the S&P 500. The correlation is a small positive correlation between the two variables. 
+
+The correlation between the log of the median household income and unemployment in Maine is -0.1587006. The correlation between the log of the median household income and unemployment is that of a small negative relationship. The small negative relationship suggests that the two variables have a weak inverse relationship of one another. 
 
 ```{r ME boxplot unemployment}
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(ME_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(ME_data$value)$out))  # box plot for 'Unemployment'
+boxplot(ME_data$value, main="ME Unemployment", sub=paste("Outlier rows: ", boxplot.stats(ME_data$value)$out))  # box plot for 'Unemployment'
 ```
 
 ```{r ME boxplot poverty}
-boxplot(ME_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(ME_data$poverty)$out))  # box plot for 'Poverty'
+boxplot(ME_data$poverty, main="ME Poverty", sub=paste("Outlier rows: ", boxplot.stats(ME_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
 
@@ -910,20 +1023,7 @@ anova(ME_reg2)
 ```{r ME linear significant variables}
 ME_linearModelSignificant <- lm(value ~ poverty + log_pop, data = ME_data)
 summary(ME_linearModelSignificant)
-
-#test to show a scatterplot ME HPI data against year
 ```
-
-
-
-
-
-
-
-
-
-
-
 
 Next, the data we collected is considered a time series as it was measured on an annual basis.  We used the unemployment data that was collected for each state and implemented a time series forecast using the Holt Method.  
 
