@@ -43,6 +43,11 @@ Below you can see the table output once all of our data has been merged.
 kable(merged_final[1:6,], caption = "Table Including All Variables")
 ```
 
+```{r All data Sescriptive Statistics}
+#Descriptive Statistics
+stat.desc(merged_final)
+```
+
 The dependent variable, value, has a mean of 5.44 and a standard deviation of 1.97. Connecticut and Virginia had the lowest unemployment rate in 2000 at 1.8, while West Virginia was the highest in 1984 at 14.4. The mean HPI was 260.15, with a standard deviation of 119.68. The lowest HPI was found in Wyoming in 1987 at 79.25, while the highest was in Massachusetts in 2018 at 796.86. Poverty rate had a mean of 12.85 and a standard deviation of 3.69. In 1989, Connecticut had the lowest rate of 2.9, and Mississippi had the highest at 27.2 in 1988. The sp500 index mean was 9.48, and the standard deviation was 15.70. In 2008, the lowest index was seen at -38.4, while the highest index was seen in 1995 at 34.11. The logged population mean was 15.06, and the standard deviation was 1.01. Wyoming had the lowest logged population at 13.025 in 1990, California having the highest in 2018 at 17.49. Logged real median household income had a mean of 10.95 and a standard deviation of 0.17. In 2013, Mississippi had the lowest log_RMHI at 10.46, while Massachusetts had the highest in 2018 at 11.37. 
 
 After our data was merged we binned the states into groups based on the mean population of the years in our dataframe (1984-2018).  Below are the bins that were created:
@@ -439,6 +444,8 @@ WA_data <- merged_final[ merged_final$state == "WA", ]
 stat.desc(WA_data)
 ```
 
+The dependent variable, unemployment, has a mean of 6.54 and a standard deviation of 1.59. The lowest unemployment rate was in 1997 at 4.5, while the highest was in 2009 at 10.5. The mean HPI was 317.69, with a standard deviation of 145.17. The lowest HPI was in 1984 at 110.19, while the highest was in 2018 at 632.92. Poverty rate had a mean of 10.84 and a standard deviation of 1.30. In 2006, lowest rate was seen of 8.0, and the highest was 12.9 in 1986. The sp500 index mean was 9.48, and the standard deviation was 15.70. In 2008, the lowest index was seen at -38.4, while the highest index was seen in 1995 at 34.11. The logged population mean was 15.59, and the standard deviation was 0.16. The lowest logged population at 15.28 in 1984, and the highest in 2018 at 15.84. Logged real median household income had a mean of 11.08 and a standard deviation of 0.088. In 1985, Washington had the lowest log_RMHI at 10.89, while had the highest in 2018 at 11.29. 
+
 ```{r WA Pairwise Correlations}
 #pairwise correlations
 sapply(WA_data, class)
@@ -793,6 +800,8 @@ WV_data <- merged_final[ merged_final$state == "WV", ]
 stat.desc(WV_data)
 ```
 
+The dependent variable, unemployment, has a mean of 7.25 and a standard deviation of 2.48. The lowest unemployment rate was in 2006 at 4.2 while the highest was in 1984 at 14.40. The mean HPI was 164.11, with a standard deviation of 48.67. The lowest HPI was in 1984 at 87.28, while the highest was in 2018 at 230.86. Poverty rate had a mean of 17.60 and a standard deviation of 2.42. In 2004, lowest rate was seen of 14.2, and the highest was 22.4 in 1986. The sp500 index mean was 9.48, and the standard deviation was 15.70. In 2008, the lowest index was seen at -38.4, while the highest index was seen in 1995 at 34.11. The logged population mean was 14.42, and the standard deviation was 0.016. The lowest logged population at 14.40 in 1990, and the highest in 1984 at 14.47. Logged real median household income had a mean of 10.67 and a standard deviation of 0.10. In 1992, West Virginia had the lowest log_RMHI at 10.48, while had the highest in 2007 at 10.84.
+
 ```{r WV Pairwise Correlations}
 #pairwise correlations
 sapply(WV_data, class)
@@ -909,6 +918,8 @@ ME_data <- merged_final[ merged_final$state == "ME", ]
 #Descriptive statistics
 stat.desc(ME_data)
 ```
+
+The dependent variable, unemployment, has a mean of 5.27 and a standard deviation of 1.57. The lowest unemployment rate was in 2017 at 3.0, while the highest was in 2009 at 8.10. The mean HPI was 352.03, with a standard deviation of 125.66. The lowest HPI was in 1984 at 141.12, while the highest was in 2018 at 548.46. Poverty rate had a mean of 11.94 and a standard deviation of 1.41. In 1994, lowest rate was seen of 9.4, and the highest was 15.4 in 1993. The sp500 index mean was 9.48, and the standard deviation was 15.70. In 2008, the lowest index was seen at -38.4, while the highest index was seen in 1995 at 34.11. The logged population mean was 14.06, and the standard deviation was 0.045. The lowest logged population at 13.96 in 1984, and the highest in 2018 at 14.11. Logged real median household income had a mean of 10.89 and a standard deviation of 0.061. In 1985, Maine had the lowest log_RMHI at 10.73, while had the highest in 2013 at 10.99. 
 
 ```{r ME Pairwise Correlations}
 #pairwise correlations
