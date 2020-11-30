@@ -37,7 +37,7 @@ WV_sampleset <-  WV_observations[ WV_observations$year > 2013, ]
 # Creates set to test modelWV_observations 
 
 ```
-scatter.smooth(WV_base$year, WV_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
+scatter.smooth(WV_base$year, WV_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue" , span = 2/3)
 
 scatter.smooth(WV_base$year, WV_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
 
@@ -436,3 +436,1224 @@ summary(RI_linearModel)
 anova(RI_linearModel)
 ```
 11/29/2020
+
+
+
+
+
+
+
+
+
+
+---
+title: "Unemployment Presentation"
+author: "https://github.com/jrkkv5/FIN6572Fall2020/blob/master/National%20Debt/importNationalDebt.Rmd"
+date: "11/24/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r packages}
+install.packages("lmtest")
+library(devtools)
+library(blsAPI)
+library(rjson)
+library(curl)
+library(RCurl)
+library(knitr)
+library(readr)
+library(dplyr)
+library(tidyverse)
+library(rmarkdown)
+library(pastecs)
+library(ggplot2)
+library(corrplot)
+library(lmtest)
+#loads the necessary packages
+
+```
+First we need to load the libraries that we will be using into our report. The above code should load the proper libraries. R Studio will prompt you to install the packages if necessary.
+
+
+Pull the data via the API: 
+```{r import_AL}
+unemp_AL = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST010000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="01f3421bc9504301b5c0de6951908ef3")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_AL = rbind(unemp_AL,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_AL, order(year, period))
+unemp_AL = unemp_AL[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of AL for applicable years
+```
+The above is a sample of the code we used to pull Unemployment data from the United States Bureau of Labor Statistics (BLS) for the state of Alabama.  In actuality we replicated this code to pull data for all 50 states by modifying the series id in the above section of code. A full breakdown of the code used to pull all 50 states can be found in the BLD_Unemployment_Requests.Rmd document shown in this repository.
+
+More information about the code can be found at the following URL: https://www.bls.gov/developers/api_r.htm.  All credit for the original source code goes to the author Mike Silva.
+
+``` {r add_state_variable}
+unemp_AL$state <- "AL"
+unemp_AK$state <- "AK"
+unemp_AZ$state <- "AZ"
+unemp_AR$state <- "AR"
+unemp_CA$state <- "CA"
+unemp_CO$state <- "CO"
+unemp_CT$state <- "CT"
+unemp_DE$state <- "DE"
+unemp_FL$state <- "FL"
+unemp_GA$state <- "GA"
+unemp_HI$state <- "HI"
+unemp_ID$state <- "ID"
+unemp_IL$state <- "IL"
+unemp_IN$state <- "IN"
+unemp_IA$state <- "IA"
+unemp_KS$state <- "KS"
+unemp_KY$state <- "KY"
+unemp_LA$state <- "LA"
+unemp_ME$state <- "ME"
+unemp_MD$state <- "MD"
+unemp_MA$state <- "MA"
+unemp_MI$state <- "MI"
+unemp_MN$state <- "MN"
+unemp_MS$state <- "MS"
+unemp_MO$state <- "MO"
+unemp_MT$state <- "MT"
+unemp_NE$state <- "NE"
+unemp_NV$state <- "NV"
+unemp_NH$state <- "NH"
+unemp_NJ$state <- "NJ"
+unemp_NM$state <- "NM"
+unemp_NY$state <- "NY"
+unemp_NC$state <- "NC"
+unemp_ND$state <- "ND"
+unemp_OH$state <- "OH"
+unemp_OK$state <- "OK"
+unemp_OR$state <- "OR"
+unemp_PA$state <- "PA"
+unemp_RI$state <- "RI"
+unemp_SC$state <- "SC"
+unemp_SD$state <- "SD"
+unemp_TN$state <- "TN"
+unemp_TX$state <- "TX"
+unemp_UT$state <- "UT"
+unemp_VT$state <- "VT"
+unemp_VA$state <- "VA"
+unemp_WV$state <- "WV"
+unemp_WA$state <- "WA"
+unemp_WI$state <- "WI"
+unemp_WY$state <- "WY"
+
+kable(unemp_AL[1:6,], caption = "Table of Unemployment in Alabama")
+
+```
+
+After importing all of the unemployment data from the BLS website using the sample code shown in the previous section we created a new variable to hold the state abbreviation for all 50 of the states.  This was a necessary step to take before merging all of the data into a single dataframe and analyzing the various states.  The kable function shows us an example of the first 6 entries that were pulled from the unemp_AL table.  As you can see each row was appended to include the state abbreviation.
+
+
+``` {r Overall_Unemployment}
+unemp_all <- rbind(unemp_AK, unemp_AL, unemp_AR, unemp_AZ, unemp_CA, unemp_CO, unemp_CT, unemp_DE, unemp_FL, unemp_GA, unemp_HI, unemp_IA, unemp_ID, unemp_IL, unemp_IN, unemp_KS, unemp_KY, unemp_LA, unemp_MA, unemp_MD, unemp_ME, unemp_MI, unemp_MN, unemp_MO, unemp_MS, unemp_MT, unemp_NC,unemp_ND, unemp_NE, unemp_NH, unemp_NJ, unemp_NM, unemp_NV, unemp_NY, unemp_OH, unemp_OK,  unemp_OR, unemp_PA, unemp_RI, unemp_SC, unemp_SD, unemp_TN, unemp_TX, unemp_UT, unemp_VA, unemp_VT, unemp_WA, unemp_WI, unemp_WV, unemp_WY)
+
+#Joins unemployment from all states in question into a single dataframe
+```
+
+Once we added a new variable to classify the state within each of our 50 dataframes, we used the rbind function to merge all of the dataframes into a single dataframe titled unemp_all.  The rbind function allows us to bind the the rows of data from our state dataframes based upon the common columns that are included.
+
+```{r HPI}
+HPI_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPI_AT_state.csv")
+#Reads HPI into new dataframe
+
+MHI_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\MHI.csv")
+#Reads MHI into a new dataframe
+
+poverty_raw <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\povertylevel.csv")
+#Reads Poverty level by state into new data frame
+
+population <- read.csv("C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\National Debt\\Unemployment_Project\\csv files\\population_by_year2.csv")
+#source: https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-poverty-people.html
+
+```
+The rest of our data was imported using csv files that were pulled from various government websites.  The above code reads the csv files from a local drive into R Studio.  The additional variables that we brought into our dataset are the housing price index (HPI), median household income (MHI), adjusted median household income (RMHI), poverty rate, population, and change in the S&P 500 index.
+
+``` {r annual_data}
+
+
+ unemp_all$annual <- ifelse(unemp_all$period=="M12", "1",NA  )
+ unemp_scrubbed_annual <- na.omit(unemp_all)
+ #Adds annual variable to unempl_all df.  This should prepare it to be merged with the HPI df.
+
+ kable(unemp_scrubbed_annual[1:6,], caption = "Table Showing Unemployment on an Annual Basis")
+```
+Many of the other variables we located were only accessible on an annual basis.  It was therefore necessary for us to convert our unemployment data into annual figures.  Using the master dataframe we created in the previous section and the ifelse function we created a new column to hold a variable to denote the annual unemployment rate for each year.  We used the relational operator == to set the annual column to 1 if the period column was equal to M12.  After that we used the na.omit function to cleanup the data and store the new data in a scrubbed dataframe.
+
+``` {r annual_data_table}
+
+kable(unemp_all[1:12,], caption = "Table Showing Unemployment on an Annual Basis")
+```
+The table above shows the dataframe prior to cleanup with a bunch of missing observations in the annual column.
+
+``` {r scrubbed_table}
+
+kable(unemp_scrubbed_annual[1:6,], caption = "Scrubbed Table")
+```
+The table above shows the dataframe after the observations with null variables in the annual column were removed.
+
+``` {r annual_data_HPI}
+
+
+HPI_raw$annual <- ifelse(HPI_raw$quarter=="4", "1",NA  )
+
+HPI_annual <- na.omit(HPI_raw)
+#Adds annual variable to HPI df.
+
+
+```
+The housing price index (HPI) data was available on a quarterly basis. Similar to the Unemployment data, we used the ifelse function and == to set quarter 4 equal to 1 and the na.omit function to cleanup our HPI data.  
+
+
+Now that all of our data has been scrubbed and is in similar format, we are ready to merge it into a single dataframe that we will use for our analysis.
+``` {r CombineAnnualData}
+
+unemp_scrubbed_annual$year <- as.integer(unemp_scrubbed_annual$year)
+#converts unemployment datatypes to integers for successful merge
+
+HPI_Unemp_Combined_Annual <- full_join(unemp_scrubbed_annual, HPI_annual, by.x = "state", by.y = "year")
+#combines HPI data with unemployment data
+
+HPI_Unemp_Combined_Annual <- na.omit(HPI_Unemp_Combined_Annual)
+#omits na entries for clean data
+
+HPI_Unemp_MHI_Combined_Annual <- full_join(HPI_Unemp_Combined_Annual, MHI_raw, by.x = "state", by.y = "year")
+#combines MHI data with unemployment data and HPI data
+
+HPI_Unemp_MHI_Combined_Annual <- na.omit(HPI_Unemp_MHI_Combined_Annual)
+#omits na entries for clean data
+
+HPI_Unemp_MHI_poverty_Combined_Annual <- full_join(HPI_Unemp_MHI_Combined_Annual, poverty_raw, by.x = "state", by.y = "year")
+#combines MHI data with unemployment data and HPI data
+
+HPI_Unemp_MHI_poverty_Combined_Annual <- na.omit(HPI_Unemp_MHI_poverty_Combined_Annual)
+#omits na entries for clean data
+
+
+HPI_Population_Unemp_MHI_poverty_Combined_Annual <- full_join(HPI_Unemp_MHI_poverty_Combined_Annual, population, by.x = "state", by.y = "year")
+#combines population data with unemployment data and HPI data
+
+HPI_Population_Unemp_MHI_poverty_Combined_Annual <- na.omit(HPI_Population_Unemp_MHI_poverty_Combined_Annual)
+#omits na entries for clean data
+
+merged_final <- full_join(HPI_Population_Unemp_MHI_poverty_Combined_Annual, SP500, by.x = "state", by.y = "year")
+#combines SP500 data with unemployment data and HPI data
+
+merged_final <- na.omit(merged_final)
+#omits na entries for clean data
+
+```
+First, the annual variable needs to be reformatted as an integer.  When the Unemployment data was brought in from the API, it was imported as a character.  We used the as.integer function to convert the year column to an integer before merging it with the other dataframes.  The rest of the dataframes were already in the correct datatype.
+
+The full_join function was used to combine all of the dataframes based on the year and state columns.  
+
+``` {r log variables}
+merged_final <- read_csv("csv files/mergedFinal.csv")
+#Reads final file into merged dataframe
+
+merged_final$log_pop = as.numeric(log(merged_final$population))
+
+merged_final$log_RMHI = as.numeric(log(merged_final$RMHI))
+```
+As a final step in scrubbing our data, we created new variables to log the population and median household income variables and store it in our dataframe. By taking the logarithmic values, these variables become more comparable to the existing variables we have within our dataset.
+
+Below you can see the table output once all of our data has been merged.
+``` {r merged_final_table}
+
+kable(merged_final[1:6,], caption = "Table Including All Variables")
+```
+After our data was merged we binned the states into groups based on the mean population of the years in our dataframe (1984-2018).  Below are the bins that were created:
+
+Population < 2,000,000
+WV, NM, NE, ID, ME, HI, NH, RI, MT, DE, SD, ND, AK, VT, WY
+
+2,000,000 < Population < 5,000,000
+MN, AL, LA, CO, SC, KY, OK, OR, CT, IA, MS, KS, AR, UT, NV
+
+5,000,000 < Population < 10,000,000
+MI, NJ, GA, NC, VA, MA, IN, WA, TN, MO, WI, MD, AZ
+
+Population > 10,000,000
+CA, TX, NY, FL, PA, IL, OH
+
+
+Each member of our group performed some basic analysis on the states within one of the bins. After performing our initial analysis we chose to focus on 2 states within each bin.  The states we chose to focus on are: TX, IL, MO, WA, OR, CO, WV, ME
+
+
+Below are some of the highlights along with commentary for the states we have chosen to focus on 
+
+```{r IL Analysis}
+IL_data <- merged_final[ merged_final$state == "IL", ]
+```
+
+```{r IL Descriptive Statistics}
+#Descriptive statistics
+stat.desc(IL_data)
+```
+
+```{r IL Histogram Unemployment}
+hist(IL_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlim=c(4,11),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r IL Histogram Poverty}
+hist(IL_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlim=c(9,16),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r IL scatter unemployment}
+scatter.smooth(IL_data$year, IL_data$value, main="IL Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r IL scatter HPI}
+scatter.smooth(IL_data$year, IL_data$HPI, main="IL HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r IL scatter poverty}
+scatter.smooth(x=IL_data$year, y=IL_data$poverty, main="IL % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r IL scatter RMHI}
+IL_data$RMHI <- as.integer(IL_data$RMHI)
+scatter.smooth(x=IL_data$year, y=IL_data$RMHI, main="IL Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r IL scatter population}
+IL_data$population <- as.integer(IL_data$population)
+scatter.smooth(x=IL_data$year, y=IL_data$population, main="IL Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r IL scatter log RMHI}
+#IL_data$log_RMHI <- as.integer(IL_data$log_RMHI)
+scatter.smooth(x=IL_data$year, y=IL_data$log_RMHI, main="IL Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r IL scatter log population}
+#IL_data$log_pop <- as.integer(IL_data$log_pop)
+scatter.smooth(x=IL_data$year, y=IL_data$log_pop, main="IL Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r IL correlations}
+cor(IL_data$RMHI, IL_data$value)
+cor(IL_data$HPI, IL_data$value)
+cor(IL_data$poverty, IL_data$value)
+cor(IL_data$population, IL_data$value)
+cor(IL_data$sp500, IL_data$value)
+cor(IL_data$log_pop, IL_data$value)
+cor(IL_data$log_RMHI, IL_data$value)
+#run base correlations between categories and dependent variable
+```
+A correlation function is used to illustrate the relationship between our independent variable and our dependent variable. The closer the correlation is to 1 or -1 the stronger the correlation between the two variables. For a correlation of 1, it signifies that there is a perfect positive correlation. For a -1 correlation there is a perfect inverse relationship between the two variables. 
+
+The correlation between the RMHI and our dependent variable, unemployment, in Illinois is 0.03109792. The correlation shows that there is a weak positive correlation between median household income 
+
+The correlation between HPI (Housing Price Index) and our dependent variable, unemployment, in Illinois is -0.08115831. The correlation shows that there is a weak negative relationship between the housing price index and unemployment. 
+
+The correlation between poverty, the percentage of the population under the poverty line, and unemployment in Illinois is 0.6975789. This correlation shows a much stronger positive relationship between the two variables. As unemployment increases there is a much stronger possibility that the percentage of the population under the poverty line increasing as well. 
+
+The correlation between the population and unemployment in Illinois is 0.02011968. The correlation between population and unemployment is a weak positive correlation. The correlation is extremely close to 0, which signified that there is no direct correlation between the two variables. 
+
+The correlation between the s&p 500 and unemployment in Illinois is 0.03109792. The correlation between the S&P 500 and unemployment is a weak positive correlation. With the correlation being extremely close to 0 it signifies that there is not much of a correlation between the two variables. 
+
+The correlation between the log of the population and unemployment in Illinois is 0.01123117. The correlation between the log of the population and unemployment is extremely close to 0, which signifies there is almost no correlation between the two variables.  
+
+The correlation between the log of median household income and unemployment in Illinois is -0.6602776. The correlation between the log of median household income and unemployment is a strong negative correlation. A strong negative correlation suggests that the two variables move in inverse directions of each other. In this case, -0.66 suggests that there is enough evidence to suggest that in most cases the two variables move in inverse directions of each other due to the proximity of -0.66 to -1 which is a perfect negative relationship. 
+
+
+```{r IL boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(IL_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(IL_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r IL boxplot poverty}
+boxplot(IL_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(IL_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r IL linear regression all}
+#run multiple linear model for data
+IL_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = IL_data)
+summary(IL_reg1)
+anova(IL_reg1)
+```
+
+```{r IL linear regression log all}
+IL_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = IL_data)
+summary(IL_reg2)
+anova(IL_reg2)
+```
+
+```{r IL linear significant variables}
+IL_linearModelSignificant <- lm(value ~ poverty + log_pop, data = IL_data)
+summary(IL_linearModelSignificant)
+
+#test to show a scatterplot IL HPI data against year
+```
+
+
+
+
+```{r TX Analysis}
+TX_data <- merged_final[ merged_final$state == "TX", ]
+```
+
+```{r TX Descriptive Statistics}
+#Descriptive statistics
+stat.desc(TX_data)
+```
+
+```{r TX Histogram Unemployment}
+hist(TX_data$value,
+     main="Histogram of Unemployment Across All Years",
+     xlim=c(3,9),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r TX Histogram Poverty}
+hist(TX_data$poverty,
+     main="Histogram of Poverty Across All Years",
+     xlim=c(13,20),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r TX scatter unemployment}
+scatter.smooth(TX_data$year, TX_data$value, main="TX Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r TX scatter HPI}
+scatter.smooth(TX_data$year, TX_data$HPI, main="TX HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r TX scatter poverty}
+scatter.smooth(x=TX_data$year, y=TX_data$poverty, main="TX % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r TX scatter RMHI}
+TX_data$RMHI <- as.integer(TX_data$RMHI)
+scatter.smooth(x=TX_data$year, y=TX_data$RMHI, main="TX Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r TX scatter population}
+TX_data$population <- as.integer(TX_data$population)
+scatter.smooth(x=TX_data$year, y=TX_data$population, main="TX Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r TX scatter log RMHI}
+#TX_data$log_RMHI <- as.integer(TX_data$log_RMHI)
+scatter.smooth(x=TX_data$year, y=TX_data$log_RMHI, main="TX Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r TX scatter log population}
+#TX_data$log_pop <- as.integer(TX_data$log_pop)
+scatter.smooth(x=TX_data$year, y=TX_data$log_pop, main="TX Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r TX correlations}
+cor(TX_data$RMHI, TX_data$value)
+cor(TX_data$HPI, TX_data$value)
+cor(TX_data$poverty, TX_data$value)
+cor(TX_data$population, TX_data$value)
+cor(TX_data$sp500, TX_data$value)
+cor(TX_data$log_pop, TX_data$value)
+cor(TX_data$log_RMHI, TX_data$value)
+#run base correlations between categories and dependent variable
+```
+The correlation between the RMHI and our dependent variable, unemployment, in Texas is -0.5663074. The correlation between median household income and unemployment is a decently strong negative correlation. This is much stronger correlation than was the vase with the previous state of Illinois.
+
+The correlation between the housing price index and unemployment in Texas is -0.4234252 which is a negative correlation. It illustrates a correlation that points towards an inverse relationship between the housing price index and unemployment. 
+
+The correlation between poverty, the proportion of the population under the poverty line, and unemployment in Texas is 0.6719098. The correlation between poverty and unemployment shows a decently strong correlation between the two variables. The positive correlation shows that the variables move in the same direction dependent on the value of the variables.  
+
+The correlation between population and unemployment in Texas is -0.3861266. The correlation between population and unemployment points to a weak inverse relationship. This means that as population goes up, then the unemployment tends to go down. The correlation is not as close to -1 as it is to 0, which shows that there are instances where there is no direct relationship between the two variables. 
+
+The correlation between the S&P 500 and unemployment in Texas is 0.09162901. The correlation between S&P 500 and unemployment is a weak positive correlation. With the correlation being this close to zero it shows that in most cases there is no direct correlation between the two variables. 
+
+The correlation between the log of the population and unemployment in Texas is -0.3941111. The correlation between the log of population and unemployment shows that there is an inverse relationship between the two variables. THe correlation is not the strongest, but does illustrate that in certain cases the two variables do have an inverse relationship. 
+
+The correlation between the log of the median household income and unemployment in Texas is -0.5626285. THe correlation between the log of the median household income and unemployment shows a strong inverse relationship. An inverse relationship suggests that the two variables tend to go in opposite directions of each other. So, for instance, as median household income goes up,then the unemployment tends to go down.   
+```{r TX boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(TX_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(TX_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r TX boxplot poverty}
+boxplot(TX_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(TX_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r TX linear regression all}
+#run multiple linear model for data
+TX_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = TX_data)
+summary(TX_reg1)
+anova(TX_reg1)
+```
+
+```{r TX linear regression log all}
+TX_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = TX_data)
+summary(TX_reg2)
+anova(TX_reg2)
+```
+
+```{r TX linear significant variables}
+TX_linearModelSignificant <- lm(value ~ poverty + log_pop, data = TX_data)
+summary(TX_linearModelSignificant)
+
+#test to show a scatterplot TX HPI data against year
+```
+
+```{r MO Analysis}
+MO_data <- merged_final[ merged_final$state == "MO", ]
+```
+
+```{r MO Descriptive Statistics}
+#Descriptive statistics
+stat.desc(MO_data)
+```
+
+```{r MO Histogram Unemployment}
+hist(MO_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlim=c(4,11),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r MO Histogram Poverty}
+hist(MO_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlim=c(9,16),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r MO scatter unemployment}
+scatter.smooth(MO_data$year, MO_data$value, main="MO Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r MO scatter HPI}
+scatter.smooth(MO_data$year, MO_data$HPI, main="MO HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r MO scatter poverty}
+scatter.smooth(x=MO_data$year, y=MO_data$poverty, main="MO % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r MO scatter RMHI}
+MO_data$RMHI <- as.integer(MO_data$RMHI)
+scatter.smooth(x=MO_data$year, y=MO_data$RMHI, main="MO Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r MO scatter population}
+MO_data$population <- as.integer(MO_data$population)
+scatter.smooth(x=MO_data$year, y=MO_data$population, main="MO Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r MO scatter log RMHI}
+#MO_data$log_RMHI <- as.integer(MO_data$log_RMHI)
+scatter.smooth(x=MO_data$year, y=MO_data$log_RMHI, main="MO Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r MO scatter log population}
+#MO_data$log_pop <- as.integer(MO_data$log_pop)
+scatter.smooth(x=MO_data$year, y=MO_data$log_pop, main="MO Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r MO correlations}
+cor(MO_data$RMHI, MO_data$value)
+cor(MO_data$HPI, MO_data$value)
+cor(MO_data$poverty, MO_data$value)
+cor(MO_data$population, MO_data$value)
+cor(MO_data$sp500, MO_data$value)
+cor(MO_data$log_pop, MO_data$value)
+cor(MO_data$log_RMHI, MO_data$value)
+#run base correlations between categories and dependent variable
+```
+
+THe correlation between the median household income and unemployment in Missouri is -0.4832073. The correlation between the median household income and unemployment is that of a medium strength negative relationship. A negative relationship between the two variables suggests that the two variables move inversely of one another with a medium stength relationship.
+
+The correlation between the housing price index and unemployment in Missouri is 0.05064891. The correlation between the housing price index and unemployment is that of a small positive relationship. The relationship between the two variables is quite small with it being so close to 0, but does suggest that the two variables do move in the same direction of one another. 
+
+The correlation between poverty, the proportion of the population below the poverty line, and unemployment in Missouri is 0.603927. The correlation between poverty and unemployment is that of a large positive correlation. A large positive correlation suggests that the two variables tend to mimic each other. As poverty increases so does the unemployment rate.
+
+The correlation between the population and unemployment in Missouri is 0.08687034. The correlation between the population and unemployment is a small positive correlation. The small positive correlation suggests a weak relationship between the two variables, but does suggest that they move in the same direction of one another. 
+
+The correlation between the S&P 500 and unemployment in Missouri is -0.09530716. The correlation between the S&P 500 and unemployment is that of a small negative correlation. THe relationship between the two variables is a weak relationship, but does suggest that they move inversely of one another. 
+
+The correlation of the log of the population and unemployment in Missouri is 0.08057646. The correlation between the log of the population and unemployment is that of a small positive relationship. The stregth of the correlation is quite weak, but does suggest that the two variables move in the same direction of one another.
+
+The correlation of the log of the median household income and unemployment in Missouri is -0.4725887. The correlation between the log of the median household income and unemployment suggest a medium positive correlation. The relationship between the two variables is a medium positive relationship suggesting the two variables tend to move in the same direction of one another. 
+```{r MO boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(MO_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(MO_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r MO boxplot poverty}
+boxplot(MO_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(MO_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r MO linear regression all}
+#run multiple linear model for data
+MO_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = MO_data)
+summary(MO_reg1)
+anova(MO_reg1)
+```
+
+```{r MO linear regression log all}
+MO_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = MO_data)
+summary(MO_reg2)
+anova(MO_reg2)
+```
+
+```{r MO linear significant variables}
+MO_linearModelSignificant <- lm(value ~ poverty + log_pop, data = MO_data)
+summary(MO_linearModelSignificant)
+
+#test to show a scatterplot MO HPI data against year
+```
+
+```{r WA Analysis}
+WA_data <- merged_final[ merged_final$state == "WA", ]
+```
+
+```{r WA Descriptive Statistics}
+#Descriptive statistics
+stat.desc(WA_data)
+```
+
+```{r WA Histogram Unemployment}
+hist(WA_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlim=c(4,11),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r WA Histogram Poverty}
+hist(WA_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlim=c(9,16),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r WA scatter unemployment}
+scatter.smooth(WA_data$year, WA_data$value, main="WA Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r WA scatter HPI}
+scatter.smooth(WA_data$year, WA_data$HPI, main="WA HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r WA scatter poverty}
+scatter.smooth(x=WA_data$year, y=WA_data$poverty, main="WA % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r WA scatter RMHI}
+WA_data$RMHI <- as.integer(WA_data$RMHI)
+scatter.smooth(x=WA_data$year, y=WA_data$RMHI, main="WA Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r WA scatter population}
+WA_data$population <- as.integer(WA_data$population)
+scatter.smooth(x=WA_data$year, y=WA_data$population, main="WA Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r WA scatter log RMHI}
+#WA_data$log_RMHI <- as.integer(WA_data$log_RMHI)
+scatter.smooth(x=WA_data$year, y=WA_data$log_RMHI, main="WA Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r WA scatter log population}
+#WA_data$log_pop <- as.integer(WA_data$log_pop)
+scatter.smooth(x=WA_data$year, y=WA_data$log_pop, main="WA Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r WA correlations}
+cor(WA_data$RMHI, WA_data$value)
+cor(WA_data$HPI, WA_data$value)
+cor(WA_data$poverty, WA_data$value)
+cor(WA_data$population, WA_data$value)
+cor(WA_data$sp500, WA_data$value)
+cor(WA_data$log_pop, WA_data$value)
+cor(WA_data$log_RMHI, WA_data$value)
+#run base correlations between categories and dependent variable
+```
+
+The correlation between the median household income and unemployment in Washington is -0.381975. The correlation between the median household income and unemployment is that of a medium negative correlation. The relationship between the two variables has medium strength and suggests that they move inversely of one another. 
+
+The correlation between the housing price index and unemployment in Washington is -0.1978439. The correlation between the housing price index and unemployment is that of a small negative correlation. A small negative correlation between the two variables suggests a weak inverse relationship between the housing price index and unemployment.
+
+The correlation between poverty, the proportion of the population below the poverty line, and unemployment in Washington is 0.5519993. The correlation between poverty and unemployment is that of a large positive correlation. A large positive correlation suggests a strong positive relationship between the two variables that tend to move in the direction of one another. 
+
+The correlation between the population and unemployment in Washington is -0.1159072. The correlation between the population and unemployment is that of a small negative correlation. A small negative correlation suggests a weak inverse relationship between the two variables.  
+
+The correlation between the S&P 500 and unemployment in Washington is -0.02637235. The correlation between the S&P 500 and unemployment is that of a small negative correlation. A small negative correlation suggests a weak inverse relationship between the two variables. 
+
+The correlation between the log of the population and unemployment in Washington is -0.1258998. The correlation between the log of the population and unemployment is that of a small negative correlation. The small negative correlation suggests a weak inverse relationship between the two variables. 
+
+The correlation between the log of the median household income and unemployment in Washington is -0.375168. THe correlation between the log of the median household income and unemployment is that of a medium negative Correlation. A medium negative correlation suggests a somewhat strong inverse relationship between the two variables. 
+```{r WA boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(WA_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(WA_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r WA boxplot poverty}
+boxplot(WA_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(WA_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r WA linear regression all}
+#run multiple linear model for data
+WA_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = WA_data)
+summary(WA_reg1)
+anova(WA_reg1)
+```
+
+```{r WA linear regression log all}
+WA_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = WA_data)
+summary(WA_reg2)
+anova(WA_reg2)
+```
+
+```{r WA linear significant variables}
+WA_linearModelSignificant <- lm(value ~ poverty + log_pop, data = WA_data)
+summary(WA_linearModelSignificant)
+
+#test to show a scatterplot WA HPI data against year
+```
+
+```{r OR Analysis}
+OR_data <- merged_final[ merged_final$state == "OR", ]
+```
+
+```{r OR Descriptive Statistics}
+#Descriptive statistics
+stat.desc(OR_data)
+```
+
+```{r OR Histogram Unemployment}
+hist(OR_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlim=c(4,11),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r OR Histogram Poverty}
+hist(OR_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlim=c(9,16),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r OR scatter unemployment}
+scatter.smooth(OR_data$year, OR_data$value, main="OR Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r OR scatter HPI}
+scatter.smooth(OR_data$year, OR_data$HPI, main="OR HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r OR scatter poverty}
+scatter.smooth(x=OR_data$year, y=OR_data$poverty, main="OR % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r OR scatter RMHI}
+OR_data$RMHI <- as.integer(OR_data$RMHI)
+scatter.smooth(x=OR_data$year, y=OR_data$RMHI, main="OR Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r OR scatter population}
+OR_data$population <- as.integer(OR_data$population)
+scatter.smooth(x=OR_data$year, y=OR_data$population, main="OR Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r OR scatter log RMHI}
+#OR_data$log_RMHI <- as.integer(OR_data$log_RMHI)
+scatter.smooth(x=OR_data$year, y=OR_data$log_RMHI, main="OR Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r OR scatter log population}
+#OR_data$log_pop <- as.integer(OR_data$log_pop)
+scatter.smooth(x=OR_data$year, y=OR_data$log_pop, main="OR Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r OR correlations}
+cor(OR_data$RMHI, OR_data$value)
+cor(OR_data$HPI, OR_data$value)
+cor(OR_data$poverty, OR_data$value)
+cor(OR_data$population, OR_data$value)
+cor(OR_data$sp500, OR_data$value)
+cor(OR_data$log_pop, OR_data$value)
+cor(OR_data$log_RMHI, OR_data$value)
+#run base correlations between categories and dependent variable
+```
+
+The correlation between the median household income and unemployment in Oregon is -0.3950978. The correlation between the median household income and unemployment is that of an inverse relationship. The inverse relationship is not the strongest, but does shows that in theory that as the median household income goes up, then the unemployment would go down. Of course, When it comes to scenarios such as a pandemic or depression, this could cause the relationship to become much more skewed, then it would be in most cases. 
+
+The correlation between the housing price index and unemployment in Oregon is -0.07066041. The correlation between the housing price index and unemployment is an extremely weak relationship. With the correlation being that close to 0, it shows that there is a possibility of their being no correlation between the two variables. 
+
+The correlation between poverty, the percentage of the population below the poverty line, and unemployment in Oregon is 0.4477392.  The correlation between poverty and unemployment is a decently strong positive relationship. This correlation suggests that the two variables tend to head in the same direction. As one goes up the other tends to do the same. 
+
+The correlation between the population and unemployment in Oregon is 0.03283668. The correlation between population and unemployment is a weak positive correlation. With the correlation being so close to 0, the correlation suggests that there is no relationship between the two variables.
+
+The correlation between the S&P 500 and unemployment in Oregon is -0.09391935. The correlation between the S&P 500 and unemployment is a weak negative relationship. A negative correlation suggests an inverse relationship between the two variables. But, the inverse relationship is extremely weak due to the closeness of the correlation being to 0. 
+
+The correlation between the log of the population and unemployment in Oregon is 0.03392033. The correlation between the log of the population and unemployment is a weak positive correlation. With the correlation being so close to 0, it shows that relationship between the two variables is weak and does not exactly distinguish the direction that the two variables can go. 
+
+The correlation between the log of the median household income and unemployment in Oregon is -0.3887452. The correlation between the log of the median household income and unemployment is a seemingly significant negative relationship. The negative relationship of correlation suggests that the two variables tend to move in opposite directions of each other. 
+```{r OR boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(OR_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(OR_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r OR boxplot poverty}
+boxplot(OR_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(OR_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r OR linear regression all}
+#run multiple linear model for data
+OR_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = OR_data)
+summary(OR_reg1)
+anova(OR_reg1)
+```
+
+```{r OR linear regression log all}
+OR_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = OR_data)
+summary(OR_reg2)
+anova(OR_reg2)
+```
+
+```{r OR linear significant variables}
+OR_linearModelSignificant <- lm(value ~ poverty + log_pop, data = OR_data)
+summary(OR_linearModelSignificant)
+
+#test to show a scatterplot OR HPI data against year
+```
+
+```{r CO Analysis}
+CO_data <- merged_final[ merged_final$state == "CO", ]
+```
+
+```{r CO Descriptive Statistics}
+#Descriptive statistics
+stat.desc(CO_data)
+```
+
+```{r CO Histogram Unemployment}
+hist(CO_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlim=c(4,11),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r CO Histogram Poverty}
+hist(CO_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlim=c(9,16),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r CO scatter unemployment}
+scatter.smooth(CO_data$year, CO_data$value, main="CO Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r CO scatter HPI}
+scatter.smooth(CO_data$year, CO_data$HPI, main="CO HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r CO scatter poverty}
+scatter.smooth(x=CO_data$year, y=CO_data$poverty, main="CO % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r CO scatter RMHI}
+CO_data$RMHI <- as.integer(CO_data$RMHI)
+scatter.smooth(x=CO_data$year, y=CO_data$RMHI, main="CO Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r CO scatter population}
+CO_data$population <- as.integer(CO_data$population)
+scatter.smooth(x=CO_data$year, y=CO_data$population, main="CO Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r CO scatter log RMHI}
+#CO_data$log_RMHI <- as.integer(CO_data$log_RMHI)
+scatter.smooth(x=CO_data$year, y=CO_data$log_RMHI, main="CO Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r CO scatter log population}
+#CO_data$log_pop <- as.integer(CO_data$log_pop)
+scatter.smooth(x=CO_data$year, y=CO_data$log_pop, main="CO Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r CO correlations}
+cor(CO_data$RMHI, CO_data$value)
+cor(CO_data$HPI, CO_data$value)
+cor(CO_data$poverty, CO_data$value)
+cor(CO_data$population, CO_data$value)
+cor(CO_data$sp500, CO_data$value)
+cor(CO_data$log_pop, CO_data$value)
+cor(CO_data$log_RMHI, CO_data$value)
+#run base correlations between categories and dependent variable
+```
+
+The correlation between the median household income and unemployment in Colorado is -0.3744386. The correlation between the median household income and unemployment is a medium negative correlation. The correlation suggests an inverse relationship between the two variables. 
+
+The correlation between the housing price index and unemployment in Colorado is -0.216168. The correlation between the housing price index and unemployment shows a weak negative correlation between the variables. The negative correlation illustrates the possibility of there being an inverse relationship between the two variables. The closeness of the correlation to 0 does show that there is a possibility that maybe the variables do not have any correlation at all. Of course with all of the depressions that have occurred and the pandemic this year, this could skew the correlation and downplay the relationship between the two variables. 
+
+The correlation between poverty, the proportion of the population below the poverty line, and unemployment in Colorado is 0.7235819. The correlation between poverty and unemployment is a large positive correlation. A strong positive correlation suggests that there is a relationship between the two variables and it suggests that the two variables tend to move in the same direction of one another. 
+
+The correlation between the population and unemployment in Colorado is -0.09548704. The correlation between the population and unemployment is a small negative correlation. The relationship between the two variables is quite small due to the correlation being so close to 0. 
+
+THe correlation between the S&P 500 and unemployment is 0.0164226. The correlation between the S%P 500 and unemployment is an extremely small correlation. With the correlation being so close to 0, it signifies that the relationship between the two variables is not that common. Likewise, the correlation shows that there is a chance that there is no direct relationship between the two variables. 
+
+The correlation between the log of the population and unemployment in Colorado is -0.1058047. The correlation between the log of the population and unemployment is a weak negative correlation. Just like in the case of the S&P 500, the weak correlation does not show a strong inverse relationship between the two variables. 
+
+The correlation between the log of the median household income and unemployment in Colorado is -0.3621963. THe correlation between the log of the median household income and unemployment is that of a medium negative correlation. The correlation between these two variables in Colorado is much stronger than the S&P 500 and the log of the median household income. With the negative relationship, it suggests that the two variables tend to move in an inverse fashion. 
+```{r CO boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(CO_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(CO_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r CO boxplot poverty}
+boxplot(CO_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(CO_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r CO linear regression all}
+#run multiple linear model for data
+CO_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = CO_data)
+summary(CO_reg1)
+anova(CO_reg1)
+```
+
+```{r CO linear regression log all}
+CO_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = CO_data)
+summary(CO_reg2)
+anova(CO_reg2)
+```
+
+```{r CO linear significant variables}
+CO_linearModelSignificant <- lm(value ~ poverty + log_pop, data = CO_data)
+summary(CO_linearModelSignificant)
+
+#test to show a scatterplot CO HPI data against year
+```
+
+```{r WV Analysis}
+WV_data <- merged_final[ merged_final$state == "WV", ]
+```
+
+```{r WV Descriptive Statistics}
+#Descriptive statistics
+stat.desc(WV_data)
+```
+
+```{r WV Histogram Unemployment}
+hist(WV_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlim=c(4,11),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r WV Histogram Poverty}
+hist(WV_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlim=c(9,16),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r WV scatter unemployment}
+scatter.smooth(WV_data$year, WV_data$value, main="WV Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r WV scatter HPI}
+scatter.smooth(WV_data$year, WV_data$HPI, main="WV HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r WV scatter poverty}
+scatter.smooth(x=WV_data$year, y=WV_data$poverty, main="WV % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r WV scatter RMHI}
+WV_data$RMHI <- as.integer(WV_data$RMHI)
+scatter.smooth(x=WV_data$year, y=WV_data$RMHI, main="WV Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r WV scatter population}
+WV_data$population <- as.integer(WV_data$population)
+scatter.smooth(x=WV_data$year, y=WV_data$population, main="WV Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r WV scatter log RMHI}
+#WV_data$log_RMHI <- as.integer(WV_data$log_RMHI)
+scatter.smooth(x=WV_data$year, y=WV_data$log_RMHI, main="WV Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r WV scatter log population}
+#WV_data$log_pop <- as.integer(WV_data$log_pop)
+scatter.smooth(x=WV_data$year, y=WV_data$log_pop, main="WV Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r WV correlations}
+cor(WV_data$RMHI, WV_data$value)
+cor(WV_data$HPI, WV_data$value)
+cor(WV_data$poverty, WV_data$value)
+cor(WV_data$population, WV_data$value)
+cor(WV_data$sp500, WV_data$value)
+cor(WV_data$log_pop, WV_data$value)
+cor(WV_data$log_RMHI, WV_data$value)
+#run base correlations between categories and dependent variable
+```
+
+The correlation between the median household income and unemployment in West Virginia is -0.6170457. The correlation between the median household income and unemployment is that of a large negative correlation. A large negative correlation suggests that in most cases the variables tend to move in inverse directions. 
+
+The correlation between the housing price index and unemployment in West Virginia is -0.7138695. The correlation between the housing price index and unemployment is that of a large negative correlation. Just like with the median household income, the housing price index suggests an inverse relationship between unemployment. 
+
+The correlation between poverty, the proportion of the population below the poverty line, and unemployment in West Virginia is 0.6996082. The correlation between poverty and unemployment is that of a large positive correlation. A large positive correlation suggests that the two variables tend to move in the same direction unlike the median household income and the housing price index.
+
+The correlation between the population and unemployment is 0.5144306. The correlation between the population and unemployment is that of a large positive correlation. Just like with poverty, the correlation suggests that the two variables tend to move in the same direction of one another. 
+
+The correlation between the S&P 500 and unemployment in West Virginia is 0.1979507. The correlation between the S&P 500 and unemployment is a small positive correlation. The correlation shows that there is a small positive relationship between the two variables signifying that the two variables tend to move in the same direction.  
+
+The correlation between the log of the population and unemployment in West Virginia is 0.509377. The correlation between the log of the population and unemployment is that of a large positive Correlation. The positive correlation suggests that the two variables mimic one another. 
+
+The correlation between the log of the median household income and unemployment in West Virginia is -0.6322822. THe correlation between the log of the median household income and unemployment is a large negative correlation. The large negative correlation suggests that as the log of the median household income increases, the unemployment tends to decrease. 
+```{r WV boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(WV_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(WV_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r WV boxplot poverty}
+boxplot(WV_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(WV_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r WV linear regression all}
+#run multiple linear model for data
+WV_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = WV_data)
+summary(WV_reg1)
+anova(WV_reg1)
+```
+
+```{r WV linear regression log all}
+WV_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = WV_data)
+summary(WV_reg2)
+anova(WV_reg2)
+```
+
+```{r WV linear significant variables}
+WV_linearModelSignificant <- lm(value ~ poverty + log_pop, data = WV_data)
+summary(WV_linearModelSignificant)
+
+#test to show a scatterplot WV HPI data against year
+```
+
+```{r ME Analysis}
+ME_data <- merged_final[ merged_final$state == "ME", ]
+```
+
+```{r ME Descriptive Statistics}
+#Descriptive statistics
+stat.desc(ME_data)
+```
+
+```{r ME Histogram Unemployment}
+hist(ME_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlim=c(4,11),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r ME Histogram Poverty}
+hist(ME_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlim=c(9,16),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r ME scatter unemployment}
+scatter.smooth(ME_data$year, ME_data$value, main="ME Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r ME scatter HPI}
+scatter.smooth(ME_data$year, ME_data$HPI, main="ME HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r ME scatter poverty}
+scatter.smooth(x=ME_data$year, y=ME_data$poverty, main="ME % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r ME scatter RMHI}
+ME_data$RMHI <- as.integer(ME_data$RMHI)
+scatter.smooth(x=ME_data$year, y=ME_data$RMHI, main="ME Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r ME scatter population}
+ME_data$population <- as.integer(ME_data$population)
+scatter.smooth(x=ME_data$year, y=ME_data$population, main="ME Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r ME scatter log RMHI}
+#ME_data$log_RMHI <- as.integer(ME_data$log_RMHI)
+scatter.smooth(x=ME_data$year, y=ME_data$log_RMHI, main="ME Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r ME scatter log population}
+#ME_data$log_pop <- as.integer(ME_data$log_pop)
+scatter.smooth(x=ME_data$year, y=ME_data$log_pop, main="ME Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r ME correlations}
+cor(ME_data$RMHI, ME_data$value)
+cor(ME_data$HPI, ME_data$value)
+cor(ME_data$poverty, ME_data$value)
+cor(ME_data$population, ME_data$value)
+cor(ME_data$sp500, ME_data$value)
+cor(ME_data$log_pop, ME_data$value)
+cor(ME_data$log_RMHI, ME_data$value)
+#run base correlations between categories and dependent variable
+```
+
+The correlation between the median household income and unemployment is Maine is -0.1586851. THe correlation between the median household income and unemployment is a small negative relationship. The negative relationship suggests that the two variables tend to move inversely of one another. 
+
+The correlation between the housing price index and unemployment in Maine is -0.02225343. The correlation between the two variables is that of a small negative relationship. The relation between the two variables is a small correlation that points to the two variables moving inversely of one another. 
+
+The correlation between poverty, the proportion of the population below the poverty line, and unemployment in Maine is 0.3808906. The correlation between poverty and unemployment is that of a medium positive correlation. The positive correlation suggests that the two variables tend to mimic one another with the direction that they proceed.
+
+The correlation between the population and unemployment in Maine is 0.06660653. The correlation between the population and unemployment is that of a small positive correlation. A small positive correlation suggests that there is a weak positive relationship between the population and unemployment, but the two variables do tend to move in the same direction of one another. 
+
+The correlation between the S&P 500 and unemployment in Maine is 0.03233341. The correlation between the S&P 500 and unemployment is a small positive correlation. The small positive correlation is quite close to 0, but does still show the small possibility that the two variables move in the same direction of one another. 
+
+The correlation between the log of the population and unemployment in Maine is 0.06676556. The correlation between the log of the population and unemployment is quite similar to that of the S&P 500. The correlation is a small positive correlation between the two variables. 
+
+The correlation between the log of the median household income and unemployment in Maine is -0.1587006. The correlation between the log of the median household income and unemployment is that of a small negative relationship. The small negative relationship suggests that the two variables have a weak inverse relationship of one another. 
+```{r ME boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(ME_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(ME_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r ME boxplot poverty}
+boxplot(ME_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(ME_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r ME linear regression all}
+#run multiple linear model for data
+ME_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = ME_data)
+summary(ME_reg1)
+anova(ME_reg1)
+```
+
+```{r ME linear regression log all}
+ME_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = ME_data)
+summary(ME_reg2)
+anova(ME_reg2)
+```
+
+```{r ME linear significant variables}
+ME_linearModelSignificant <- lm(value ~ poverty + log_pop, data = ME_data)
+summary(ME_linearModelSignificant)
+
+#test to show a scatterplot ME HPI data against year
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r writeCSV}
+write.csv(unemp_all,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\allUnemploymentData.csv", row.names = FALSE)
+
+write.csv(unemp_scrubbed,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\unemploymentQuarterly.csv", row.names = FALSE)
+
+write.csv(HPI_Unemp_Combined,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentQuarterlyCombined.csv", row.names = FALSE)
+
+write.csv(unemp_scrubbed_annual,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentAnnualCombined.csv", row.names = FALSE)
+
+write.csv(HPI_Unemp_MHI_Combined_Annual,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentMHIAnnualCombined.csv", row.names = FALSE)
+
+write.csv(HPI_Unemp_MHI_poverty_Combined_Annual,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentMHIPovertyAnnualCombined.csv", row.names = FALSE)
+
+
+write.csv(merged_final,"C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\National Debt\\Unemployment_Project\\csv files\\mergedFinal.csv", row.names = FALSE)
+
+## Backs up all data into local file
+## replace file path below with a file path on your local computer to save backup of csv files
+## C:\\Users\\ABowles0608\\Desktop\\FIN6572Fall2020\\Project csv files\\HPIUnemploymentAnnualCombined.csv with a file path on your local computer to save backup of csv files
+```
