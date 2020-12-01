@@ -1416,7 +1416,7 @@ hist(WV_data$poverty,
 ```{r WV scatter unemployment}
 scatter.smooth(WV_data$year, WV_data$value, main="WV Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
 ```
-Unemployment in the state of West Virgina from 1984-2007 was at a declining pace, which shows that the job market is saturated and the state is in good standing. But, prior to the stock market crash of 2008-2009, we can notice that the unemployment rate began to start creeping up and shot up drastically when the stock market crash occurred. Since, then we have seen a steady decline to the rates that were prior to that of the stock market crash. 
+Unemployment in the state of West VirginIa from 1984-2007 was at a declining pace, which shows that the job market is saturated and the state is in good standing. But, prior to the stock market crash of 2008-2009, we can notice that the unemployment rate began to start creeping up and shot up drastically when the stock market crash occurred. Since, then we have seen a steady decline to the rates that were prior to that of the stock market crash. 
 ```{r WV scatter HPI}
 scatter.smooth(WV_data$year, WV_data$HPI, main="WV HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
