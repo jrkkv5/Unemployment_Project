@@ -192,7 +192,7 @@ hist(IL_data$value,
      xlab="Unemployment Rate",
      breaks = 5)
 ```
-Histograms graphically summarize the distribution of a data set. In Illinois, from 1984 to 2018, The annual unemployment rates ranged from 4.0-11.0%. The histogram displays a positively skewed distribution. An unemployment rate that fell within the first two intervals, 4.0-4.9% & 5.0-5.9% occurred 18 out of the 36 years examined. 
+Histograms graphically summarize the distribution of a data set. In Illinois, from 1984 to 2018, The annual unemployment rates ranged from 4.0-11.0%. The histogram displays a positively skewed distribution. An unemployment rate that fell within the first two intervals, 4.0-4.9% & 5.0-5.9%, occurred 18 out of the 36 years examined. 
 
 ```{r IL Histogram Poverty}
 hist(IL_data$poverty,
@@ -201,7 +201,7 @@ hist(IL_data$poverty,
      xlab="Poverty Rate",
      breaks = 5)
 ```
-In Illinois, from 1984 to 2018, the poverty levels ranged from 9.0-16.0%. The histogram displays a slightly negatively skewed distribution meaning relatively higher poverty rates occurred more often than lower rates. Between 12.0-12.9% was the most frequently recorded interval during this time period. In 14 of the 36 years examined, the poverty rate in Illinois was between 13-15.9%. 
+In Illinois, from 1984 to 2018, the poverty levels ranged from 9.0-16.0%. The histogram displays a relatively normal distribution. Between 12.0-12.9% was the most frequently recorded interval during this time period. In 14 of the 36 years examined, the poverty rate in Illinois was between 13-15.9%. 
 
 ```{r IL scatter unemployment}
 scatter.smooth(IL_data$year, IL_data$value, main="IL Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
@@ -210,32 +210,31 @@ A scatterplot displays the relationship between two numeric variables. This plot
 ```{r IL scatter HPI}
 scatter.smooth(IL_data$year, IL_data$HPI, main="IL HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
-This plot represents the relationship between Illinois' median housing price index (HPI) and the year. From 1984 to 2008 the relationship appeared to be linear, until the HPI dipped from 2008-2013. Since then, the HPI has began to increase in a linear relationship again. This pattern is displayed consistently when observing the proceeding states and, through inference, can partially be attributed to the housing crisis that occurred in 2008 and 2009. 
+This plot represents the relationship between Illinois' median housing price index (HPI) and the year. From 1984 to 2008 the relationship appeared to be linear until the HPI dipped in 2008-2013. Since then, the HPI began to continue its increase in a linear fashion. This pattern is observed consistently when examining many other states and, through inference, can partially be attributed to the housing crisis that occurred in 2008 and 2009. 
 ```{r IL scatter poverty}
 scatter.smooth(x=IL_data$year, y=IL_data$poverty, main="IL % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
 ```
-
-
+The percentage of individuals living below the poverty rate in Illinois does not display a clear pattern. Overall, there has been slight decrease of roughly 4% from 1984 to 2018. Poverty levels peaked in 1992.
 ```{r IL scatter log RMHI}
 #IL_data$log_RMHI <- as.integer(IL_data$log_RMHI)
 scatter.smooth(x=IL_data$year, y=IL_data$log_RMHI, main="IL Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
 ```
-
+The median household income in Illinois increased dramatically from 1984-2018. The lowest and highest values recorded fell at the beginning and the end of the time period, respectively.
 ```{r IL scatter log population}
 #IL_data$log_pop <- as.integer(IL_data$log_pop)
 scatter.smooth(x=IL_data$year, y=IL_data$log_pop, main="IL Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
 ```
-
+The log population of Illinois decreased from 1984-1988 before increasing in a relatively linear fashion from 1988 to its peak in 2013. 2013-2018 is characterized by a gradual decline in population. 
 ```{r IL boxplot unemployment}
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
 boxplot(IL_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(IL_data$value)$out))  # box plot for 'Unemployment'
 ```
-
+The annual unemployment rate in Illinois ranged from 4%-11% from 1984-2018. The boxplot displays a positively skewed distribution meaning the mean is greater than the median. 
 ```{r IL boxplot poverty}
 boxplot(IL_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(IL_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
-
+The poverty levels in Illinois ranged from roughly 9% to just under 15% from 1984-2018. The median poverty rate is displayed at roughly 12.5%.The plot displays a relatively normal distribution meaning the mean and median are close the same value. 
 
 
 
