@@ -371,3 +371,1746 @@ forecast(TX_HFinal, h=1)
 ```
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Next, the data we collected is considered a time series as it was measured on an annual basis.  We used the unemployment data that was collected for each state and implemented a time series forecast using the Holt Method.  
+
+Time series data typically contains four components: trend, seasonal, cyclical, and random components.  Trend is represented by the long-term movements in the data series, whether that be upward or downward.  A seasonal component normally represents repetitions that occur within a single year time period, whereas the cyclical component represents long-term trends that are usually a factor the economy.  Typically, seasonal trends are easier to identify than cyclical trends because the time period of the seasonal trend is often known ahead of time.  Random components represent the random and unexplained movements within the time series data.
+
+As our unemployment data is shown on an annual basis, we will be focusing on the trend, cyclical, random components in our analysis.  The type of analysis we have chosen to focus on is labeled the Holt Exponential Smoothing Method.  This method is characterized by incorporating the large upward and downward fluctuations in the series and is most appropriate when the dataset lacks seasonal variation.  We went into greater detail explaining the process that was used on IL, but for the other states we will simply analyze the model and the results.
+
+
+```{r IL Holt Analysis}
+
+IL_TS <- ts(IL_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+IL_TData <- window(IL_TS, end = c(2004))
+IL_VData <- window(IL_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+In the above section of code, we begin our time series analysis of IL by creating the time series with the TS function.  We set the start and end values of our times series data equal to the time span our data streches and set the frequency equal to one.
+
+Using the window function we partition our dataset into a training set, IL_TData, and a validation set, IL_VData.
+
+```{r IL Holt Analysis User}
+IL_HUser <- ets(IL_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(IL_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+It is common for practitioners to provide user supplied values for alpha and beta (smoothing parameters) due to the fact that the computer generated values are known to over-fit models where the data performed well in the sample period, but does not exhibit the same performance in the future.  In our data, we will compare both user supplied and computer generated smoothing parameters.  We will then compare the error measures to determine which model is a better fit to our data.  We used an alpha = 0.2 and beta = 0.15 when creating our user supplier parameters model.
+
+The ets function above denotes the error, trend, and seasonality of the training set, respectively. The first letter in the model string represents that we want the error to be additive, the second letter represents that fact that we expect the trend type to be additive, and the third letter represents the fact that we do not intend on incorporating seasonality into our model.
+
+
+```{r IL Holt Analysis Computer}
+IL_HCmp <- ets(IL_TData, model = "AAN")
+summary(IL_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+By comparing the root mean squared error(RMSE) and the mean absolute percentage error(MAPE) we can assess the fitness of the user supplier and computer generate models.  The user supplied model has a higher RMSE and MAPE indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r IL Holt Set Forecast}
+IL_nV <- length(IL_VData)
+IL_fUser <- forecast(IL_HUser, h = IL_nV)
+IL_fCmp <- forecast(IL_HCmp, h = IL_nV)
+```
+The length function above was used to set the number of observations equal to the length of the validation set.
+Then the forecast function was used to make a forecast based on the observations in our training set.
+
+```{r IL Holt Analysis User Accuracy}
+accuracy(IL_fUser,IL_VData)
+```
+```{r IL Holt Analysis Computer Accuracy}
+accuracy(IL_fCmp,IL_VData)
+```
+When comparing the accuracy function results we see conflicting results in our validation set.  The test set shows that the RMSE and MAPE of the user generated model provides a better fit for the performance of our data.  Ultimately, we decided to continue the process using the computer generated model, but the user supplied model would work just as well.
+  
+``` {r IL Holt Forecast}
+IL_HFinal <- ets(IL_TS, model = "AAN")
+forecast(IL_HFinal, h=1)
+```
+Finally, we bring everything together with the ets function and forecast the unemployment level for the next period, 2019. The forecast that was generated shows us that the expected value of the Illinois unemployment level in December 2019 is equal to 4.42% based on the trends that were observed in our model.
+
+
+
+```{r TX Holt Analysis}
+
+TX_TS <- ts(TX_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+TX_TData <- window(TX_TS, end = c(2004))
+TX_VData <- window(TX_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r TX Holt Analysis User}
+TX_HUser <- ets(TX_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(TX_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r TX Holt Analysis Computer}
+TX_HCmp <- ets(TX_TData, model = "AAN")
+summary(TX_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+The user supplied model for the state of Texas has a higher RMSE and MAPE at 1.0227 and 14.7904 respectively. The computer generated model has a RMSE of 0.8366 and a MAPE of 11.3532 indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r TX Holt Set Forecast}
+TX_nV <- length(TX_VData)
+TX_fUser <- forecast(TX_HUser, h = TX_nV)
+TX_fCmp <- forecast(TX_HCmp, h = TX_nV)
+```
+```{r TX Holt Analysis User Accuracy}
+accuracy(TX_fUser,TX_VData)
+```
+```{r TX Holt Analysis Computer Accuracy}
+accuracy(TX_fCmp,TX_VData)
+```
+The accuracy function confirms that the computer generated model is a better overall fit to the data we are using to create our model.  This is due to the fact that once again the validation set exhibits a lower RMSE and MAPE.
+
+``` {r TX Holt Forecast}
+TX_HFinal <- ets(TX_TS, model = "AAN")
+forecast(TX_HFinal, h=1)
+```
+The forecast that was generated shows us that the expected value of the Texas unemployment level in December 2019 is equal to 3.79% based on the trends that were observed in our model.
+
+
+
+```{r MO Holt Analysis}
+
+MO_TS <- ts(MO_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+MO_TData <- window(MO_TS, end = c(2004))
+MO_VData <- window(MO_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r MO Holt Analysis User}
+MO_HUser <- ets(MO_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(MO_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r MO Holt Analysis Computer}
+MO_HCmp <- ets(MO_TData, model = "AAN")
+summary(MO_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+The user supplied model for the state of Missouri has a higher RMSE and MAPE at 0.9134 and 16.6072 respectively. The computer generated model has a RMSE of 0.6557 and a MAPE of 11.5924 indicating that the computer generated model provides a better overall fit to our forecast. 
+```{r MO Holt Set Forecast}
+MO_nV <- length(MO_VData)
+MO_fUser <- forecast(MO_HUser, h = MO_nV)
+MO_fCmp <- forecast(MO_HCmp, h = MO_nV)
+```
+```{r MO Holt Analysis User Accuracy}
+accuracy(MO_fUser,MO_VData)
+```
+```{r MO Holt Analysis Computer Accuracy}
+accuracy(MO_fCmp,MO_VData)
+```
+The results from the accuracy function conflict with our initial assessment. The accuracy function shows that in the validation set, the RMSE and MAPE of the user defined model are lower and indicate there is a better overall fit to the data. For this exercise we will proceed with the computer generated model.
+``` {r MO Holt Forecast}
+MO_HFinal <- ets(MO_TS, model = "AAN")
+forecast(MO_HFinal, h=1)
+```
+The forecast that was generated shows us that the expected value of the Missouri unemployment level in December 2019 is equal to 2.94% based on the trends that were observed in our model.
+
+
+```{r WA Holt Analysis}
+
+WA_TS <- ts(WA_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+WA_TData <- window(WA_TS, end = c(2004))
+WA_VData <- window(WA_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r WA Holt Analysis User}
+WA_HUser <- ets(WA_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(WA_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r WA Holt Analysis Computer}
+WA_HCmp <- ets(WA_TData, model = "AAN")
+summary(WA_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+
+The user supplied model for the state of Washington has a higher RMSE and MAPE at 1.1583 and 14.6664 respectively. The computer generated model has a RMSE of 0.8353 and a MAPE of 10.6124 indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r WA Holt Set Forecast}
+WA_nV <- length(WA_VData)
+WA_fUser <- forecast(WA_HUser, h = WA_nV)
+WA_fCmp <- forecast(WA_HCmp, h = WA_nV)
+```
+```{r WA Holt Analysis User Accuracy}
+accuracy(WA_fUser,WA_VData)
+```
+```{r WA Holt Analysis Computer Accuracy}
+accuracy(WA_fCmp,WA_VData)
+```
+
+The results from the accuracy function conflict with our initial assessment. The accuracy function shows that in the validation set, the RMSE and MAPE of the user defined model are lower and indicate there is a better overall fit to the data. For this exercise we will proceed with the computer generated model.
+
+``` {r WA Holt Forecast}
+WA_HFinal <- ets(WA_TS, model = "AAN")
+forecast(WA_HFinal, h=1)
+```
+The forecast that was generated shows us that the expected value of the Washington unemployment level in December 2019 is equal to 4.63% based on the trends that were observed in our model.
+
+
+```{r OR Holt Analysis}
+
+OR_TS <- ts(OR_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+OR_TData <- window(OR_TS, end = c(2004))
+OR_VData <- window(OR_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+```{r OR Holt Analysis User}
+OR_HUser <- ets(OR_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(OR_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+```{r OR Holt Analysis Computer}
+OR_HCmp <- ets(OR_TData, model = "AAN")
+summary(OR_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+
+The user supplied model for the state of Oregon has a higher RMSE and MAPE at 1.2116 and 14.9369 respectively. The computer generated model has a RMSE of 1.0738 and a MAPE of 13.2990 indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r OR Holt Set Forecast}
+OR_nV <- length(OR_VData)
+OR_fUser <- forecast(OR_HUser, h = OR_nV)
+OR_fCmp <- forecast(OR_HCmp, h = OR_nV)
+```
+```{r OR Holt Analysis User Accuracy}
+accuracy(OR_fUser,OR_VData)
+```
+```{r OR Holt Analysis Computer Accuracy}
+accuracy(OR_fCmp,OR_VData)
+```
+The results from the accuracy function conflict with our initial assessment. The accuracy function shows that in the validation set, the RMSE of the user defined model is lower and indicate there is a better overall fit to the data. The MAPE of the validation set confirms our initial assessment that the computer generated model provides a better overall fit. For this exercise we will proceed with the computer generated model.
+
+``` {r OR Holt Forecast}
+OR_HFinal <- ets(OR_TS, model = "AAN")
+forecast(OR_HFinal, h=1)
+```
+The forecast that was generated shows us that the expected value of the Oregon unemployment level in December 2019 is equal to 3.7678% based on the trends that were observed in our model.
+
+```{r CO Holt Analysis}
+
+CO_TS <- ts(CO_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+CO_TData <- window(CO_TS, end = c(2004))
+CO_VData <- window(CO_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+```{r CO Holt Analysis User}
+CO_HUser <- ets(CO_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(CO_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+```{r CO Holt Analysis Computer}
+CO_HCmp <- ets(CO_TData, model = "AAN")
+summary(CO_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+The user supplied model for the state of Colorado has a higher RMSE and MAPE at 1.2473 and 18.2991 respectively. The computer generated model has a RMSE of 0.9833 and a MAPE of 15.5345 indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r CO Holt Set Forecast}
+CO_nV <- length(CO_VData)
+CO_fUser <- forecast(CO_HUser, h = CO_nV)
+CO_fCmp <- forecast(CO_HCmp, h = CO_nV)
+```
+```{r CO Holt Analysis User Accuracy}
+accuracy(CO_fUser,CO_VData)
+```
+
+```{r CO Holt Analysis Computer Accuracy}
+accuracy(CO_fCmp,CO_VData)
+```
+
+The accuracy function confirms that the computer generated model is a better overall fit to the data we are using to create our model.  This is due to the fact that once again the validation set exhibits a lower RMSE and MAPE.
+
+``` {r CO Holt Forecast}
+CO_HFinal <- ets(CO_TS, model = "AAN")
+forecast(CO_HFinal, h=1)
+```
+
+The forecast that was generated shows us that the expected value of the Colorado unemployment level in December 2019 is equal to 2.7246% based on the trends that were observed in our model.
+
+```{r WV Holt Analysis}
+
+WV_TS <- ts(WV_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+WV_TData <- window(WV_TS, end = c(2004))
+WV_VData <- window(WV_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+```{r WV Holt Analysis User}
+WV_HUser <- ets(WV_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(WV_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+```{r WV Holt Analysis Computer}
+WV_HCmp <- ets(WV_TData, model = "AAN")
+summary(WV_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+
+The user supplied model for the state of West Virginia has a higher RMSE and MAPE at 1.4288 and 14.1598 respectively. The computer generated model has a RMSE of 0.9736 and a MAPE of 8.5906 indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r WV Holt Set Forecast}
+WV_nV <- length(WV_VData)
+WV_fUser <- forecast(WV_HUser, h = WV_nV)
+WV_fCmp <- forecast(WV_HCmp, h = WV_nV)
+```
+```{r WV Holt Analysis User Accuracy}
+accuracy(WV_fUser,WV_VData)
+```
+```{r WV Holt Analysis Computer Accuracy}
+accuracy(WV_fCmp,WV_VData)
+```
+
+The accuracy function confirms that the computer generated model is a better overall fit to the data we are using to create our model.  This is due to the fact that once again the validation set exhibits a lower RMSE and MAPE.
+
+``` {r WV Holt Forecast}
+WV_HFinal <- ets(WV_TS, model = "AAN")
+forecast(WV_HFinal, h=1)
+```
+
+The forecast that was generated shows us that the expected value of the West Virginia unemployment level in December 2019 is equal to 4.70% based on the trends that were observed in our model.
+
+```{r ME Holt Analysis}
+
+ME_TS <- ts(ME_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+ME_TData <- window(ME_TS, end = c(2004))
+ME_VData <- window(ME_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+```{r ME Holt Analysis User}
+ME_HUser <- ets(ME_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(ME_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+```{r ME Holt Analysis Computer}
+ME_HCmp <- ets(ME_TData, model = "AAN")
+summary(ME_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+
+The user supplied model for the state of Maine has a higher RMSE and MAPE at 1.4430 and 26.5876 respectively. The computer generated model has a RMSE of 0.8670 and a MAPE of 12.1342 indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r ME Holt Set Forecast}
+ME_nV <- length(ME_VData)
+ME_fUser <- forecast(ME_HUser, h = ME_nV)
+ME_fCmp <- forecast(ME_HCmp, h = ME_nV)
+```
+```{r ME Holt Analysis User Accuracy}
+accuracy(ME_fUser,ME_VData)
+```
+```{r ME Holt Analysis Computer Accuracy}
+accuracy(ME_fCmp,ME_VData)
+```
+
+The accuracy function confirms that the computer generated model is a better overall fit to the data we are using to create our model.  This is due to the fact that once again the validation set exhibits a lower RMSE and MAPE.
+
+``` {r ME Holt Forecast}
+ME_HFinal <- ets(ME_TS, model = "AAN")
+forecast(ME_HFinal, h=1)
+```
+The forecast that was generated shows us that the expected value of the Maine unemployment level in December 2019 is equal to 2.6793% based on the trends that were observed in our model.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+title: "Unemployment Report"
+Author: "Jeff Krueger, Corey Lund, Fred Mwangi, and Nemanja Orescanin"
+date: "11/29/2020"
+output: html_document
+---
+
+```{r packages}
+library(devtools)
+library(blsAPI)
+library(rjson)
+library(curl)
+library(RCurl)
+library(knitr)
+library(readr)
+library(dplyr)
+library(tidyverse)
+library(rmarkdown)
+library(pastecs)
+library(ggplot2)
+library(corrplot)
+library(lmtest)
+library(forecast)
+#loads the necessary packages
+
+```
+First we need to load the libraries that we will be using into our report. The above code should load the proper libraries. R Studio will prompt you to install the packages if necessary.
+
+
+``` {r log variables}
+merged_final <- read_csv("csv files/mergedFinal.csv")
+#Reads final file into merged dataframe
+
+merged_final$log_pop = as.numeric(log(merged_final$population))
+
+merged_final$log_RMHI = as.numeric(log(merged_final$RMHI))
+```
+As a final step in scrubbing our data, we created new variables to log the population and median household income variables and store it in our dataframe. By taking the logarithmic values, these variables become more comparable to the existing variables we have within our dataset.
+
+Below you can see the table output once all of our data has been merged.
+``` {r merged_final_table}
+
+kable(merged_final[1:6,], caption = "Table Including All Variables")
+```
+After our data was merged we binned the states into groups based on the mean population of the years in our dataframe (1984-2018).  Below are the bins that were created:
+
+Population < 2,000,000
+WV, NM, NE, ID, ME, HI, NH, RI, MT, DE, SD, ND, AK, VT, WY
+
+2,000,000 < Population < 5,000,000
+MN, AL, LA, CO, SC, KY, OK, OR, CT, IA, MS, KS, AR, UT, NV
+
+5,000,000 < Population < 10,000,000
+MI, NJ, GA, NC, VA, MA, IN, WA, TN, MO, WI, MD, AZ
+
+Population > 10,000,000
+CA, TX, NY, FL, PA, IL, OH
+
+
+Each member of our group performed some basic analysis on the states within one of the bins. After performing our initial analysis we chose to focus on 2 states within each bin.  The states we chose to focus on are: TX, IL, MO, WA, OR, CO, WV, ME
+
+
+Below are some of the highlights along with commentary for the states we have chosen to focus on 
+
+```{r IL Analysis}
+IL_data <- merged_final[ merged_final$state == "IL", ]
+```
+
+```{r IL Descriptive Statistics}
+#Descriptive statistics
+stat.desc(IL_data)
+```
+```{r IL Pairwise Correlations}
+#pairwise correlations
+sapply(IL_data, class)
+sapply(IL_data, is.factor)
+cor(IL_data[sapply(IL_data, function(x) !is.character(x))])
+```
+
+```{r IL Histogram Unemployment}
+hist(IL_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlim=c(4,11),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r IL Histogram Poverty}
+hist(IL_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlim=c(9,16),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r IL scatter unemployment}
+scatter.smooth(IL_data$year, IL_data$value, main="IL Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r IL scatter HPI}
+scatter.smooth(IL_data$year, IL_data$HPI, main="IL HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r IL scatter poverty}
+scatter.smooth(x=IL_data$year, y=IL_data$poverty, main="IL % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r IL scatter RMHI}
+IL_data$RMHI <- as.integer(IL_data$RMHI)
+scatter.smooth(x=IL_data$year, y=IL_data$RMHI, main="IL Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r IL scatter population}
+IL_data$population <- as.integer(IL_data$population)
+scatter.smooth(x=IL_data$year, y=IL_data$population, main="IL Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r IL scatter log RMHI}
+#IL_data$log_RMHI <- as.integer(IL_data$log_RMHI)
+scatter.smooth(x=IL_data$year, y=IL_data$log_RMHI, main="IL Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r IL scatter log population}
+#IL_data$log_pop <- as.integer(IL_data$log_pop)
+scatter.smooth(x=IL_data$year, y=IL_data$log_pop, main="IL Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r IL correlations}
+cor(IL_data$RMHI, IL_data$value)
+cor(IL_data$HPI, IL_data$value)
+cor(IL_data$poverty, IL_data$value)
+cor(IL_data$population, IL_data$value)
+cor(IL_data$sp500, IL_data$value)
+cor(IL_data$log_pop, IL_data$value)
+cor(IL_data$log_RMHI, IL_data$value)
+#run base correlations between categories and dependent variable
+```
+
+```{r IL boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(IL_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(IL_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r IL boxplot poverty}
+boxplot(IL_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(IL_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r IL linear regression all}
+#run multiple linear model for data
+IL_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = IL_data)
+summary(IL_reg1)
+anova(IL_reg1)
+```
+
+```{r IL linear regression log all}
+IL_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = IL_data)
+summary(IL_reg2)
+anova(IL_reg2)
+```
+
+```{r IL linear significant variables}
+IL_linearModelSignificant <- lm(value ~ poverty + log_pop, data = IL_data)
+summary(IL_linearModelSignificant)
+
+#test to show a scatterplot IL HPI data against year
+```
+
+
+
+
+```{r TX Analysis}
+TX_data <- merged_final[ merged_final$state == "TX", ]
+```
+
+```{r TX Descriptive Statistics}
+#Descriptive statistics
+stat.desc(TX_data)
+```
+
+```{r TX Pairwise Correlations}
+#pairwise correlations
+sapply(TX_data, class)
+sapply(TX_data, is.factor)
+cor(TX_data[sapply(TX_data, function(x) !is.character(x))])
+```
+
+
+```{r TX Histogram Unemployment}
+hist(TX_data$value,
+     main="Histogram of Unemployment Across All Years",
+     xlim=c(3,9),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r TX Histogram Poverty}
+hist(TX_data$poverty,
+     main="Histogram of Poverty Across All Years",
+     xlim=c(13,20),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r TX scatter unemployment}
+scatter.smooth(TX_data$year, TX_data$value, main="TX Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r TX scatter HPI}
+scatter.smooth(TX_data$year, TX_data$HPI, main="TX HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r TX scatter poverty}
+scatter.smooth(x=TX_data$year, y=TX_data$poverty, main="TX % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r TX scatter RMHI}
+TX_data$RMHI <- as.integer(TX_data$RMHI)
+scatter.smooth(x=TX_data$year, y=TX_data$RMHI, main="TX Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r TX scatter population}
+TX_data$population <- as.integer(TX_data$population)
+scatter.smooth(x=TX_data$year, y=TX_data$population, main="TX Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r TX scatter log RMHI}
+#TX_data$log_RMHI <- as.integer(TX_data$log_RMHI)
+scatter.smooth(x=TX_data$year, y=TX_data$log_RMHI, main="TX Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r TX scatter log population}
+#TX_data$log_pop <- as.integer(TX_data$log_pop)
+scatter.smooth(x=TX_data$year, y=TX_data$log_pop, main="TX Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r TX correlations}
+cor(TX_data$RMHI, TX_data$value)
+cor(TX_data$HPI, TX_data$value)
+cor(TX_data$poverty, TX_data$value)
+cor(TX_data$population, TX_data$value)
+cor(TX_data$sp500, TX_data$value)
+cor(TX_data$log_pop, TX_data$value)
+cor(TX_data$log_RMHI, TX_data$value)
+#run base correlations between categories and dependent variable
+```
+
+```{r TX boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(TX_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(TX_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r TX boxplot poverty}
+boxplot(TX_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(TX_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r TX linear regression all}
+#run multiple linear model for data
+TX_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = TX_data)
+summary(TX_reg1)
+anova(TX_reg1)
+```
+
+```{r TX linear regression log all}
+TX_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = TX_data)
+summary(TX_reg2)
+anova(TX_reg2)
+```
+
+```{r TX linear significant variables}
+TX_linearModelSignificant <- lm(value ~ poverty + log_pop, data = TX_data)
+summary(TX_linearModelSignificant)
+
+#test to show a scatterplot TX HPI data against year
+```
+
+```{r MO Analysis}
+MO_data <- merged_final[ merged_final$state == "MO", ]
+```
+
+```{r MO Descriptive Statistics}
+#Descriptive statistics
+stat.desc(MO_data)
+```
+
+```{r MO Pairwise Correlations}
+#pairwise correlations
+sapply(MO_data, class)
+sapply(MO_data, is.factor)
+cor(MO_data[sapply(MO_data, function(x) !is.character(x))])
+```
+
+
+```{r MO Histogram Unemployment}
+hist(MO_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r MO Histogram Poverty}
+hist(MO_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r MO scatter unemployment}
+scatter.smooth(MO_data$year, MO_data$value, main="MO Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r MO scatter HPI}
+scatter.smooth(MO_data$year, MO_data$HPI, main="MO HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r MO scatter poverty}
+scatter.smooth(x=MO_data$year, y=MO_data$poverty, main="MO % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r MO scatter RMHI}
+MO_data$RMHI <- as.integer(MO_data$RMHI)
+scatter.smooth(x=MO_data$year, y=MO_data$RMHI, main="MO Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r MO scatter population}
+MO_data$population <- as.integer(MO_data$population)
+scatter.smooth(x=MO_data$year, y=MO_data$population, main="MO Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r MO scatter log RMHI}
+#MO_data$log_RMHI <- as.integer(MO_data$log_RMHI)
+scatter.smooth(x=MO_data$year, y=MO_data$log_RMHI, main="MO Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r MO scatter log population}
+#MO_data$log_pop <- as.integer(MO_data$log_pop)
+scatter.smooth(x=MO_data$year, y=MO_data$log_pop, main="MO Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r MO correlations}
+cor(MO_data$RMHI, MO_data$value)
+cor(MO_data$HPI, MO_data$value)
+cor(MO_data$poverty, MO_data$value)
+cor(MO_data$population, MO_data$value)
+cor(MO_data$sp500, MO_data$value)
+cor(MO_data$log_pop, MO_data$value)
+cor(MO_data$log_RMHI, MO_data$value)
+#run base correlations between categories and dependent variable
+```
+
+```{r MO boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(MO_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(MO_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r MO boxplot poverty}
+boxplot(MO_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(MO_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r MO linear regression all}
+#run multiple linear model for data
+MO_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = MO_data)
+summary(MO_reg1)
+anova(MO_reg1)
+```
+
+```{r MO linear regression log all}
+MO_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = MO_data)
+summary(MO_reg2)
+anova(MO_reg2)
+```
+
+```{r MO linear significant variables}
+MO_linearModelSignificant <- lm(value ~ poverty + log_pop, data = MO_data)
+summary(MO_linearModelSignificant)
+
+#test to show a scatterplot MO HPI data against year
+```
+
+```{r WA Analysis}
+WA_data <- merged_final[ merged_final$state == "WA", ]
+```
+
+```{r WA Descriptive Statistics}
+#Descriptive statistics
+stat.desc(WA_data)
+```
+
+```{r WA Pairwise Correlations}
+#pairwise correlations
+sapply(WA_data, class)
+sapply(WA_data, is.factor)
+cor(WA_data[sapply(WA_data, function(x) !is.character(x))])
+```
+
+```{r WA Histogram Unemployment}
+hist(WA_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r WA Histogram Poverty}
+hist(WA_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r WA scatter unemployment}
+scatter.smooth(WA_data$year, WA_data$value, main="WA Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r WA scatter HPI}
+scatter.smooth(WA_data$year, WA_data$HPI, main="WA HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r WA scatter poverty}
+scatter.smooth(x=WA_data$year, y=WA_data$poverty, main="WA % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r WA scatter RMHI}
+WA_data$RMHI <- as.integer(WA_data$RMHI)
+scatter.smooth(x=WA_data$year, y=WA_data$RMHI, main="WA Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r WA scatter population}
+WA_data$population <- as.integer(WA_data$population)
+scatter.smooth(x=WA_data$year, y=WA_data$population, main="WA Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r WA scatter log RMHI}
+#WA_data$log_RMHI <- as.integer(WA_data$log_RMHI)
+scatter.smooth(x=WA_data$year, y=WA_data$log_RMHI, main="WA Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r WA scatter log population}
+#WA_data$log_pop <- as.integer(WA_data$log_pop)
+scatter.smooth(x=WA_data$year, y=WA_data$log_pop, main="WA Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r WA correlations}
+cor(WA_data$RMHI, WA_data$value)
+cor(WA_data$HPI, WA_data$value)
+cor(WA_data$poverty, WA_data$value)
+cor(WA_data$population, WA_data$value)
+cor(WA_data$sp500, WA_data$value)
+cor(WA_data$log_pop, WA_data$value)
+cor(WA_data$log_RMHI, WA_data$value)
+#run base correlations between categories and dependent variable
+```
+
+```{r WA boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(WA_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(WA_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r WA boxplot poverty}
+boxplot(WA_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(WA_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r WA linear regression all}
+#run multiple linear model for data
+WA_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = WA_data)
+summary(WA_reg1)
+anova(WA_reg1)
+```
+
+```{r WA linear regression log all}
+WA_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = WA_data)
+summary(WA_reg2)
+anova(WA_reg2)
+```
+
+```{r WA linear significant variables}
+WA_linearModelSignificant <- lm(value ~ poverty + log_pop, data = WA_data)
+summary(WA_linearModelSignificant)
+
+#test to show a scatterplot WA HPI data against year
+```
+
+```{r OR Analysis}
+OR_data <- merged_final[ merged_final$state == "OR", ]
+```
+
+```{r OR Descriptive Statistics}
+#Descriptive statistics
+stat.desc(OR_data)
+```
+
+```{r OR Pairwise Correlations}
+#pairwise correlations
+sapply(OR_data, class)
+sapply(OR_data, is.factor)
+cor(OR_data[sapply(OR_data, function(x) !is.character(x))])
+```
+
+
+```{r OR Histogram Unemployment}
+hist(OR_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r OR Histogram Poverty}
+hist(OR_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r OR scatter unemployment}
+scatter.smooth(OR_data$year, OR_data$value, main="OR Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r OR scatter HPI}
+scatter.smooth(OR_data$year, OR_data$HPI, main="OR HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r OR scatter poverty}
+scatter.smooth(x=OR_data$year, y=OR_data$poverty, main="OR % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r OR scatter RMHI}
+OR_data$RMHI <- as.integer(OR_data$RMHI)
+scatter.smooth(x=OR_data$year, y=OR_data$RMHI, main="OR Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r OR scatter population}
+OR_data$population <- as.integer(OR_data$population)
+scatter.smooth(x=OR_data$year, y=OR_data$population, main="OR Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r OR scatter log RMHI}
+#OR_data$log_RMHI <- as.integer(OR_data$log_RMHI)
+scatter.smooth(x=OR_data$year, y=OR_data$log_RMHI, main="OR Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r OR scatter log population}
+#OR_data$log_pop <- as.integer(OR_data$log_pop)
+scatter.smooth(x=OR_data$year, y=OR_data$log_pop, main="OR Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r OR correlations}
+cor(OR_data$RMHI, OR_data$value)
+cor(OR_data$HPI, OR_data$value)
+cor(OR_data$poverty, OR_data$value)
+cor(OR_data$population, OR_data$value)
+cor(OR_data$sp500, OR_data$value)
+cor(OR_data$log_pop, OR_data$value)
+cor(OR_data$log_RMHI, OR_data$value)
+#run base correlations between categories and dependent variable
+```
+
+```{r OR boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(OR_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(OR_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r OR boxplot poverty}
+boxplot(OR_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(OR_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r OR linear regression all}
+#run multiple linear model for data
+OR_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = OR_data)
+summary(OR_reg1)
+anova(OR_reg1)
+```
+
+```{r OR linear regression log all}
+OR_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = OR_data)
+summary(OR_reg2)
+anova(OR_reg2)
+```
+
+```{r OR linear significant variables}
+OR_linearModelSignificant <- lm(value ~ poverty + log_pop, data = OR_data)
+summary(OR_linearModelSignificant)
+
+#test to show a scatterplot OR HPI data against year
+```
+
+```{r CO Analysis}
+CO_data <- merged_final[ merged_final$state == "CO", ]
+```
+
+```{r CO Descriptive Statistics}
+#Descriptive statistics
+stat.desc(CO_data)
+```
+
+```{r CO Pairwise Correlations}
+#pairwise correlations
+sapply(CO_data, class)
+sapply(CO_data, is.factor)
+cor(CO_data[sapply(CO_data, function(x) !is.character(x))])
+```
+
+
+```{r CO Histogram Unemployment}
+hist(CO_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r CO Histogram Poverty}
+hist(CO_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r CO scatter unemployment}
+scatter.smooth(CO_data$year, CO_data$value, main="CO Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r CO scatter HPI}
+scatter.smooth(CO_data$year, CO_data$HPI, main="CO HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r CO scatter poverty}
+scatter.smooth(x=CO_data$year, y=CO_data$poverty, main="CO % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r CO scatter RMHI}
+CO_data$RMHI <- as.integer(CO_data$RMHI)
+scatter.smooth(x=CO_data$year, y=CO_data$RMHI, main="CO Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r CO scatter population}
+CO_data$population <- as.integer(CO_data$population)
+scatter.smooth(x=CO_data$year, y=CO_data$population, main="CO Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r CO scatter log RMHI}
+#CO_data$log_RMHI <- as.integer(CO_data$log_RMHI)
+scatter.smooth(x=CO_data$year, y=CO_data$log_RMHI, main="CO Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r CO scatter log population}
+#CO_data$log_pop <- as.integer(CO_data$log_pop)
+scatter.smooth(x=CO_data$year, y=CO_data$log_pop, main="CO Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r CO correlations}
+cor(CO_data$RMHI, CO_data$value)
+cor(CO_data$HPI, CO_data$value)
+cor(CO_data$poverty, CO_data$value)
+cor(CO_data$population, CO_data$value)
+cor(CO_data$sp500, CO_data$value)
+cor(CO_data$log_pop, CO_data$value)
+cor(CO_data$log_RMHI, CO_data$value)
+#run base correlations between categories and dependent variable
+```
+
+```{r CO boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(CO_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(CO_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r CO boxplot poverty}
+boxplot(CO_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(CO_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r CO linear regression all}
+#run multiple linear model for data
+CO_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = CO_data)
+summary(CO_reg1)
+anova(CO_reg1)
+```
+
+```{r CO linear regression log all}
+CO_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = CO_data)
+summary(CO_reg2)
+anova(CO_reg2)
+```
+
+```{r CO linear significant variables}
+CO_linearModelSignificant <- lm(value ~ poverty + log_pop, data = CO_data)
+summary(CO_linearModelSignificant)
+
+#test to show a scatterplot CO HPI data against year
+```
+
+```{r WV Analysis}
+WV_data <- merged_final[ merged_final$state == "WV", ]
+```
+
+```{r WV Descriptive Statistics}
+#Descriptive statistics
+stat.desc(WV_data)
+```
+
+```{r WV Pairwise Correlations}
+#pairwise correlations
+sapply(WV_data, class)
+sapply(WV_data, is.factor)
+cor(WV_data[sapply(WV_data, function(x) !is.character(x))])
+```
+
+
+```{r WV Histogram Unemployment}
+hist(WV_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r WV Histogram Poverty}
+hist(WV_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r WV scatter unemployment}
+scatter.smooth(WV_data$year, WV_data$value, main="WV Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r WV scatter HPI}
+scatter.smooth(WV_data$year, WV_data$HPI, main="WV HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r WV scatter poverty}
+scatter.smooth(x=WV_data$year, y=WV_data$poverty, main="WV % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r WV scatter RMHI}
+WV_data$RMHI <- as.integer(WV_data$RMHI)
+scatter.smooth(x=WV_data$year, y=WV_data$RMHI, main="WV Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r WV scatter population}
+WV_data$population <- as.integer(WV_data$population)
+scatter.smooth(x=WV_data$year, y=WV_data$population, main="WV Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r WV scatter log RMHI}
+#WV_data$log_RMHI <- as.integer(WV_data$log_RMHI)
+scatter.smooth(x=WV_data$year, y=WV_data$log_RMHI, main="WV Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r WV scatter log population}
+#WV_data$log_pop <- as.integer(WV_data$log_pop)
+scatter.smooth(x=WV_data$year, y=WV_data$log_pop, main="WV Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r WV correlations}
+cor(WV_data$RMHI, WV_data$value)
+cor(WV_data$HPI, WV_data$value)
+cor(WV_data$poverty, WV_data$value)
+cor(WV_data$population, WV_data$value)
+cor(WV_data$sp500, WV_data$value)
+cor(WV_data$log_pop, WV_data$value)
+cor(WV_data$log_RMHI, WV_data$value)
+#run base correlations between categories and dependent variable
+```
+
+```{r WV boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(WV_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(WV_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r WV boxplot poverty}
+boxplot(WV_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(WV_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r WV linear regression all}
+#run multiple linear model for data
+WV_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = WV_data)
+summary(WV_reg1)
+anova(WV_reg1)
+```
+
+```{r WV linear regression log all}
+WV_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = WV_data)
+summary(WV_reg2)
+anova(WV_reg2)
+```
+
+```{r WV linear significant variables}
+WV_linearModelSignificant <- lm(value ~ poverty + log_pop, data = WV_data)
+summary(WV_linearModelSignificant)
+
+#test to show a scatterplot WV HPI data against year
+```
+
+```{r ME Analysis}
+ME_data <- merged_final[ merged_final$state == "ME", ]
+```
+
+```{r ME Descriptive Statistics}
+#Descriptive statistics
+stat.desc(ME_data)
+```
+
+```{r ME Pairwise Correlations}
+#pairwise correlations
+sapply(ME_data, class)
+sapply(ME_data, is.factor)
+cor(ME_data[sapply(ME_data, function(x) !is.character(x))])
+```
+
+
+```{r ME Histogram Unemployment}
+hist(ME_data$value,
+     main="Histogram of Unemployment Across All 50 States",
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+```{r ME Histogram Poverty}
+hist(ME_data$poverty,
+     main="Histogram of Poverty Across All 50 States",
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+
+```{r ME scatter unemployment}
+scatter.smooth(ME_data$year, ME_data$value, main="ME Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
+```
+
+```{r ME scatter HPI}
+scatter.smooth(ME_data$year, ME_data$HPI, main="ME HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
+```
+
+```{r ME scatter poverty}
+scatter.smooth(x=ME_data$year, y=ME_data$poverty, main="ME % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+```
+
+```{r ME scatter RMHI}
+ME_data$RMHI <- as.integer(ME_data$RMHI)
+scatter.smooth(x=ME_data$year, y=ME_data$RMHI, main="ME Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
+```
+
+```{r ME scatter population}
+ME_data$population <- as.integer(ME_data$population)
+scatter.smooth(x=ME_data$year, y=ME_data$population, main="ME Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
+```
+
+```{r ME scatter log RMHI}
+#ME_data$log_RMHI <- as.integer(ME_data$log_RMHI)
+scatter.smooth(x=ME_data$year, y=ME_data$log_RMHI, main="ME Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+```
+
+```{r ME scatter log population}
+#ME_data$log_pop <- as.integer(ME_data$log_pop)
+scatter.smooth(x=ME_data$year, y=ME_data$log_pop, main="ME Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+```
+
+```{r ME correlations}
+cor(ME_data$RMHI, ME_data$value)
+cor(ME_data$HPI, ME_data$value)
+cor(ME_data$poverty, ME_data$value)
+cor(ME_data$population, ME_data$value)
+cor(ME_data$sp500, ME_data$value)
+cor(ME_data$log_pop, ME_data$value)
+cor(ME_data$log_RMHI, ME_data$value)
+#run base correlations between categories and dependent variable
+```
+
+```{r ME boxplot unemployment}
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(ME_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(ME_data$value)$out))  # box plot for 'Unemployment'
+```
+
+```{r ME boxplot poverty}
+boxplot(ME_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(ME_data$poverty)$out))  # box plot for 'Poverty'
+#create box plot for poverty level and unemployment level
+```
+
+```{r ME linear regression all}
+#run multiple linear model for data
+ME_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = ME_data)
+summary(ME_reg1)
+anova(ME_reg1)
+```
+
+```{r ME linear regression log all}
+ME_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = ME_data)
+summary(ME_reg2)
+anova(ME_reg2)
+```
+
+```{r ME linear significant variables}
+ME_linearModelSignificant <- lm(value ~ poverty + log_pop, data = ME_data)
+summary(ME_linearModelSignificant)
+
+#test to show a scatterplot ME HPI data against year
+```
+
+
+
+
+
+
+
+
+
+
+
+
+Next, the data we collected is considered a time series as it was measured on an annual basis.  We used the unemployment data that was collected for each state and implemented a time series forecast using the Holt Method.  
+
+Time series data typically contains four components: trend, seasonal, cyclical, and random components.  Trend is represented by the long-term movements in the data series, whether that be upward or downward.  A seasonal component normally represents repetitions that occur within a single year time period, whereas the cyclical component represents long-term trends that are usually a factor the economy.  Typically, seasonal trends are easier to identify than cyclical trends because the time period of the seasonal trend is often known ahead of time.  Random components represent the random and unexplained movements within the time series data.
+
+As our unemployment data is shown on an annual basis, we will be focusing on the trend, cyclical, random components in our analysis.  The type of analysis we have chosen to focus on is labeled the Holt Exponential Smoothing Method.  This method is characterized by incorporating the large upward and downward fluctuations in the series and is most appropriate when the dataset lacks seasonal variation.  We went into greater detail explaining the process that was used on IL, but for the other states we will simply analyze the model and the results.
+
+
+```{r IL Holt Analysis}
+
+IL_TS <- ts(IL_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+IL_TData <- window(IL_TS, end = c(2004))
+IL_VData <- window(IL_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+In the above section of code, we begin our time series analysis of IL by creating the time series with the TS function.  We set the start and end values of our times series data equal to the time span our data streches and set the frequency equal to one.
+
+Using the window function we partition our dataset into a training set, IL_TData, and a validation set, IL_VData.
+
+```{r IL Holt Analysis User}
+IL_HUser <- ets(IL_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(IL_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+It is common for practitioners to provide user supplied values for alpha and beta (smoothing parameters) due to the fact that the computer generated values are known to over-fit models where the data performed well in the sample period, but does not exhibit the same performance in the future.  In our data, we will compare both user supplied and computer generated smoothing parameters.  We will then compare the error measures to determine which model is a better fit to our data.  We used an alpha = 0.2 and beta = 0.15 when creating our user supplier parameters model.
+
+The ets function above denotes the error, trend, and seasonality of the training set, respectively. The first letter in the model string represents that we want the error to be additive, the second letter represents that fact that we expect the trend type to be additive, and the third letter represents the fact that we do not intend on incorporating seasonality into our model.
+
+
+```{r IL Holt Analysis Computer}
+IL_HCmp <- ets(IL_TData, model = "AAN")
+summary(IL_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+By comparing the root mean squared error(RMSE) and the mean absolute percentage error(MAPE) we can assess the fitness of the user supplier and computer generate models.  The user supplied model has a higher RMSE and MAPE indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r IL Holt Set Forecast}
+IL_nV <- length(IL_VData)
+IL_fUser <- forecast(IL_HUser, h = IL_nV)
+IL_fCmp <- forecast(IL_HCmp, h = IL_nV)
+```
+The length function above was used to set the number of observations equal to the length of the validation set.
+Then the forecast function was used to make a forecast based on the observations in our training set.
+
+```{r IL Holt Analysis User Accuracy}
+accuracy(IL_fUser,IL_VData)
+```
+```{r IL Holt Analysis Computer Accuracy}
+accuracy(IL_fCmp,IL_VData)
+```
+When comparing the accuracy function results we see conflicting results in our validation set.  The test set shows that the RMSE and MAPE of the user generated model provides a better fit for the performance of our data.  Ultimately, we decided to continue the process using the computer generated model, but the user supplied model would work just as well.
+  
+``` {r IL Holt Forecast}
+IL_HFinal <- ets(IL_TS, model = "AAN")
+forecast(IL_HFinal, h=1)
+```
+Finally, we bring everything together with the ets function and forecast the unemployment level for the next period, 2019. The forecast that was generated shows us that the expected value of the Illinois unemployment level in December 2019 is equal to 4.42% based on the trends that were observed in our model.
+
+
+
+```{r TX Holt Analysis}
+
+TX_TS <- ts(TX_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+TX_TData <- window(TX_TS, end = c(2004))
+TX_VData <- window(TX_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r TX Holt Analysis User}
+TX_HUser <- ets(TX_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(TX_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r TX Holt Analysis Computer}
+TX_HCmp <- ets(TX_TData, model = "AAN")
+summary(TX_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+The user supplied model for the state of Texas has a higher RMSE and MAPE at 1.0227 and 14.7904 respectively. The computer generated model has a RMSE of 0.8366 and a MAPE of 11.3532 indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r TX Holt Set Forecast}
+TX_nV <- length(TX_VData)
+TX_fUser <- forecast(TX_HUser, h = TX_nV)
+TX_fCmp <- forecast(TX_HCmp, h = TX_nV)
+```
+```{r TX Holt Analysis User Accuracy}
+accuracy(TX_fUser,TX_VData)
+```
+```{r TX Holt Analysis Computer Accuracy}
+accuracy(TX_fCmp,TX_VData)
+```
+The accuracy function confirms that the computer generated model is a better overall fit to the data we are using to create our model.  This is due to the fact that once again the validation set exhibits a lower RMSE and MAPE.
+
+``` {r TX Holt Forecast}
+TX_HFinal <- ets(TX_TS, model = "AAN")
+forecast(TX_HFinal, h=1)
+```
+The forecast that was generated shows us that the expected value of the Texas unemployment level in December 2019 is equal to 3.79% based on the trends that were observed in our model.
+
+
+
+```{r MO Holt Analysis}
+
+MO_TS <- ts(MO_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+MO_TData <- window(MO_TS, end = c(2004))
+MO_VData <- window(MO_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r MO Holt Analysis User}
+MO_HUser <- ets(MO_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(MO_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r MO Holt Analysis Computer}
+MO_HCmp <- ets(MO_TData, model = "AAN")
+summary(MO_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+The user supplied model for the state of Missouri has a higher RMSE and MAPE at 0.9134 and 16.6072 respectively. The computer generated model has a RMSE of 0.6557 and a MAPE of 11.5924 indicating that the computer generated model provides a better overall fit to our forecast. 
+```{r MO Holt Set Forecast}
+MO_nV <- length(MO_VData)
+MO_fUser <- forecast(MO_HUser, h = MO_nV)
+MO_fCmp <- forecast(MO_HCmp, h = MO_nV)
+```
+```{r MO Holt Analysis User Accuracy}
+accuracy(MO_fUser,MO_VData)
+```
+```{r MO Holt Analysis Computer Accuracy}
+accuracy(MO_fCmp,MO_VData)
+```
+The results from the accuracy function conflict with our initial assessment. The accuracy function shows that in the validation set, the RMSE and MAPE of the user defined model are lower and indicate there is a better overall fit to the data. For this exercise we will proceed with the computer generated model.
+``` {r MO Holt Forecast}
+MO_HFinal <- ets(MO_TS, model = "AAN")
+forecast(MO_HFinal, h=1)
+```
+The forecast that was generated shows us that the expected value of the Missouri unemployment level in December 2019 is equal to 2.94% based on the trends that were observed in our model.
+
+
+```{r WA Holt Analysis}
+
+WA_TS <- ts(WA_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+WA_TData <- window(WA_TS, end = c(2004))
+WA_VData <- window(WA_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+
+```{r WA Holt Analysis User}
+WA_HUser <- ets(WA_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(WA_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+
+```{r WA Holt Analysis Computer}
+WA_HCmp <- ets(WA_TData, model = "AAN")
+summary(WA_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+
+The user supplied model for the state of Washington has a higher RMSE and MAPE at 1.1583 and 14.6664 respectively. The computer generated model has a RMSE of 0.8353 and a MAPE of 10.6124 indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r WA Holt Set Forecast}
+WA_nV <- length(WA_VData)
+WA_fUser <- forecast(WA_HUser, h = WA_nV)
+WA_fCmp <- forecast(WA_HCmp, h = WA_nV)
+```
+```{r WA Holt Analysis User Accuracy}
+accuracy(WA_fUser,WA_VData)
+```
+```{r WA Holt Analysis Computer Accuracy}
+accuracy(WA_fCmp,WA_VData)
+```
+
+The results from the accuracy function conflict with our initial assessment. The accuracy function shows that in the validation set, the RMSE and MAPE of the user defined model are lower and indicate there is a better overall fit to the data. For this exercise we will proceed with the computer generated model.
+
+``` {r WA Holt Forecast}
+WA_HFinal <- ets(WA_TS, model = "AAN")
+forecast(WA_HFinal, h=1)
+```
+The forecast that was generated shows us that the expected value of the Washington unemployment level in December 2019 is equal to 4.63% based on the trends that were observed in our model.
+
+
+```{r OR Holt Analysis}
+
+OR_TS <- ts(OR_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+OR_TData <- window(OR_TS, end = c(2004))
+OR_VData <- window(OR_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+```{r OR Holt Analysis User}
+OR_HUser <- ets(OR_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(OR_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+```{r OR Holt Analysis Computer}
+OR_HCmp <- ets(OR_TData, model = "AAN")
+summary(OR_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+
+The user supplied model for the state of Oregon has a higher RMSE and MAPE at 1.2116 and 14.9369 respectively. The computer generated model has a RMSE of 1.0738 and a MAPE of 13.2990 indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r OR Holt Set Forecast}
+OR_nV <- length(OR_VData)
+OR_fUser <- forecast(OR_HUser, h = OR_nV)
+OR_fCmp <- forecast(OR_HCmp, h = OR_nV)
+```
+```{r OR Holt Analysis User Accuracy}
+accuracy(OR_fUser,OR_VData)
+```
+```{r OR Holt Analysis Computer Accuracy}
+accuracy(OR_fCmp,OR_VData)
+```
+The results from the accuracy function conflict with our initial assessment. The accuracy function shows that in the validation set, the RMSE of the user defined model is lower and indicate there is a better overall fit to the data. The MAPE of the validation set confirms our initial assessment that the computer generated model provides a better overall fit. For this exercise we will proceed with the computer generated model.
+
+``` {r OR Holt Forecast}
+OR_HFinal <- ets(OR_TS, model = "AAN")
+forecast(OR_HFinal, h=1)
+```
+The forecast that was generated shows us that the expected value of the Oregon unemployment level in December 2019 is equal to 3.7678% based on the trends that were observed in our model.
+
+```{r CO Holt Analysis}
+
+CO_TS <- ts(CO_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+CO_TData <- window(CO_TS, end = c(2004))
+CO_VData <- window(CO_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+```{r CO Holt Analysis User}
+CO_HUser <- ets(CO_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(CO_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+```{r CO Holt Analysis Computer}
+CO_HCmp <- ets(CO_TData, model = "AAN")
+summary(CO_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+The user supplied model for the state of Colorado has a higher RMSE and MAPE at 1.2473 and 18.2991 respectively. The computer generated model has a RMSE of 0.9833 and a MAPE of 15.5345 indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r CO Holt Set Forecast}
+CO_nV <- length(CO_VData)
+CO_fUser <- forecast(CO_HUser, h = CO_nV)
+CO_fCmp <- forecast(CO_HCmp, h = CO_nV)
+```
+```{r CO Holt Analysis User Accuracy}
+accuracy(CO_fUser,CO_VData)
+```
+
+```{r CO Holt Analysis Computer Accuracy}
+accuracy(CO_fCmp,CO_VData)
+```
+
+The accuracy function confirms that the computer generated model is a better overall fit to the data we are using to create our model.  This is due to the fact that once again the validation set exhibits a lower RMSE and MAPE.
+
+``` {r CO Holt Forecast}
+CO_HFinal <- ets(CO_TS, model = "AAN")
+forecast(CO_HFinal, h=1)
+```
+
+The forecast that was generated shows us that the expected value of the Colorado unemployment level in December 2019 is equal to 2.7246% based on the trends that were observed in our model.
+
+```{r WV Holt Analysis}
+
+WV_TS <- ts(WV_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+WV_TData <- window(WV_TS, end = c(2004))
+WV_VData <- window(WV_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+```{r WV Holt Analysis User}
+WV_HUser <- ets(WV_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(WV_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+```{r WV Holt Analysis Computer}
+WV_HCmp <- ets(WV_TData, model = "AAN")
+summary(WV_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+
+The user supplied model for the state of West Virginia has a higher RMSE and MAPE at 1.4288 and 14.1598 respectively. The computer generated model has a RMSE of 0.9736 and a MAPE of 8.5906 indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r WV Holt Set Forecast}
+WV_nV <- length(WV_VData)
+WV_fUser <- forecast(WV_HUser, h = WV_nV)
+WV_fCmp <- forecast(WV_HCmp, h = WV_nV)
+```
+```{r WV Holt Analysis User Accuracy}
+accuracy(WV_fUser,WV_VData)
+```
+```{r WV Holt Analysis Computer Accuracy}
+accuracy(WV_fCmp,WV_VData)
+```
+
+The accuracy function confirms that the computer generated model is a better overall fit to the data we are using to create our model.  This is due to the fact that once again the validation set exhibits a lower RMSE and MAPE.
+
+``` {r WV Holt Forecast}
+WV_HFinal <- ets(WV_TS, model = "AAN")
+forecast(WV_HFinal, h=1)
+```
+
+The forecast that was generated shows us that the expected value of the West Virginia unemployment level in December 2019 is equal to 4.70% based on the trends that were observed in our model.
+
+```{r ME Holt Analysis}
+
+ME_TS <- ts(ME_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+ME_TData <- window(ME_TS, end = c(2004))
+ME_VData <- window(ME_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+```{r ME Holt Analysis User}
+ME_HUser <- ets(ME_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(ME_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+```{r ME Holt Analysis Computer}
+ME_HCmp <- ets(ME_TData, model = "AAN")
+summary(ME_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+
+The user supplied model for the state of Maine has a higher RMSE and MAPE at 1.4430 and 26.5876 respectively. The computer generated model has a RMSE of 0.8670 and a MAPE of 12.1342 indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r ME Holt Set Forecast}
+ME_nV <- length(ME_VData)
+ME_fUser <- forecast(ME_HUser, h = ME_nV)
+ME_fCmp <- forecast(ME_HCmp, h = ME_nV)
+```
+```{r ME Holt Analysis User Accuracy}
+accuracy(ME_fUser,ME_VData)
+```
+```{r ME Holt Analysis Computer Accuracy}
+accuracy(ME_fCmp,ME_VData)
+```
+
+The accuracy function confirms that the computer generated model is a better overall fit to the data we are using to create our model.  This is due to the fact that once again the validation set exhibits a lower RMSE and MAPE.
+
+``` {r ME Holt Forecast}
+ME_HFinal <- ets(ME_TS, model = "AAN")
+forecast(ME_HFinal, h=1)
+```
+The forecast that was generated shows us that the expected value of the Maine unemployment level in December 2019 is equal to 2.6793% based on the trends that were observed in our model.

@@ -27,3 +27,2126 @@ plot(x=test$year, y=test$population, main="Population by Year", xlab = "Year", y
 #test to show a scatterplot CA HPI data against year
 ```
 
+```{r packages}
+library(devtools)
+library(blsAPI)
+library(rjson)
+library(curl)
+library(dplyr)
+library(tidyverse)
+```
+
+See example 2 at <https://github.com/mikeasilva/blsAPI> and adapt code.
+
+Note: Create your own API key at <https://data.bls.gov/registrationEngine/> and insert the key they email you as the registration key parameter.
+
+Pull the data via the API:
+
+```{r import_AL}
+unemp_AL = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST010000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_AL = rbind(unemp_AL,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_AL, order(year, period))
+unemp_AL = unemp_AL[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of AL for applicable years
+```
+
+```{r import_AK}
+unemp_AK = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST020000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_AK = rbind(unemp_AK,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_AK, order(year, period))
+unemp_AK = unemp_AK[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of AK for applicable years
+```
+
+```{r import_AZ}
+unemp_AZ = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST040000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_AZ = rbind(unemp_AZ,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_AZ, order(year, period))
+unemp_AZ = unemp_AZ[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of AZ for applicable years
+```
+
+```{r import_AR}
+unemp_AR = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST050000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_AR = rbind(unemp_AR,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_AR, order(year, period))
+unemp_AR = unemp_AR[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of AR for applicable years
+```
+
+```{r import_CA}
+unemp_CA = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST060000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_CA = rbind(unemp_CA,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_CA, order(year, period))
+unemp_CA = unemp_CA[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of CA for applicable years
+```
+
+```{r import_CO}
+unemp_CO = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST080000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_CO = rbind(unemp_CO,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_CO, order(year, period))
+unemp_CO = unemp_CO[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of CO for applicable years
+```
+
+```{r import_CT}
+unemp_CT = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST090000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_CT = rbind(unemp_CT,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_CT, order(year, period))
+unemp_CT = unemp_CT[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of ct for applicable years
+```
+
+```{r import_DE}
+unemp_DE = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST100000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_DE = rbind(unemp_DE,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_DE, order(year, period))
+unemp_DE = unemp_DE[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of DE for applicable years
+```
+
+```{r import_FL}
+unemp_FL = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST120000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_FL = rbind(unemp_FL,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_FL, order(year, period))
+unemp_FL = unemp_FL[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of FL for applicable years
+```
+
+```{r import_GA}
+unemp_GA = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST130000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_GA = rbind(unemp_GA,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_GA, order(year, period))
+unemp_GA = unemp_GA[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of GA for applicable years
+```
+
+```{r import_HI}
+unemp_HI = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST150000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_HI = rbind(unemp_HI,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_HI, order(year, period))
+unemp_HI = unemp_HI[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of HI for applicable years
+```
+
+```{r import_ID}
+unemp_ID = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST160000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_ID = rbind(unemp_ID,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_ID, order(year, period))
+unemp_ID = unemp_ID[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of ID for applicable years
+```
+
+```{r import_IL}
+unemp_IL = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST170000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_IL = rbind(unemp_IL,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_IL, order(year, period))
+unemp_IL = unemp_IL[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of IL for applicable years
+```
+
+```{r import_IN}
+unemp_IN = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST180000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_IN = rbind(unemp_IN,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_IN, order(year, period))
+unemp_IN = unemp_IN[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of IN for applicable years
+```
+
+```{r import_IA}
+unemp_IA = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST190000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_IA = rbind(unemp_IA,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_IA, order(year, period))
+unemp_IA = unemp_IA[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of IA for applicable years
+```
+
+```{r import_KS}
+unemp_KS = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST200000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_KS = rbind(unemp_KS,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_KS, order(year, period))
+unemp_KS = unemp_KS[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of KS for applicable years
+```
+
+```{r import_KY}
+unemp_KY = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST210000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_KY = rbind(unemp_KY,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_KY, order(year, period))
+unemp_KY = unemp_KY[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of KY for applicable years
+```
+
+```{r import_LA}
+unemp_LA = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST220000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_LA = rbind(unemp_LA,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_LA, order(year, period))
+unemp_LA = unemp_LA[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of LA for applicable years
+```
+
+```{r import_ME}
+unemp_ME = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST230000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_ME = rbind(unemp_ME,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_ME, order(year, period))
+unemp_ME = unemp_ME[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of ME for applicable years
+```
+
+```{r import_MD}
+unemp_MD = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST240000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_MD = rbind(unemp_MD,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_MD, order(year, period))
+unemp_MD = unemp_MD[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of MO for applicable years
+```
+
+```{r import_MA}
+unemp_MA = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST250000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_MA = rbind(unemp_MA,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_MA, order(year, period))
+unemp_MA = unemp_MA[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of MA for applicable years
+```
+
+```{r import_MI}
+unemp_MI = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST260000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_MI = rbind(unemp_MI,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_MI, order(year, period))
+unemp_MI = unemp_MI[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of MI for applicable years
+```
+
+```{r import_MN}
+unemp_MN = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST270000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_MN = rbind(unemp_MN,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_MN, order(year, period))
+unemp_MN = unemp_MN[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of MN for applicable years
+```
+
+```{r import_MS}
+unemp_MS = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST280000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_MS = rbind(unemp_MS,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_MS, order(year, period))
+unemp_MS = unemp_MS[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of MS for applicable years
+```
+
+
+```{r import_MO}
+unemp_MO = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST290000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_MO = rbind(unemp_MO,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_MO, order(year, period))
+unemp_MO = unemp_MO[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of MO for applicable years
+```
+
+```{r import_MT}
+unemp_MT = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST300000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_MT = rbind(unemp_MT,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_MT, order(year, period))
+unemp_MT = unemp_MT[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of MT for applicable years
+```
+
+```{r import_NE}
+unemp_NE = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST310000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_NE = rbind(unemp_NE,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_NE, order(year, period))
+unemp_NE = unemp_NE[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of NE for applicable years
+```
+
+```{r import_NV}
+unemp_NV = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST320000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_NV = rbind(unemp_NV,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_NV, order(year, period))
+unemp_NV = unemp_NV[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of NV for applicable years
+```
+
+```{r import_NH}
+unemp_NH = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST330000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_NH = rbind(unemp_NH,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_NH, order(year, period))
+unemp_NH = unemp_NH[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of NH for applicable years
+```
+
+```{r import_NJ}
+unemp_NJ = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST340000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_NJ = rbind(unemp_NJ,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_NJ, order(year, period))
+unemp_NJ = unemp_NJ[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of NJ for applicable years
+```
+
+```{r import_NM}
+unemp_NM = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST350000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_NM = rbind(unemp_NM,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_NM, order(year, period))
+unemp_NM = unemp_NM[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of NM for applicable years
+```
+
+```{r import_NY}
+unemp_NY = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST360000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_NY = rbind(unemp_NY,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_NY, order(year, period))
+unemp_NY = unemp_NY[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of NY for applicable years
+```
+
+```{r import_NC}
+unemp_NC = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST370000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_NC = rbind(unemp_NC,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_NC, order(year, period))
+unemp_NC = unemp_NC[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of NC for applicable years
+```
+
+```{r import_ND}
+unemp_ND = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST380000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_ND = rbind(unemp_ND,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_ND, order(year, period))
+unemp_ND = unemp_ND[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of ND for applicable years
+```
+
+```{r import_OH}
+unemp_OH = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST390000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_OH = rbind(unemp_OH,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_OH, order(year, period))
+unemp_OH = unemp_OH[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of OH for applicable years
+```
+
+```{r import_OK}
+unemp_OK = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST400000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_OK = rbind(unemp_OK,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_OK, order(year, period))
+unemp_OK = unemp_OK[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of OK for applicable years
+```
+
+```{r import_OR}
+unemp_OR = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST410000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_OR = rbind(unemp_OR,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_OR, order(year, period))
+unemp_OR = unemp_OR[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of OR for applicable years
+```
+
+```{r import_PA}
+unemp_PA = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST420000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_PA = rbind(unemp_PA,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_PA, order(year, period))
+unemp_PA = unemp_PA[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of PA for applicable years
+```
+
+```{r import_RI}
+unemp_RI = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST440000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_RI = rbind(unemp_RI,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_RI, order(year, period))
+unemp_RI = unemp_RI[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of RI for applicable years
+```
+
+```{r import_SC}
+unemp_SC = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST450000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_SC = rbind(unemp_SC,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_SC, order(year, period))
+unemp_SC = unemp_SC[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of SC for applicable years
+```
+
+```{r import_SD}
+unemp_SD = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST460000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_SD = rbind(unemp_SD,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_SD, order(year, period))
+unemp_SD = unemp_SD[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of SD for applicable years
+```
+
+```{r import_TN}
+unemp_TN = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST470000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_TN = rbind(unemp_TN,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_TN, order(year, period))
+unemp_TN = unemp_TN[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of TN for applicable years
+```
+
+```{r import_TX}
+unemp_TX = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST480000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_TX = rbind(unemp_TX,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_TX, order(year, period))
+unemp_TX = unemp_TX[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of TX for applicable years
+```
+
+```{r import_UT}
+unemp_UT = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST490000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_UT = rbind(unemp_UT,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_UT, order(year, period))
+unemp_UT = unemp_UT[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of TX for applicable years
+```
+
+```{r import_VT}
+unemp_VT = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST500000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_VT = rbind(unemp_VT,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_VT, order(year, period))
+unemp_VT = unemp_VT[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of VT for applicable years
+```
+
+```{r import_VA}
+unemp_VA = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST510000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_VA = rbind(unemp_VA,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_VA, order(year, period))
+unemp_VA = unemp_VA[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of VA for applicable years
+```
+
+```{r import_WI}
+unemp_WI = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST550000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_WI = rbind(unemp_WI,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_WI, order(year, period))
+unemp_WI = unemp_WI[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of WI for applicable years
+```
+
+```{r import_WY}
+unemp_WY = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST560000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_WY = rbind(unemp_WY,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_WY, order(year, period))
+unemp_WY = unemp_WY[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of WY for applicable years
+```
+
+```{r import_WA}
+unemp_WA = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST530000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_WA = rbind(unemp_WA,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_WA, order(year, period))
+unemp_WA = unemp_WA[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of WA for applicable years
+```
+
+```{r import_WV}
+unemp_WV = data.frame()
+startyear = 1948
+endyear = 1957
+nreq = ceiling((2020-1948)/10)
+for (i in 1:nreq){
+  if(endyear > 2020){
+    endyear = 2020
+  }
+  payload <- list(
+  'seriesid'=c('LAUST540000000000003'),
+  'startyear'=startyear,
+  'endyear'=endyear,
+  'registrationkey'="a2de97f7227a493292f9bfa48daa17fa")
+  response <- blsAPI(payload, 2)
+  json <- fromJSON(response)
+  apiDF <- function(data){
+    df <- data.frame(year=character(),
+                     period=character(),
+                     periodName=character(),
+                     value=character(),
+                     stringsAsFactors=FALSE)
+    i <- 0
+    for(d in data){
+      i <- i + 1
+      df[i,] <- unlist(d)
+    }
+    return(df)
+  }
+  unemppart <- apiDF(json$Results$series[[1]]$data)
+  unemp_WV = rbind(unemp_WV,unemppart)
+  startyear=startyear+10
+  endyear=endyear+10
+}
+index <- with(unemp_WV, order(year, period))
+unemp_WV = unemp_WV[index, ]
+#https://www.bls.gov/help/hlpforma.htm#SM
+#Pulls Unemployment data from BLS on state of WV for applicable years
+```
+
+``` {r add_state_variable}
+unemp_AL$state <- "AL"
+unemp_AK$state <- "AK"
+unemp_AZ$state <- "AZ"
+unemp_AR$state <- "AR"
+unemp_CA$state <- "CA"
+unemp_CO$state <- "CO"
+unemp_CT$state <- "CT"
+unemp_DE$state <- "DE"
+unemp_FL$state <- "FL"
+unemp_GA$state <- "GA"
+unemp_HI$state <- "HI"
+unemp_ID$state <- "ID"
+unemp_IL$state <- "IL"
+unemp_IN$state <- "IN"
+unemp_IA$state <- "IA"
+unemp_KS$state <- "KS"
+unemp_KY$state <- "KY"
+unemp_LA$state <- "LA"
+unemp_ME$state <- "ME"
+unemp_MD$state <- "MD"
+unemp_MA$state <- "MA"
+unemp_MI$state <- "MI"
+unemp_MN$state <- "MN"
+unemp_MS$state <- "MS"
+unemp_MO$state <- "MO"
+unemp_MT$state <- "MT"
+unemp_NE$state <- "NE"
+unemp_NV$state <- "NV"
+unemp_NH$state <- "NH"
+unemp_NJ$state <- "NJ"
+unemp_NM$state <- "NM"
+unemp_NY$state <- "NY"
+unemp_NC$state <- "NC"
+unemp_ND$state <- "ND"
+unemp_OH$state <- "OH"
+unemp_OK$state <- "OK"
+unemp_OR$state <- "OR"
+unemp_PA$state <- "PA"
+unemp_RI$state <- "RI"
+unemp_SC$state <- "SC"
+unemp_SD$state <- "SD"
+unemp_TN$state <- "TN"
+unemp_TX$state <- "TX"
+unemp_UT$state <- "UT"
+unemp_VT$state <- "VT"
+unemp_VA$state <- "VA"
+unemp_WV$state <- "WV"
+unemp_WA$state <- "WA"
+unemp_WI$state <- "WI"
+unemp_WY$state <- "WY"
+
+```
+
+``` {r format_dataframes}
+#colnames(unemp_MO)[which(names(unemp_MO) == "value")] <- "MO_Unemployment"
+#colnames(unemp_MO)[which(names(unemp_MO) == "periodName")] <- "month"
+#renames columns with month and unemployment data for Missouri
+
+#colnames(unemp_WA)[which(names(unemp_WA) == "value")] <- "WA_Unemployment"
+#colnames(unemp_WA)[which(names(unemp_WA) == "periodName")] <- "month"
+#renames columns with month and unemployment data for Washington
+
+#colnames(unemp_WV)[which(names(unemp_WV) == "value")] <- "WV_Unemployment"
+#colnames(unemp_WV)[which(names(unemp_WV) == "periodName")] <- "month"
+#renames columns with month and unemployment data for West Virginia
+
+#colnames(unemp_LA)[which(names(unemp_LA) == "value")] <- "LA_Unemployment"
+#colnames(unemp_LA)[which(names(unemp_LA) == "periodName")] <- "month"
+
+
+#Commented out all old code
+
+```
+
+
+``` {r Overall_Unemployment}
+unemp_all <- rbind(unemp_AK, unemp_AL, unemp_AR, unemp_AZ, unemp_CA, unemp_CO, unemp_CT, unemp_DE, unemp_FL, unemp_GA, unemp_HI, unemp_IA, unemp_ID, unemp_IL, unemp_IN, unemp_KS, unemp_KY, unemp_LA, unemp_MA, unemp_MD, unemp_ME, unemp_MI, unemp_MN, unemp_MO, unemp_MS, unemp_MT, unemp_NC,unemp_ND, unemp_NE, unemp_NH, unemp_NJ, unemp_NM, unemp_NV, unemp_NY, unemp_OH, unemp_OK,  unemp_OR, unemp_PA, unemp_RI, unemp_SC, unemp_SD, unemp_TN, unemp_TX, unemp_UT, unemp_VA, unemp_VT, unemp_WA, unemp_WI, unemp_WV, unemp_WY)
+
+#Joins unemployment from all states in question into a single dataframe
+```
+
+``` {r quarterly_data}
+
+
+unemp_all$quarter <- ifelse(unemp_all$period=="M03", "1",
+        ifelse(unemp_all$period=="M06", "2",
+        ifelse(unemp_all$period=="M09", "3",
+        ifelse(unemp_all$period=="M12", "4",
+                        NA  ))))
+
+unemp_scrubbed <- na.omit(unemp_all)
+#Adds quarterly variable to unempl_all df.  This should prepare it to be merged with the HPI df.
+
+
+
+```
+``` {r annual_data}
+
+
+unemp_all$annual <- ifelse(unemp_all$period=="M12", "1",NA  )
+
+unemp_scrubbed_annual <- na.omit(unemp_all)
+#Adds annual variable to unempl_all df.  This should prepare it to be merged with the HPI df.
+
+
+```
