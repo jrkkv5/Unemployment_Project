@@ -4,553 +4,126 @@ author: "https://github.com/jrkkv5/FIN6572Fall2020/blob/master/National%20Debt/i
 date: "11/8/2020"
 output: html_document
 ---
-
-``` {r load_necessary_packages}
-library(readr)
+```{r packages}
 library(devtools)
 library(blsAPI)
 library(rjson)
 library(curl)
+library(RCurl)
+library(knitr)
+library(readr)
 library(dplyr)
 library(tidyverse)
-#Loads necessary packages
-
-
-merged_final <- read_csv("csv files/mergedFinal.csv")
-#Reads final file into merged dataframe
-
-merged_final$log_pop = log(merged_final$population)
-
-merged_final$log_RMHI = log(merged_final$RMHI)
-
-#My states: CA, TX, NY, FL, PA, IL, OH
-```
-
-
-``` {r CA Basic Analysis}
-
-CA_observations <- merged_final[ merged_final$state == "CA", ]
-CA_base <- CA_observations[ CA_observations$year < 2014, ] # Creates training set for model
-CA_sampleset <-  CA_observations[ CA_observations$year > 2013, ] # Creates set to test model
-
-scatter.smooth(CA_base$year, CA_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
-
-scatter.smooth(CA_base$year, CA_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
-
-scatter.smooth(x=CA_base$year, y=CA_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
-
-scatter.smooth(x=CA_base$year, y=CA_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
-
-CA_base$RMHI <- as.integer(CA_base$RMHI)
-plot(x=CA_base$year, y=CA_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
-
-CA_base$population <- as.integer(CA_base$population)
-plot(x=CA_base$year, y=CA_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
-
-
-cor(CA_base$RMHI, CA_base$value)
-cor(CA_base$HPI, CA_base$value)
-cor(CA_base$poverty, CA_base$value)
-cor(CA_base$population, CA_base$value)
-cor(CA_base$sp500, CA_base$value)
-#run base correlations between categories and dependent variable
-
-par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(CA_base$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(CA_base$value)$out))  # box plot for 'Unemployment'
-boxplot(CA_base$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(CA_base$poverty)$out))  # box plot for 'Poverty'
-#create box plot for poverty level and unemployment level
-
-
-CA_Test <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = CA_base)
-summary(CA_Test)
-anova(CA_Test)
-#run multiple linear model for data
-
-CA_linearModelSignificant <- lm(value ~ poverty + population, data = CA_base)
-summary(CA_linearModelSignificant)
-#test to show a scatterplot CA HPI data against year
-
-CA_linearModel <- lm(value ~ poverty + RMHI + HPI + log(population) + sp500, data = CA_base)
-summary(CA_linearModel)
-anova(CA_linearModel)
-```
-
-``` {r TX Basic Analysis}
-
-TX_base <- merged_final[ merged_final$state == "TX", ]
-
-scatter.smooth(TX_base$year, TX_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/3)
-
-scatter.smooth(TX_base$year, TX_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
-
-scatter.smooth(x=TX_base$year, y=TX_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
-
-scatter.smooth(x=TX_base$year, y=TX_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
-
-TX_base$RMHI <- as.integer(TX_base$RMHI)
-plot(x=TX_base$year, y=TX_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
-
-TX_base$population <- as.integer(TX_base$population)
-plot(x=TX_base$year, y=TX_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
-
-```
-``` {r NY Basic Analysis}
-
-NY_base <- merged_final[ merged_final$state == "NY", ]
-
-scatter.smooth(NY_base$year, NY_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
-
-scatter.smooth(NY_base$year, NY_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
-
-scatter.smooth(x=NY_base$year, y=NY_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
-
-scatter.smooth(x=NY_base$year, y=NY_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
-
-NY_base$RMHI <- as.integer(NY_base$RMHI)
-plot(x=NY_base$year, y=NY_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
-
-NY_base$population <- as.integer(NY_base$population)
-plot(x=NY_base$year, y=NY_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
-
-```
-
-``` {r FL Basic Analysis}
-
-FL_base <- merged_final[ merged_final$state == "FL", ]
-
-scatter.smooth(FL_base$year, FL_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
-
-scatter.smooth(FL_base$year, FL_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
-
-scatter.smooth(x=FL_base$year, y=FL_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
-
-scatter.smooth(x=FL_base$year, y=FL_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
-
-FL_base$RMHI <- as.integer(FL_base$RMHI)
-plot(x=FL_base$year, y=FL_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
-
-FL_base$population <- as.integer(FL_base$population)
-plot(x=FL_base$year, y=FL_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
+library(rmarkdown)
+library(pastecs)
+library(ggplot2)
+library(corrplot)
+library(lmtest)
+library(forecast)
+#loads the necessary packages
 
 ```
 
 
-``` {r PA Basic Analysis}
+Next, the data we collected is considered a time series as it was measured on an annual basis.  We used the unemployment data that was collected for each state and implemented a time series forecast using the Holt Method.  
 
-PA_base <- merged_final[ merged_final$state == "PA", ]
+Time series data typically contains four components: trend, seasonal, cyclical, and random components.  Trend is represented by the long-term movements in a data series, whether that be upward or downward.  Seasonality is normally represented by repetitions that occur within a single year time period, whereas the cyclical component represents long-term trends that are usually a factor the economy.  Typically, seasonal trends are easier to identify than cyclical trends because the time period of a seasonal trend is often known ahead of time.  Random components represent the random and unexplained movements within the time series data.
 
-scatter.smooth(PA_base$year, PA_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
+As the unemployment data we collected is shown on an annual basis, we will be focusing on the trend, cyclical, random components in our analysis.  The type of analysis we have chosen to focus on is called Holt Exponential Smoothing Method.  This method is characterized by incorporating large upward and downward fluctuations in data series.  This method is especially relevant because the dataset lacks seasonal variation.  
 
-scatter.smooth(PA_base$year, PA_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
+```{r IL Holt Analysis}
 
-scatter.smooth(x=PA_base$year, y=PA_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
+IL_TS <- ts(IL_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
 
-scatter.smooth(x=PA_base$year, y=PA_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
+IL_TData <- window(IL_TS, end = c(2004))
+IL_VData <- window(IL_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+In the above section of code, we begin our Holt analysis of IL by creating the time series with the TS function.  We set the start and end values of our times series data equal to the time span our data stretches and set the frequency equal to one.
 
-PA_base$RMHI <- as.integer(PA_base$RMHI)
-plot(x=PA_base$year, y=PA_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
+Using the window function we partition our dataset into a training set, IL_TData, and a validation set, IL_VData.
 
-PA_base$population <- as.integer(PA_base$population)
-plot(x=PA_base$year, y=PA_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
+```{r IL Holt Analysis User}
+IL_HUser <- ets(IL_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(IL_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+It is common for practitioners to provide user supplied values for alpha and beta (smoothing parameters) due to the fact that the computer generated values are known to over-fit models where the data performed well in the sample period, but does not exhibit the same performance in the future.  In our data, we compare both user supplied and computer generated smoothing parameters.  We then compare the error measures to determine which model is a better fit to our data.  We used an alpha = 0.2 and beta = 0.15 when creating the user supplier parameters model.
 
+The ets function above denotes the error, trend, and seasonality of the training set. The first letter in the model string represents that we want the error to be additive, the second letter represents that fact that we expect the trend type to be additive, and the third letter, "N", represents the fact that we do not intend on incorporating seasonality into our model.
+
+
+```{r IL Holt Analysis Computer}
+IL_HCmp <- ets(IL_TData, model = "AAN")
+summary(IL_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+We replicated the ets function using the computer generated smoothing parameters and obtained the output above. By comparing the root mean squared error(RMSE) and the mean absolute percentage error(MAPE) we can assess the fitness of the user supplier and computer generate models.  The user supplied model has a higher RMSE and MAPE indicating that the computer generated model provides a better overall fit for making a forecast. 
+
+```{r IL Holt Set Forecast}
+IL_nV <- length(IL_VData)
+IL_fUser <- forecast(IL_HUser, h = IL_nV)
+IL_fCmp <- forecast(IL_HCmp, h = IL_nV)
+```
+The length function is used to set the number of observations equal to the length of the validation set.
+Then the forecast function is utilized to make a forecast based on the observations in our training set.
+
+```{r IL Holt Analysis User Accuracy}
+accuracy(IL_fUser,IL_VData)
+```
+```{r IL Holt Analysis Computer Accuracy}
+accuracy(IL_fCmp,IL_VData)
+```
+The accuracy function is used to test the error term outputs that were created using the training set.  When comparing the accuracy function results we see conflicting results in our validation set.  The test set shows that the RMSE and MAPE of the user generated model provides a better fit for the performance of our data.  Ultimately, we decided to continue the process using the computer generated model, but the user supplied model would work just as well.
+  
+``` {r IL Holt Forecast}
+IL_HFinal <- ets(IL_TS, model = "AAN")
+forecast(IL_HFinal, h=1)
+```
+Finally, everything is brought together with the ets and forecast functions to forecast the unemployment level for the next period, 2019. The forecast generated shows that the expected value of the Illinois unemployment level in December 2019 is equal to 4.42% based on the trends that is observed in our model.  Based on the forecast we expect that the unemployment will range from 2.85% to 5.98% at a 80% confidence interval.  Additionally, we can be 95% confident that the unemployment value will fall between 2.02% and 6.81%. Based on the actual unemployment rate in IL for December 2019 of 3.5% our model was accurate at predicting the unemployment value at both the 95% and 80% confidence intervals.
+
+
+```{r WV Holt Analysis}
+
+WV_TS <- ts(WV_data$value, start = c(1984), end = c(2018), frequency = 1)
+#Stores start, end, and frequency of timeseries data
+
+WV_TData <- window(WV_TS, end = c(2004))
+WV_VData <- window(WV_TS, start = c(2005))
+#Partitions the training and validation sets
+```
+```{r WV Holt Analysis User}
+WV_HUser <- ets(WV_TData, model = "AAN", alpha = 0.2, beta = 0.15)
+summary(WV_HUser)
+#Training data set using user based parameters for alpha and beta for smoothing.
+```
+```{r WV Holt Analysis Computer}
+WV_HCmp <- ets(WV_TData, model = "AAN")
+summary(WV_HCmp)
+#Training data set using computer based parameters for alpha and beta for smoothing.
+```
+With West Virginia, we setup the datasets and partitioned them into training and validation sets following similar steps to Illinois.
+
+The user supplied model for the state of West Virginia has a higher RMSE and MAPE at 1.4288 and 14.1598, respectively. The computer generated model has a RMSE of 0.9736 and a MAPE of 8.5906 indicating that the computer generated model provides a better overall fit to our forecast. 
+
+```{r WV Holt Set Forecast}
+WV_nV <- length(WV_VData)
+WV_fUser <- forecast(WV_HUser, h = WV_nV)
+WV_fCmp <- forecast(WV_HCmp, h = WV_nV)
+```
+```{r WV Holt Analysis User Accuracy}
+accuracy(WV_fUser,WV_VData)
+```
+```{r WV Holt Analysis Computer Accuracy}
+accuracy(WV_fCmp,WV_VData)
 ```
 
-``` {r IL Basic Analysis}
+The accuracy function confirms that the computer generated model is a better overall fit to the data we are using to create the model.  This is due to the fact that once again the validation set exhibits a lower RMSE and MAPE under the computer generated model.
 
-IL_base <- merged_final[ merged_final$state == "IL", ]
-
-scatter.smooth(IL_base$year, IL_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
-
-scatter.smooth(IL_base$year, IL_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
-
-scatter.smooth(x=IL_base$year, y=IL_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
-
-scatter.smooth(x=IL_base$year, y=IL_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
-
-IL_base$RMHI <- as.integer(IL_base$RMHI)
-plot(x=IL_base$year, y=IL_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
-
-IL_base$population <- as.integer(IL_base$population)
-plot(x=IL_base$year, y=IL_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
-
+``` {r WV Holt Forecast}
+WV_HFinal <- ets(WV_TS, model = "AAN")
+forecast(WV_HFinal, h=1)
 ```
 
-``` {r OH Basic Analysis}
-
-OH_base <- merged_final[ merged_final$state == "OH", ]
-
-scatter.smooth(OH_base$year, OH_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue")
-
-scatter.smooth(OH_base$year, OH_base$HPI, main="HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
-
-scatter.smooth(x=OH_base$year, y=OH_base$value, main="Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
-
-scatter.smooth(x=OH_base$year, y=OH_base$poverty, main="% of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
-
-OH_base$RMHI <- as.integer(OH_base$RMHI)
-plot(x=OH_base$year, y=OH_base$RMHI, main="Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
-
-OH_base$population <- as.integer(OH_base$population)
-plot(x=OH_base$year, y=OH_base$population, main="Population by Year", xlab = "Year", ylab = "Population" )
-
-```
-
-```{r CA Analysis}
-# Using
-# Freds
-# Updates
-
-CA_data <- merged_final[ merged_final$state == "CA", ]
-
-scatter.smooth(CA_data$year, CA_data$value, main="CA Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/3)
-
-scatter.smooth(CA_data$year, CA_data$HPI, main="CA HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
-
-scatter.smooth(x=CA_data$year, y=CA_data$value, main="CA Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
-
-scatter.smooth(x=CA_data$year, y=CA_data$poverty, main="CA % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
-
-CA_data$RMHI <- as.integer(CA_data$RMHI)
-plot(x=CA_data$year, y=CA_data$RMHI, main="CA Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
-
-CA_data$population <- as.integer(CA_data$population)
-plot(x=CA_data$year, y=CA_data$population, main="CA Population by Year", xlab = "Year", ylab = "Population" )
-
-CA_data$log_RMHI <- as.integer(CA_data$log_RMHI)
-plot(x=CA_data$year, y=CA_data$log_RMHI, main="CA Median Household Income by Year", xlab = "Year", ylab = "log_RMHI" )
-
-CA_data$log_pop <- as.integer(CA_data$log_pop)
-plot(x=CA_data$year, y=CA_data$log_pop, main="CA Population by Year", xlab = "Year", ylab = "log_Population" )
-
-cor(CA_data$RMHI, CA_data$value)
-cor(CA_data$HPI, CA_data$value)
-cor(CA_data$poverty, CA_data$value)
-cor(CA_data$population, CA_data$value)
-cor(CA_data$sp500, CA_data$value)
-#run base correlations between categories and dependent variable
-
-par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(CA_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(CA_data$value)$out))  # box plot for 'Unemployment'
-boxplot(CA_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(CA_data$poverty)$out))  # box plot for 'Poverty'
-#create box plot for poverty level and unemployment level
-
-#run multiple linear model for data
-CA_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = CA_data)
-summary(CA_reg1)
-anova(CA_reg1)
-
-CA_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = CA_data)
-summary(CA_reg2)
-anova(CA_reg2)
-
-CA_linearModelSignificant <- lm(value ~ poverty + population, data = CA_data)
-summary(CA_linearModelSignificant)
-
-#test to show a scatterplot CA HPI data against year
-```
-
-```{r TX Analysis}
-TX_data <- merged_final[ merged_final$state == "TX", ]
-
-scatter.smooth(TX_data$year, TX_data$value, main="TX Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/3)
-
-scatter.smooth(TX_data$year, TX_data$HPI, main="TX HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
-
-scatter.smooth(x=TX_data$year, y=TX_data$value, main="TX Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
-
-scatter.smooth(x=TX_data$year, y=TX_data$poverty, main="TX % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
-
-TX_data$RMHI <- as.integer(TX_data$RMHI)
-plot(x=TX_data$year, y=TX_data$RMHI, main="TX Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
-
-TX_data$population <- as.integer(TX_data$population)
-plot(x=TX_data$year, y=TX_data$population, main="TX Population by Year", xlab = "Year", ylab = "Population" )
-
-TX_data$log_RMHI <- as.integer(TX_data$log_RMHI)
-plot(x=TX_data$year, y=TX_data$log_RMHI, main="TX Median Household Income by Year", xlab = "Year", ylab = "log_RMHI" )
-
-TX_data$log_pop <- as.integer(TX_data$log_pop)
-plot(x=TX_data$year, y=TX_data$log_pop, main="TX Population by Year", xlab = "Year", ylab = "log_Population" )
-
-cor(TX_data$RMHI, TX_data$value)
-cor(TX_data$HPI, TX_data$value)
-cor(TX_data$poverty, TX_data$value)
-cor(TX_data$population, TX_data$value)
-cor(TX_data$sp500, TX_data$value)
-#run base correlations between categories and dependent variable
-
-par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(TX_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(TX_data$value)$out))  # box plot for 'Unemployment'
-boxplot(TX_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(TX_data$poverty)$out))  # box plot for 'Poverty'
-#create box plot for poverty level and unemployment level
-
-#run multiple linear model for data
-TX_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = TX_data)
-summary(TX_reg1)
-anova(TX_reg1)
-
-TX_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = TX_data)
-summary(TX_reg2)
-anova(TX_reg2)
-
-TX_linearModelSignificant <- lm(value ~ poverty + population, data = TX_data)
-summary(TX_linearModelSignificant)
-
-#test to show a scatterplot TX HPI data against year
-```
-
-
-```{r NY Analysis}
-NY_data <- merged_final[ merged_final$state == "NY", ]
-
-scatter.smooth(NY_data$year, NY_data$value, main="NY Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/3)
-
-scatter.smooth(NY_data$year, NY_data$HPI, main="NY HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
-
-scatter.smooth(x=NY_data$year, y=NY_data$value, main="NY Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
-
-scatter.smooth(x=NY_data$year, y=NY_data$poverty, main="NY % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
-
-NY_data$RMHI <- as.integer(NY_data$RMHI)
-plot(x=NY_data$year, y=NY_data$RMHI, main="NY Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
-
-NY_data$population <- as.integer(NY_data$population)
-plot(x=NY_data$year, y=NY_data$population, main="NY Population by Year", xlab = "Year", ylab = "Population" )
-
-NY_data$log_RMHI <- as.integer(NY_data$log_RMHI)
-plot(x=NY_data$year, y=NY_data$log_RMHI, main="NY Median Household Income by Year", xlab = "Year", ylab = "log_RMHI" )
-
-NY_data$log_pop <- as.integer(NY_data$log_pop)
-plot(x=NY_data$year, y=NY_data$log_pop, main="NY Population by Year", xlab = "Year", ylab = "log_Population" )
-
-cor(NY_data$RMHI, NY_data$value)
-cor(NY_data$HPI, NY_data$value)
-cor(NY_data$poverty, NY_data$value)
-cor(NY_data$population, NY_data$value)
-cor(NY_data$sp500, NY_data$value)
-#run base correlations between categories and dependent variable
-
-par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(NY_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(NY_data$value)$out))  # box plot for 'Unemployment'
-boxplot(NY_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(NY_data$poverty)$out))  # box plot for 'Poverty'
-#create box plot for poverty level and unemployment level
-
-#run multiple linear model for data
-NY_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = NY_data)
-summary(NY_reg1)
-anova(NY_reg1)
-
-NY_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = NY_data)
-summary(NY_reg2)
-anova(NY_reg2)
-
-NY_linearModelSignificant <- lm(value ~ poverty + population, data = NY_data)
-summary(NY_linearModelSignificant)
-
-#test to show a scatterplot NY HPI data against year
-```
-
-
-```{r FL Analysis}
-FL_data <- merged_final[ merged_final$state == "FL", ]
-
-scatter.smooth(FL_data$year, FL_data$value, main="FL Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/3)
-
-scatter.smooth(FL_data$year, FL_data$HPI, main="FL HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
-
-scatter.smooth(x=FL_data$year, y=FL_data$value, main="FL Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
-
-scatter.smooth(x=FL_data$year, y=FL_data$poverty, main="FL % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
-
-FL_data$RMHI <- as.integer(FL_data$RMHI)
-plot(x=FL_data$year, y=FL_data$RMHI, main="FL Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
-
-FL_data$population <- as.integer(FL_data$population)
-plot(x=FL_data$year, y=FL_data$population, main="FL Population by Year", xlab = "Year", ylab = "Population" )
-
-FL_data$log_RMHI <- as.integer(FL_data$log_RMHI)
-plot(x=FL_data$year, y=FL_data$log_RMHI, main="FL Median Household Income by Year", xlab = "Year", ylab = "log_RMHI" )
-
-FL_data$log_pop <- as.integer(FL_data$log_pop)
-plot(x=FL_data$year, y=FL_data$log_pop, main="FL Population by Year", xlab = "Year", ylab = "log_Population" )
-
-cor(FL_data$RMHI, FL_data$value)
-cor(FL_data$HPI, FL_data$value)
-cor(FL_data$poverty, FL_data$value)
-cor(FL_data$population, FL_data$value)
-cor(FL_data$sp500, FL_data$value)
-#run base correlations between categories and dependent variable
-
-par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(FL_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(FL_data$value)$out))  # box plot for 'Unemployment'
-boxplot(FL_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(FL_data$poverty)$out))  # box plot for 'Poverty'
-#create box plot for poverty level and unemployment level
-
-#run multiple linear model for data
-FL_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = FL_data)
-summary(FL_reg1)
-anova(FL_reg1)
-
-FL_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = FL_data)
-summary(FL_reg2)
-anova(FL_reg2)
-
-FL_linearModelSignificant <- lm(value ~ poverty + population, data = FL_data)
-summary(FL_linearModelSignificant)
-
-#test to show a scatterplot FL HPI data against year
-```
-
-```{r PA Analysis}
-PA_data <- merged_final[ merged_final$state == "PA", ]
-
-scatter.smooth(PA_data$year, PA_data$value, main="PA Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/3)
-
-scatter.smooth(PA_data$year, PA_data$HPI, main="PA HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
-
-scatter.smooth(x=PA_data$year, y=PA_data$value, main="PA Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
-
-scatter.smooth(x=PA_data$year, y=PA_data$poverty, main="PA % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
-
-PA_data$RMHI <- as.integer(PA_data$RMHI)
-plot(x=PA_data$year, y=PA_data$RMHI, main="PA Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
-
-PA_data$population <- as.integer(PA_data$population)
-plot(x=PA_data$year, y=PA_data$population, main="PA Population by Year", xlab = "Year", ylab = "Population" )
-
-PA_data$log_RMHI <- as.integer(PA_data$log_RMHI)
-plot(x=PA_data$year, y=PA_data$log_RMHI, main="PA Median Household Income by Year", xlab = "Year", ylab = "log_RMHI" )
-
-PA_data$log_pop <- as.integer(PA_data$log_pop)
-plot(x=PA_data$year, y=PA_data$log_pop, main="PA Population by Year", xlab = "Year", ylab = "log_Population" )
-
-cor(PA_data$RMHI, PA_data$value)
-cor(PA_data$HPI, PA_data$value)
-cor(PA_data$poverty, PA_data$value)
-cor(PA_data$population, PA_data$value)
-cor(PA_data$sp500, PA_data$value)
-#run base correlations between categories and dependent variable
-
-par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(PA_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(PA_data$value)$out))  # box plot for 'Unemployment'
-boxplot(PA_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(PA_data$poverty)$out))  # box plot for 'Poverty'
-#create box plot for poverty level and unemployment level
-
-#run multiple linear model for data
-PA_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = PA_data)
-summary(PA_reg1)
-anova(PA_reg1)
-
-PA_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = PA_data)
-summary(PA_reg2)
-anova(PA_reg2)
-
-PA_linearModelSignificant <- lm(value ~ poverty + population, data = PA_data)
-summary(PA_linearModelSignificant)
-
-#test to show a scatterplot PA HPI data against year
-```
-
-
-
-```{r IL Analysis}
-IL_data <- merged_final[ merged_final$state == "IL", ]
-
-scatter.smooth(IL_data$year, IL_data$value, main="IL Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/3)
-
-scatter.smooth(IL_data$year, IL_data$HPI, main="IL HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
-
-scatter.smooth(x=IL_data$year, y=IL_data$value, main="IL Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
-
-scatter.smooth(x=IL_data$year, y=IL_data$poverty, main="IL % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
-
-IL_data$RMHI <- as.integer(IL_data$RMHI)
-plot(x=IL_data$year, y=IL_data$RMHI, main="IL Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
-
-IL_data$population <- as.integer(IL_data$population)
-plot(x=IL_data$year, y=IL_data$population, main="IL Population by Year", xlab = "Year", ylab = "Population" )
-
-IL_data$log_RMHI <- as.integer(IL_data$log_RMHI)
-plot(x=IL_data$year, y=IL_data$log_RMHI, main="IL Median Household Income by Year", xlab = "Year", ylab = "log_RMHI" )
-
-IL_data$log_pop <- as.integer(IL_data$log_pop)
-plot(x=IL_data$year, y=IL_data$log_pop, main="IL Population by Year", xlab = "Year", ylab = "log_Population" )
-
-cor(IL_data$RMHI, IL_data$value)
-cor(IL_data$HPI, IL_data$value)
-cor(IL_data$poverty, IL_data$value)
-cor(IL_data$population, IL_data$value)
-cor(IL_data$sp500, IL_data$value)
-#run base correlations between categories and dependent variable
-
-par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(IL_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(IL_data$value)$out))  # box plot for 'Unemployment'
-boxplot(IL_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(IL_data$poverty)$out))  # box plot for 'Poverty'
-#create box plot for poverty level and unemployment level
-
-#run multiple linear model for data
-IL_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = IL_data)
-summary(IL_reg1)
-anova(IL_reg1)
-
-IL_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = IL_data)
-summary(IL_reg2)
-anova(IL_reg2)
-
-IL_linearModelSignificant <- lm(value ~ poverty + population, data = IL_data)
-summary(IL_linearModelSignificant)
-
-#test to show a scatterplot IL HPI data against year
-```
-
-
-```{r OH Analysis}
-OH_data <- merged_final[ merged_final$state == "OH", ]
-
-scatter.smooth(OH_data$year, OH_data$value, main="OH Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/3)
-
-scatter.smooth(OH_data$year, OH_data$HPI, main="OH HPI by Year", xlab = "Year", ylab = "HPI", col = "blue")
-
-scatter.smooth(x=OH_data$year, y=OH_data$value, main="OH Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "red")
-
-scatter.smooth(x=OH_data$year, y=OH_data$poverty, main="OH % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20))
-
-OH_data$RMHI <- as.integer(OH_data$RMHI)
-plot(x=OH_data$year, y=OH_data$RMHI, main="OH Median Household Income by Year", xlab = "Year", ylab = "RMHI" )
-
-OH_data$population <- as.integer(OH_data$population)
-plot(x=OH_data$year, y=OH_data$population, main="OH Population by Year", xlab = "Year", ylab = "Population" )
-
-OH_data$log_RMHI <- as.integer(OH_data$log_RMHI)
-plot(x=OH_data$year, y=OH_data$log_RMHI, main="OH Median Household Income by Year", xlab = "Year", ylab = "log_RMHI" )
-
-OH_data$log_pop <- as.integer(OH_data$log_pop)
-plot(x=OH_data$year, y=OH_data$log_pop, main="OH Population by Year", xlab = "Year", ylab = "log_Population" )
-
-cor(OH_data$RMHI, OH_data$value)
-cor(OH_data$HPI, OH_data$value)
-cor(OH_data$poverty, OH_data$value)
-cor(OH_data$population, OH_data$value)
-cor(OH_data$sp500, OH_data$value)
-#run base correlations between categories and dependent variable
-
-par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(OH_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(OH_data$value)$out))  # box plot for 'Unemployment'
-boxplot(OH_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(OH_data$poverty)$out))  # box plot for 'Poverty'
-#create box plot for poverty level and unemployment level
-
-#run multiple linear model for data
-OH_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = OH_data)
-summary(OH_reg1)
-anova(OH_reg1)
-
-OH_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = OH_data)
-summary(OH_reg2)
-anova(OH_reg2)
-
-OH_linearModelSignificant <- lm(value ~ poverty + population, data = OH_data)
-summary(OH_linearModelSignificant)
-
-#test to show a scatterplot OH HPI data against year
-```
-
+The forecast for West Virginia shows us that the expected value of the unemployment level in December 2019 is equal to 4.70% based on the trends that were observed in the computer generated model. At an 80% confidence interval we expect West Virginia's unemployment level to range from 3.20% to 6.20%.  Additionally, we can be 95% confident that the unemployment rate will be in the 2.41% to 6.99% level. The actual unemployment rate for the State of West Virginia in December 2019 is 5%. Our model is accurate at both the 95% and 80% confidence intervals.  5% is also fairly close to the point estimate at 4.7% further signifying that our model produces accurate results.
