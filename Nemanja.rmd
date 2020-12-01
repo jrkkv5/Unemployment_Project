@@ -1145,7 +1145,7 @@ The box plot for the state of Washing shows the median or second quartile to be 
 boxplot(WA_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(WA_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
-The box plot for the poverty, proportion of the population below the poverty line, within the state of Washington shows the second quartile to be at 11%. For roughly 75% of the unemployment rates between the years 1984-2019 we finf the unemployment rates to be between 9.75% and 11.75%. The outliers within the poverty ratio are due to downturns of the economy within the United States.
+The box plot for the poverty, proportion of the population below the poverty line, within the state of Washington shows the second quartile to be at 11%. For roughly 75% of the unemployment rates between the years 1984-2019 we finD the unemployment rates to be between 9.75% and 11.75%. The outliers within the poverty ratio are due to downturns of the economy within the United States.
 ```{r WA linear regression all}
 #run multiple linear model for data
 WA_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = WA_data)
@@ -1416,34 +1416,35 @@ hist(WV_data$poverty,
 ```{r WV scatter unemployment}
 scatter.smooth(WV_data$year, WV_data$value, main="WV Unemployment by Year", xlab = "Year", ylab = "Unemployment", col = "blue", span = 2/8)
 ```
-
+Unemployment in the state of West Virgina from 1984-2007 was at a declining pace, which shows that the job market is saturated and the state is in good standing. But, prior to the stock market crash of 2008-2009, we can notice that the unemployment rate began to start creeping up and shot up drastically when the stock market crash occurred. Since, then we have seen a steady decline to the rates that were prior to that of the stock market crash. 
 ```{r WV scatter HPI}
 scatter.smooth(WV_data$year, WV_data$HPI, main="WV HPI by Year", xlab = "Year", ylab = "HPI", col = "blue", span = 2/8)
 ```
-
+THe housing price index in the state of West Virginia is much different than that of the poverty level and household income. THe housing price index has been steadily increasing within the state since 1984. THe one dip in the housing price index was the stock market crash of 2008-2009. As the scatter plot shows the housing price index dropped down for about two years and since then has continued to increase at a steady pace. 
 ```{r WV scatter poverty}
 scatter.smooth(x=WV_data$year, y=WV_data$poverty, main="WV % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
 ```
-
+The poverty, proportion of the population below the poverty line, in West Virginia is pretty consistent with the other scatter plots related to the other variables. As we can in the scatter plot the recession of the 1990s caused the unemployment to shoot up as did the stock market crash in 2008-2009. The stock market crash affected the poverty level negatively for the next few years until the stock market was able to rebound and that is when the proportion of the population below the poverty line began to dwindle. 
 ```{r WV scatter RMHI}
 WV_data$RMHI <- as.integer(WV_data$RMHI)
 scatter.smooth(x=WV_data$year, y=WV_data$RMHI, main="WV Median Household Income by Year", xlab = "Year", ylab = "RMHI", span = 2/8 )
 ```
-
+As the scatter plot suggests for the state of West Virginia, the median household income does fluctuate from year to year, but does show a consistent increasing trend throughout the years. The dips on the median household income seem to come at time of economic recessions. In the 1990s, the recession caused the drop in the median household income. As well did the stock market crash that occurred in 2008-2009. 
 ```{r WV scatter population}
 WV_data$population <- as.integer(WV_data$population)
 scatter.smooth(x=WV_data$year, y=WV_data$population, main="WV Population by Year", xlab = "Year", ylab = "Population", span = 2/8 )
 ```
-
+The population scatter plot for the state of West Virginia shows a steady decrease from 1984-1992. There started to be a slight increase in the population till about 1998 where it began to dwindle down again until 2001. From 2001, the population continued to increase steadily until 2012 and has been declining slightly ever since then. 
 ```{r WV scatter log RMHI}
 #WV_data$log_RMHI <- as.integer(WV_data$log_RMHI)
 scatter.smooth(x=WV_data$year, y=WV_data$log_RMHI, main="WV Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
 ```
-
+The log of the median household income paints a similar picture to that of the median household income and the poverty level within the state. The log of the median household income gradually increases throughout the years, but does dwindle down at times of economic instability. The recession of the 1990s and the stock market crash of 2008-2009 did cause the median household income to dwindle, but other than those two instances the median household income within the state has increased steadily. 
 ```{r WV scatter log population}
 #WV_data$log_pop <- as.integer(WV_data$log_pop)
 scatter.smooth(x=WV_data$year, y=WV_data$log_pop, main="WV Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
 ```
+THe log of the population paints the same picture as the scatter plot for the population. The log of the population within the state of West Virginia shows the times of growth within the population and the withering of the population within the state. As we can see from the scatter plot between 2001 and 2012 there was growth of the population which has since then been followed with withering of the population within the state. 
 
 ```{r WV correlations}
 cor(WV_data$RMHI, WV_data$value)
@@ -1473,12 +1474,12 @@ The correlation between the log of the median household income and unemployment 
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
 boxplot(WV_data$value, main="Unemployment", sub=paste("Outlier rows: ", boxplot.stats(WV_data$value)$out))  # box plot for 'Unemployment'
 ```
-
+The box plot for the unemployment in the state of West Virginia shows that the median or second quartile for the unemployment rate within the state to be about 7%. Between the first and third quartile range we find the first quartile to be 5% and the third quartile to be at around 9%. This is where most of the unemployment between the years 1984 and 2019 tend to recide. The outliers for unemployment occur at times of economic instability that are found throughout the entire United States. 
 ```{r WV boxplot poverty}
 boxplot(WV_data$poverty, main="Poverty", sub=paste("Outlier rows: ", boxplot.stats(WV_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
-
+THe poverty level within the state of West Virginia for the second quartile range is around 17%. THe first quartile begins at about 15.5% and the third quartile range is at 19%. The outliers for the data are similar to the outliers of the unemployment rate which occur at times of economic instability within the state, but also the entire United States. 
 ```{r WV linear regression all}
 #run multiple linear model for data
 WV_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = WV_data)
