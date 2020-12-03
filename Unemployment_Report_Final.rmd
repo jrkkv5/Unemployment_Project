@@ -1,6 +1,6 @@
 ---
-title: "Unemployment Report Final"
-author: "https://github.com/jrkkv5/FIN6572Fall2020/blob/master/National%20Debt/importNationalDebt.Rmd"
+title: "Unemployment Report"
+author: "Jeff Krueger, Corey Lund, Fred Mwangi, and Nemanja Orescanin"
 date: "12/2/2020"
 output: html_document
 ---
@@ -33,10 +33,13 @@ First we need to load the libraries that we will be using into our report. The a
 merged_final <- read_csv("csv files/mergedFinal.csv")
 #Reads final file into merged dataframe
 
+names(merged_final)[4] <- "unemployment"
+
 merged_final$log_pop = as.numeric(log(merged_final$population))
 
 merged_final$log_RMHI = as.numeric(log(merged_final$RMHI))
 ```
+
 As a final step in scrubbing our data, we created new variables to log the population and median household income variables and store it in our dataframe. By taking the logarithmic values, these variables become more comparable to the existing variables we have within our dataset.
 
 Below you can see the table output once all of our data has been merged.
@@ -45,14 +48,36 @@ Below you can see the table output once all of our data has been merged.
 kable(merged_final[1:6,], caption = "Table Including All Variables")
 ```
 
+
+
 ```{r All data Sescriptive Statistics}
 #Descriptive Statistics
 stat.desc(merged_final)
 ```
 
-The dependent variable, value, has a mean of 5.44 and a standard deviation of 1.97. Connecticut and Virginia had the lowest unemployment rate in 2000 at 1.8, while West Virginia was the highest in 1984 at 14.4. The mean HPI was 260.15, with a standard deviation of 119.68. The lowest HPI was found in Wyoming in 1987 at 79.25, while the highest was in Massachusetts in 2018 at 796.86. Poverty rate had a mean of 12.85 and a standard deviation of 3.69. In 1989, Connecticut had the lowest rate of 2.9, and Mississippi had the highest at 27.2 in 1988. The sp500 index mean was 9.48, and the standard deviation was 15.70. In 2008, the lowest index was seen at -38.4, while the highest index was seen in 1995 at 34.11. The logged population mean was 15.06, and the standard deviation was 1.01. Wyoming had the lowest logged population at 13.025 in 1990, California having the highest in 2018 at 17.49. Logged real median household income had a mean of 10.95 and a standard deviation of 0.17. In 2013, Mississippi had the lowest log_RMHI at 10.46, while Massachusetts had the highest in 2018 at 11.37. 
+The dependent variable, unemployment, has a mean of 5.44% and a standard deviation of 1.97%. Connecticut and Virginia have the lowest unemployment rates in 2000 at 1.8%, while West Virginia has the highest rate in 1984 at 14.4%. The mean HPI is 260.15, with a standard deviation of 119.68. The lowest HPI can be found in Wyoming in 1987 at 79.25, while the highest is in Massachusetts in 2018 at 796.86. Poverty rate has a mean of 12.85% and a standard deviation of 3.69%. In 1989, Connecticut has the lowest rate of poverty at 2.9%, and Mississippi has the highest at 27.2% in 1988. The change in the S&P 500 index has a mean of 9.48, and the standard deviation was 15.70. In 2008, the index had its sharpest decrease at -38.4, while its greatest increase registered in 1995 at 34.11. The logarithmic value of the population  has a mean of 15.06, and the standard deviation is 1.01. Wyoming shows the lowest log population at 13.025 in 1990 with California having the highest in 2018 at 17.49. The logarithmic real median household income has a mean of 10.95 and a standard deviation of 0.17. In 2013, Mississippi has the lowest log_RMHI at 10.46, while Massachusetts shows the highest in 2018 at 11.37. 
 
-After our data was merged we binned the states into groups based on the mean population of the years in our dataframe (1984-2018).  Below are the bins that were created:
+```{r Histogram Unemployment}
+hist(merged_final$unemployment,
+     main="Histogram of Unemployment \nin the United States from 1984-2018",
+     ylim = c(0,800),
+     xlab="Unemployment Rate",
+     breaks = 5)
+```
+
+Histograms graphically summarize the frequency distribution of a data set. In the United States, from 1984 to 2018, the annual unemployment rate ranges from 1.8%-14.4%. The histogram displays a slight positive skew. Overall the most frequent unemployment rate in the United States over this time period hovers around 5%.
+
+```{r Histogram Pov}
+hist(merged_final$poverty,
+     main="Histogram of Poverty \nin the United States from 1984-2018",
+     ylim = c(0,1000),
+     xlab="Poverty Rate",
+     breaks = 5)
+```
+The histogram of the poverty rate in the United States graphically shows much more of a normal distribution. This is demonstrated by the bell curve that is formed in the graph above. In the United States, from 1984 to 2018, the annual poverty rate ranges from 2.9%-27.2%.  Based on the normal distribution it can be assumed that the observations for poverty rate are evenly distributed around the mean 12.85%.
+
+
+After all of the data was merged we binned the states into groups based on the mean population of the years in our dataframe (1984-2018).  Below are the bins that were created:
 
 Population < 2,000,000
 WV, NM, NE, ID, ME, HI, NH, RI, MT, DE, SD, ND, AK, VT, WY
@@ -67,10 +92,10 @@ Population > 10,000,000
 CA, TX, NY, FL, PA, IL, OH
 
 
-Each member of our group performed some basic analysis on the states within one of the bins. After performing our initial analysis we chose to focus on 2 states within each bin.  The states we chose to focus on are: TX, IL, MO, WA, OR, CO, WV, ME
+Each member of our group performed some basic analysis on the states within one of the bins. After performing our initial analysis we chose to focus on 2 states: Illinois and West Virginia.  The remaineder of the analysis in this report will center around the state of West Virginia and Illinois.
 
 
-Below are some of the highlights along with commentary for the states we have chosen to focus on 
+Below are some of the highlights along with commentary for the states we have chosen to focus on .
 
 ```{r IL Analysis}
 IL_data <- merged_final[ merged_final$state == "IL", ]
@@ -81,7 +106,7 @@ IL_data <- merged_final[ merged_final$state == "IL", ]
 stat.desc(IL_data)
 ```
 
-The dependent variable, unemployment, has a mean of 6.44 and a standard deviation of 1.81. The lowest unemployment rate was in 1998 and 1999 at 4.1, while the highest was in 2009 at 11.00. The mean HPI was 256.07, with a standard deviation of 79.06. The lowest HPI was in 1984 at 112.80, while the highest was in 2018 at 371.21. Poverty rate had a mean of 12.54 and a standard deviation of 1.58. In 1999, lowest rate was seen of 9.9, and the highest was 15.6 in 1992. The sp500 index mean was 9.48, and the standard deviation was 15.70. In 2008, the lowest index was seen at -38.4, while the highest index was seen in 1995 at 34.11. The logged population mean was 16.32, and the standard deviation was 0.046. The lowest logged population at 16.248 in 1986, and the highest in 2013 at 16.373. Logged real median household income had a mean of 11.02 and a standard deviation of 0.066. In 1984, Illinois had the lowest log_RMHI at 10.91, while had the highest in 2018 at 11.16. 
+The dependent variable, unemployment in the state of Illinois, has a mean of 6.44% and a standard deviation of 1.81%. The lowest unemployment the state has is in 1998 and 1999 at 4.1%.  In 2009 it registered its highest unemployment rate at 11.00%.  This coincides with the height of The Great Recession. The mean Housing Price Index (HPI) is 256.07, with a standard deviation of 79.06. The lowest HPI for the state occured in 1984 at 112.80, while the highest can be seen in 2018 at 371.21. Poverty rate shows a mean value of 12.54% and a standard deviation of 1.58%. In 1999, the state had its lowest rate of 9.9%, and the highest was 15.6 in 1992. The change in the S&P 500 index cannot be measured at the state level and thus it is the same for all states.  It has a mean of 9.48, and the standard deviation was 15.70. In 2008, the index had its sharpest decrease at -38.4, while its greatest increase registered in 1995 at 34.11. The logarithmic value of the population mean for the state of Illinois is 16.32, and the standard deviation is 0.046. The measure shows its lowest value at 16.248 in 1986, and the highest in 2013 at 16.373. Real median household income (log) has a mean of 11.02 and a standard deviation of 0.066. In 1984, Illinois shows its lowest log_RMHI at 10.91, while the highest is in 2018 at 11.16. 
 
 ```{r IL Pairwise Correlations}
 #pairwise correlations
@@ -91,112 +116,119 @@ cor(IL_data[sapply(IL_data, function(x) !is.character(x))])
 ```
 
 ```{r IL Histogram Unemployment}
-hist(IL_data$value,
-     main="Histogram of Unemployment from 1984-2018",
+hist(IL_data$unemployment,
+     main="Histogram of Unemployment in Illinois from 1984-2018",
      xlim=c(4,11),
      xlab="Unemployment Rate",
      breaks = 5)
 ```
 
-Histograms graphically summarize the distribution of a data set. In Illinois, from 1984 to 2018, The annual unemployment rates ranged from 4.0-11.0%. The histogram displays a positively skewed distribution. An unemployment rate that fell within the first two intervals, 4.0-4.9% & 5.0-5.9%, occurred 18 out of the 36 years examined.  
+In Illinois, from 1984 to 2018, the annual unemployment rates ranged from 4.1-11.0%. The histogram displays a positively skewed distribution. An unemployment rate that fell within the first two intervals, 4.0-4.9% & 5.0-5.9%, occurred 18 out of the 36 years examined.  
 
-```{r IL Histogram Poverty}
+```{r Histogram Poverty}
 hist(IL_data$poverty,
-     main="Histogram of Poverty from 1984-2018",
+     main="Histogram of Poverty in Illinois from 1984-2018",
      xlim=c(9,16),
      xlab="Poverty Rate",
      breaks = 5)
 ```
 
-In Illinois, from 1984 to 2018, the poverty levels ranged from 9.0-16.0%. The histogram displays a relatively normal distribution. Between 12.0-12.9% was the most frequently recorded interval during this time period. In 14 of the 36 years examined, the poverty rate in Illinois was between 13-15.9%. 
+In Illinois, from 1984 to 2018, the poverty levels range from 9.9-15.6%. The histogram pictured above displays a relatively normal distribution. Illinois registered an poverty rate between 12.0-12.9% most frequently during this time period. In 14 of the 36 years examined, the poverty rate in Illinois was between 13-15.9%. 
 
 ```{r IL scatter unemployment}
-scatter.smooth(IL_data$year, IL_data$value, main="IL Unemployment by Year", xlab = "Year", ylab = "Unemployment", span = 2/8)
+scatter.smooth(IL_data$year, IL_data$unemployment, main="Illinois Unemployment Rate by Year", xlab = "Year", ylab = "Unemployment", span = 2/8)
 ```
 
-A scatterplot displays the relationship between two numeric variables. This plot demonstrates the relationship between the annual unemployment rate and the year, from 1984 to 2018. In Illinois, there is no linear relationship, however, there is an observable cyclical pattern. The annual unemployment rate was lowest around 1999 and peaked in 2008. 
+A scatter plot displays the relationship between two numeric variables. This plot demonstrates the relationship between the annual unemployment rate and the year, from 1984 to 2018. In Illinois, there is no linear relationship, however, there is an observable cyclical pattern. The annual unemployment rate in Illinois was lowest around 1999 and peaked in 2008.  The upper peaks in the scatter plot coincide with the economic recessions that occurred throughout the timeperiod.  The most notable of which is the Great Recession which spanned from 2007-2009.  The state of Illinois had an unemployment nearing 11% in 2009.  Additionally, the recession of the early 1990's and the 1981-1982 recession show peak unemployment levels nearing 9% in the state of Illinois.  To a lesser extent a small peak can be seen around 2001/2002 which  corresponds with the tech bubble of the early 2000s.
 
 ```{r IL scatter HPI}
-scatter.smooth(IL_data$year, IL_data$HPI, main="IL HPI by Year", xlab = "Year", ylab = "HPI", span = 2/8)
+scatter.smooth(IL_data$year, IL_data$HPI, main="Illinois House Price Index (HPI) by Year", xlab = "Year", ylab = "HPI", span = 2/8)
 ```
 
-This plot represents the relationship between Illinois' median housing price index (HPI) and the year. From 1984 to 2008 the relationship appeared to be linear until the HPI dipped in 2008-2013. Since then, the HPI began to continue its increase in a linear fashion. This pattern is observed consistently when examining many other states and, through inference, can partially be attributed to the housing crisis that occurred in 2008 and 2009.
-
+This plot represents the relationship between Illinois' house price index (HPI) and the year. From 1984 to 2008 the relationship appears to be linear until the HPI dipped in 2008-2013. Since then, the HPI has continued its increase in a linear fashion. This pattern is observed consistently when examining many other states and, through inference, can mainly be attributed to the fallout the Great Recession caused in the housing market.
 ```{r IL scatter poverty}
-scatter.smooth(x=IL_data$year, y=IL_data$poverty, main="IL % of People Below Poverty Level", xlab = "Year", ylab = "Poverty", ylim = c(0,20), span = 2/8)
+scatter.smooth(x=IL_data$year, y=IL_data$poverty, main="Illinois % of People \nBelow Poverty Level", xlab = "Year", ylab = "Poverty Rate", ylim = c(0,20), span = 2/8)
 ```
 
-The percentage of individuals living below the poverty rate in Illinois does not display a clear pattern. Overall, there has been slight decrease of roughly 4% from 1984 to 2018. Poverty levels peaked in 1992.
+The percentage of individuals living below the poverty rate in Illinois does not display a clear pattern. Although, a slight cyclical pattern can be observed in the data. Overall, there has been slight decrease of roughly 4% from 1984 to 2018. Poverty levels for the state of Illinois peaked in 1992.
 
 ```{r IL scatter log RMHI}
 #IL_data$log_RMHI <- as.integer(IL_data$log_RMHI)
-scatter.smooth(x=IL_data$year, y=IL_data$log_RMHI, main="IL Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+scatter.smooth(x=IL_data$year, y=IL_data$log_RMHI, main="Illinois Real Median \n Household Income (Log) by Year", xlab = "Year", ylab = "RMHI (log)", span = 2/8 )
 ```
 
-The median household income in Illinois increased dramatically from 1984-2018. The lowest and highest values recorded fell at the beginning and the end of the time period, respectively.
+The median household income in Illinois increases dramatically from 1984-2018. The lowest and highest values recorded fall at the beginning and the end of the time period, respectively. There are several peaks and valleys that can be observed in the scatter plot. Again, as this is a financial measure, the cyclical nature of this graph follows the ebb and flow of the United States economy.
 
 ```{r IL scatter log population}
 #IL_data$log_pop <- as.integer(IL_data$log_pop)
-scatter.smooth(x=IL_data$year, y=IL_data$log_pop, main="IL Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+scatter.smooth(x=IL_data$year, y=IL_data$log_pop, main="Illinois Population (Log) by Year", xlab = "Year", ylab = "Population (Log)", span = 2/8)
 ```
 
-The log population of Illinois decreased from 1984-1988 before increasing in a relatively linear fashion from 1988 to its peak in 2013. 2013-2018 is characterized by a gradual decline in population. 
+The logarithmic population of Illinois decreased slightly from 1984-1988 before increasing in a relatively linear fashion from 1988 to its peak in 2013. From 2013-2018 there is a gradual decline in population within the state. 
 
-```{r IL correlations}
-cor(IL_data$RMHI, IL_data$value)
-cor(IL_data$HPI, IL_data$value)
-cor(IL_data$poverty, IL_data$value)
-cor(IL_data$population, IL_data$value)
-cor(IL_data$sp500, IL_data$value)
-cor(IL_data$log_pop, IL_data$value)
-cor(IL_data$log_RMHI, IL_data$value)
-#run base correlations between categories and dependent variable
-```
 
 A correlation function is used to illustrate the relationship between our independent variable and our dependent variable. The closer the correlation is to 1 or -1 the stronger the correlation between the two variables. For a correlation of 1, it signifies that there is a perfect positive correlation. For a -1 correlation there is a perfect inverse relationship between the two variables. 
 
-The correlation between the RMHI and our dependent variable, unemployment, in Illinois is 0.03109792. The correlation shows that there is a weak positive correlation between median household income 
+```{r IL correlations HPI}
+cor(IL_data$HPI, IL_data$unemployment)
+```
 
-The correlation between HPI (Housing Price Index) and our dependent variable, unemployment, in Illinois is -0.08115831. The correlation shows that there is a weak negative relationship between the housing price index and unemployment. 
+The correlation between HPI (House Price Index) and our dependent variable, unemployment, in Illinois is -0.08115831. The correlation shows that there is a weak negative relationship between the housing price and unemployment in the State of Illinois. 
 
-The correlation between poverty, the percentage of the population under the poverty line, and unemployment in Illinois is 0.6975789. This correlation shows a much stronger positive relationship between the two variables. As unemployment increases there is a much stronger possibility that the percentage of the population under the poverty line increasing as well. 
+```{r IL correlations poverty}
+cor(IL_data$poverty, IL_data$unemployment)
+```
 
-The correlation between the population and unemployment in Illinois is 0.02011968. The correlation between population and unemployment is a weak positive correlation. The correlation is extremely close to 0, which signified that there is no direct correlation between the two variables. 
+The correlation between the poverty rate, the percentage of the population under the poverty line, and unemployment in Illinois is 0.6975789. This correlation shows a much stronger positive relationship between the two variables. As unemployment increases there is a much stronger possibility that the percentage of the population under the poverty line increases as well. 
 
-The correlation between the s&p 500 and unemployment in Illinois is 0.03109792. The correlation between the S&P 500 and unemployment is a weak positive correlation. With the correlation being extremely close to 0 it signifies that there is not much of a correlation between the two variables. 
+```{r IL correlations sp500}
+cor(IL_data$sp500, IL_data$unemployment)
+```
+
+The correlation between the change in the S&P 500 and unemployment in Illinois is 0.03109792. The correlation between the S&P 500 and unemployment shows a weak positive correlation. With the correlation being extremely close to 0 it signifies that there is not much of an explanatory relationship between the two variables.
+
+```{r IL correlations log_pop}
+cor(IL_data$log_pop, IL_data$unemployment)
+```
 
 The correlation between the log of the population and unemployment in Illinois is 0.01123117. The correlation between the log of the population and unemployment is extremely close to 0, which signifies there is almost no correlation between the two variables.  
 
-The correlation between the log of median household income and unemployment in Illinois is -0.6602776. The correlation between the log of median household income and unemployment is a strong negative correlation. A strong negative correlation suggests that the two variables move in inverse directions of each other. In this case, -0.66 suggests that there is enough evidence to suggest that in most cases the two variables move in inverse directions of each other due to the proximity of -0.66 to -1 which is a perfect negative relationship.
+```{r IL correlations log_RMHI}
+cor(IL_data$log_RMHI, IL_data$unemployment)
+```
+The correlation between the log of real median household income and unemployment in Illinois is -0.6602776. The relationship between the log of median household income and unemployment represents a strong negative correlation. This suggests that the two variables move in inverse directions of each other. In this case, with a correlation of -0.66, there is enough evidence to suggest that in most cases the two variables move in inverse directions of each other due to the proximity of -0.66 to -1, which is a perfect negative relationship
+.
 ```{r IL boxplot unemployment}
 par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(IL_data$value, main="Unemployment in IL", sub=paste("Outlier rows: ", boxplot.stats(IL_data$value)$out))  # box plot for 'Unemployment'
+boxplot(IL_data$unemployment, main="Boxplot of Unemployment \n in Illinois", sub=paste("Outlier rows: ", boxplot.stats(IL_data$unemployment)$out))  # box plot for 'Unemployment'
+
 ```
 
-The annual unemployment rate in Illinois ranged from 4%-11% from 1984-2018. The boxplot displays a positively skewed distribution meaning the mean is greater than the median. There were no outliers in the Unemployment data collected from 1984-2018 based upon the boxplot results.
+The annual unemployment rate in Illinois ranges from 4%-11% during the time period of 1984-2018. The boxplot for unemployment rate displays a positively skewed distribution. This shows us that the mean is greater than the median. There were no outliers in the Unemployment data collected from 1984-2018 based upon the boxplot results.
 
 ```{r IL boxplot poverty}
-boxplot(IL_data$poverty, main="IL Poverty", sub=paste("Outlier rows: ", boxplot.stats(IL_data$poverty)$out))  # box plot for 'Poverty'
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(IL_data$poverty, main="Boxplot of Poverty \nin Illinois", sub=paste("Outlier rows: ", boxplot.stats(IL_data$poverty)$out))  # box plot for 'Poverty'
 #create box plot for poverty level and unemployment level
 ```
 
-The poverty levels in Illinois ranged from roughly 9% to just under 14% from 1984-2018. The median poverty rate is displayed at roughly 12.5%.The plot displays a relatively normal distribution meaning the mean and median are close the same value. There were no outliers in the Poverty data collected from 1984-2018 based upon the boxplot results.
+The poverty levels in Illinois ranged from roughly 9% to just under 14% from 1984-2018. The median poverty rate is displayed at roughly 12.5%.The plot displays a relatively normal distribution meaning the mean and median are close the same value. There are no outliers in the Poverty data collected from 1984-2018 based upon the boxplot results.
 
 ```{r IL linear regression all}
 #run multiple linear model for data
-IL_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = IL_data)
+IL_reg1 <- lm(unemployment ~ poverty + RMHI + HPI + population + sp500, data = IL_data)
 summary(IL_reg1)
 anova(IL_reg1)
 ```
 
 ```{r IL linear regression log all}
-IL_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = IL_data)
+IL_reg2 <- lm(unemployment ~ poverty + log_RMHI + HPI + log_pop + sp500, data = IL_data)
 summary(IL_reg2)
 anova(IL_reg2)
 ```
 
 ```{r IL linear significant variables}
-IL_linearModelSignificant <- lm(value ~ poverty + log_pop, data = IL_data)
+IL_linearModelSignificant <- lm(unemployment ~ poverty + log_pop, data = IL_data)
 summary(IL_linearModelSignificant)
 ```
 
@@ -211,7 +243,7 @@ WV_data <- merged_final[ merged_final$state == "WV", ]
 stat.desc(WV_data)
 ```
 
-The dependent variable, unemployment, has a mean of 7.25 and a standard deviation of 2.48. The lowest unemployment rate was in 2006 at 4.2 while the highest was in 1984 at 14.40. The mean HPI was 164.11, with a standard deviation of 48.67. The lowest HPI was in 1984 at 87.28, while the highest was in 2018 at 230.86. Poverty rate had a mean of 17.60 and a standard deviation of 2.42. In 2004, lowest rate was seen of 14.2, and the highest was 22.4 in 1986. The sp500 index mean was 9.48, and the standard deviation was 15.70. In 2008, the lowest index was seen at -38.4, while the highest index was seen in 1995 at 34.11. The logged population mean was 14.42, and the standard deviation was 0.016. The lowest logged population at 14.40 in 1990, and the highest in 1984 at 14.47. Logged real median household income had a mean of 10.67 and a standard deviation of 0.10. In 1992, West Virginia had the lowest log_RMHI at 10.48, while had the highest in 2007 at 10.84.
+The dependent variable, unemployment, has a mean of 7.25% and a standard deviation of 2.48%. The lowest unemployment rate occurred in 2006 at 4.2% while the highest was in 1984 at 14.40%. The mean HPI registered at 164.11, with a standard deviation of 48.67. The lowest HPI is in 1984 at 87.28, while the highest is seen in 2018 at 230.86. Poverty rate has a mean of 17.60% and a standard deviation of 2.42%. In 2004, the lowest rate can be seen at 14.2%, and the highest is 22.4% in 1986. The change in the S&P 500 index cannot be measured at the state level and thus it is the same for all states.  It has a mean of 9.48, and the standard deviation is 15.70. In 2008, the index had its sharpest decrease at -38.4, while its greatest increase registered in 1995 at 34.11. The logarithmic value of the population has a mean of 14.42, and a standard deviation of 0.016. The lowest population is 14.40 in 1990, and the highest is in 1984 at 14.47. Real median household income (log) has a mean of 10.67 and a standard deviation of 0.10. In 1992, West Virginia has its lowest RMHI (log) at 10.48, while its highest is in 2007 at 10.84.
 
 ```{r WV Pairwise Correlations}
 #pairwise correlations
@@ -222,126 +254,128 @@ cor(WV_data[sapply(WV_data, function(x) !is.character(x))])
 
 
 ```{r WV Histogram Unemployment}
-hist(WV_data$value,
-     main="Histogram of Unemployment from 1984-2018",
+hist(WV_data$unemployment,
+     main="Histogram of Unemployment in \nWest Virginia from 1984-2018",
      xlab="Unemployment Rate",
      breaks = 5)
 ```
 
-In West Virginia,from 1984 to 2018, the unemployment rates ranged from 4.0-15.9%. The histogram displays a positively skewed distribution. 15 of the 36 years were characterized by unemployment rates ranging in lowest interval, 4.0-5.9%. 
+In West Virginia,from 1984 to 2018, the unemployment rate ranges from 4.2-14.4%. The histogram displays a positively skewed distribution. 15 out of the 36 years were characterized by unemployment rates in the lowest interval, 4.0-5.9%. 
 
 ```{r WV Histogram Poverty}
 hist(WV_data$poverty,
-     main="Histogram of Poverty from 1984-2018",
+     main="Histogram of Poverty in \nWest Virginia from 1984-2018",
      xlab="Poverty Rate",
      breaks = 5)
 ```
 
-In West Virginia, from 1984 to 2018, the annual poverty rates ranged from 14.0% to 23.9%. This is the highest range out of all 8 states examined. Although this range has larger values comparatively, the histogram displays a positively skewed distribution. 25 out of the 36 years were characterized by unemployment rates that fell into the first two intervals, 14.0-15.9% & 16-17.9%.  
+In West Virginia, from 1984 to 2018, the annual poverty rate ranges from 14.0% to 23.9%. This range represents one of the highest ranges out of all states. Although this range has larger values comparatively, the histogram displays a positively skewed distribution. 25 out of the 36 years were characterized by unemployment rates that fell into the first two intervals, 14.0-15.9% & 16-17.9%.  
 
 ```{r WV scatter unemployment}
-scatter.smooth(WV_data$year, WV_data$value, main="WV Unemployment by Year", xlab = "Year", ylab = "Unemployment", span = 2/8)
+scatter.smooth(WV_data$year, WV_data$unemployment, main="West Virginia Unemployment by Year", xlab = "Year", ylab = "Unemployment", span = 2/8)
 ```
 
-Unemployment in the state of West Virginia from 1984-2007 was at a declining pace, which shows that the job market is saturated and the state is in good standing. But, prior to the stock market crash of 2008-2009, we can notice that the unemployment rate began to start creeping up and shot up drastically when the stock market crash occurred. Since, then we have seen a steady decline to the rates that were prior to that of the stock market crash. 
+Unemployment in the state of West Virginia from 1984-2007 shows a gradual decline with a cyclical pattern that is representative of most financial measures. One possible explanation for this phenomenon is that the job market is healthy and the state is in good standing. Leading up to the Great Recession in 2008-2009, we notice that the unemployment rate begins to creep up. It shoots up drastically following the stock market crash. Since that time the unemployment declined to the low levels seen before the 2008 market crash. 
 
 ```{r WV scatter HPI}
-scatter.smooth(WV_data$year, WV_data$HPI, main="WV HPI by Year", xlab = "Year", ylab = "HPI", span = 2/8)
+scatter.smooth(WV_data$year, WV_data$HPI, main="West Virginia House Price Index (HPI) by Year", xlab = "Year", ylab = "HPI", span = 2/8)
 ```
 
-The housing price index in the state of West Virginia is much different than that of the poverty level and household income. THe housing price index has been steadily increasing within the state since 1984. THe one dip in the housing price index was the stock market crash of 2008-2009. As the scatter plot shows the housing price index dropped down for about two years and since then has continued to increase at a steady pace.
+The house price index in the state of West Virginia is much different than that of the poverty level and household income. The HPI steadily increases within the state starting in 1984. There is one small dip in the HPI that intersects with the time period of the Great Recession. As the scatter plot shows, the HPI dropped down for about two years and since then it has continued to increase at a steady pace. The scatter plot of housing price index approximates a positive linear relationship over the time period we examine.
 
 ```{r WV scatter poverty}
-scatter.smooth(x=WV_data$year, y=WV_data$poverty, main="WV % of People Below Poverty Level", xlab = "Year", ylab = "Poverty",  span = 2/8)
+scatter.smooth(x=WV_data$year, y=WV_data$poverty, main="West Virginia % of People Below Poverty Level", xlab = "Year", ylab = "Poverty",  span = 2/8)
 ```
 
-The poverty, proportion of the population below the poverty line, in West Virginia is pretty consistent with the other scatter plots related to the other variables. As we can in the scatter plot the recession of the 1990s caused the unemployment to shoot up as did the stock market crash in 2008-2009. The stock market crash affected the poverty level negatively for the next few years until the stock market was able to rebound and that is when the proportion of the population below the poverty line began to dwindle. 
-
+The poverty rate in West Virginia is consistent with the other scatter plots. There is a definite cyclical trend to the data. As we can see in the scatter plot, the recession in the 1980s, the recession of the early 1990s, and the Great Recession all equate to a rise in the poverty level. The 2008 stock market crash affected the poverty level negatively for a few years until the stock market rebounded. 
 
 ```{r WV scatter log RMHI}
 #WV_data$log_RMHI <- as.integer(WV_data$log_RMHI)
-scatter.smooth(x=WV_data$year, y=WV_data$log_RMHI, main="WV Log Median Household Income by Year", xlab = "Year", ylab = "log_RMHI", span = 2/8 )
+scatter.smooth(x=WV_data$year, y=WV_data$log_RMHI, main="West Virginia Real Median \n Household Income (Log) by Year", xlab = "Year", ylab = "RMHI (log)", span = 2/8 )
 ```
 
-As the scatter plot suggests for the state of West Virginia, the median household income does fluctuate from year to year, but also shows a consistent increasing trend throughout the years. The dips on the median household income seem to come at time of economic recessions. In the 1990s, the recession caused a drop in the median household income. Additionally, the stock market crash that occurred in 2008-2009 caused a drop in the median household income. Other than those two instances the median household income within the state has increased steadily. 
+As the scatter plot suggests for the state of West Virginia, the real median household income does fluctuate from year to year, but also shows a consistent increasing trend throughout the years. The dips on the median household income seem to come at times of economic recession. In the 1990s, the recession caused a drop in the median household income. Additionally, the stock market crash that occurred in 2008-2009 caused a drop in the median household income. Other than those two instances the median household income within the state has increased steadily. 
 
 ```{r WV scatter log population}
 #WV_data$log_pop <- as.integer(WV_data$log_pop)
-scatter.smooth(x=WV_data$year, y=WV_data$log_pop, main="WV Log Population by Year", xlab = "Year", ylab = "log_Population", span = 2/8)
+scatter.smooth(x=WV_data$year, y=WV_data$log_pop, main="West Virginia Population (Log) by Year", xlab = "Year", ylab = "Population (Log)", span = 2/8)
 ```
 
-The log of the population scatter plot for the state of West Virginia shows a steady decrease from 1984-1992. There started to be a slight increase in the population until about 1995 where it began to dwindle down again until 2001. From 2001, the population continued to increase steadily until 2012 and has been declining slightly ever since then.
+The logarithmic value of the population's scatter plot for the state of West Virginia shows a steep decline from 1984-1992. From 1990 to 1995 a slight increase in the population began, but after 1995 the population started to dwindle down again until 2001. From 2001, the population continues to increase steadily until 2012 and has been declining slightly ever since.
 
-```{r WV correlations}
-cor(WV_data$RMHI, WV_data$value)
-cor(WV_data$HPI, WV_data$value)
-cor(WV_data$poverty, WV_data$value)
-cor(WV_data$population, WV_data$value)
-cor(WV_data$sp500, WV_data$value)
-cor(WV_data$log_pop, WV_data$value)
-cor(WV_data$log_RMHI, WV_data$value)
-#run base correlations between categories and dependent variable
+```{r WV HPI correlations}
+cor(WV_data$HPI, WV_data$unemployment)
 ```
 
-The correlation between the median household income and unemployment in West Virginia is -0.6170457. The correlation between the median household income and unemployment is that of a large negative correlation. A large negative correlation suggests that in most cases the variables tend to move in inverse directions. 
+The correlation between the house price index (HPI) and unemployment in West Virginia is -0.7138695. The correlation between HPI and unemployment is that of a strong negative correlation suggesting there is a significant inverse relationship between the two variables. 
 
-The correlation between the housing price index and unemployment in West Virginia is -0.7138695. The correlation between the housing price index and unemployment is that of a large negative correlation. Just like with the median household income, the housing price index suggests an inverse relationship between unemployment. 
+```{r WV poverty correlations}
+cor(WV_data$poverty, WV_data$unemployment)
+```
 
-The correlation between poverty, the proportion of the population below the poverty line, and unemployment in West Virginia is 0.6996082. The correlation between poverty and unemployment is that of a large positive correlation. A large positive correlation suggests that the two variables tend to move in the same direction unlike the median household income and the housing price index.
+The correlation between poverty, the proportion of the population below the poverty line, and unemployment in West Virginia is 0.6996082. The correlation between poverty and unemployment is that of a large positive correlation. A large positive correlation suggests that the two variables tend to move in the same direction unlike the housing price index. It also suggests that there is a significant relationship between the two variables.
 
-The correlation between the population and unemployment is 0.5144306. The correlation between the population and unemployment is that of a large positive correlation. Just like with poverty, the correlation suggests that the two variables tend to move in the same direction of one another. 
+```{r WV sp500 correlations}
+cor(WV_data$sp500, WV_data$unemployment)
+```
 
-The correlation between the S&P 500 and unemployment in West Virginia is 0.1979507. The correlation between the S&P 500 and unemployment is a small positive correlation. The correlation shows that there is a small positive relationship between the two variables signifying that the two variables tend to move in the same direction.  
+The correlation between the change in the S&P 500 index and unemployment in West Virginia is 0.1979507. The correlation between the S&P 500 and unemployment is a small positive correlation. This shows that there is a small positive relationship between the two variables signifying that the two variables tend to move in the same direction, however there is little evidence that there is significant interplay between the two variables.  
 
-The correlation between the log of the population and unemployment in West Virginia is 0.509377. The correlation between the log of the population and unemployment is that of a large positive Correlation. The positive correlation suggests that the two variables mimic one another. 
+```{r WV log_pop correlations}
+cor(WV_data$log_pop, WV_data$unemployment)
+```
 
-The correlation between the log of the median household income and unemployment in West Virginia is -0.6322822. THe correlation between the log of the median household income and unemployment is a large negative correlation. The large negative correlation suggests that as the log of the median household income increases, the unemployment tends to decrease. 
+The correlation between the log of the population and unemployment in West Virginia is 0.509377. A positive correlation of 0.509377 suggests that these two variables maintain somewhat of a positive linear relationship.
+
+```{r WV log_RMHI correlations}
+cor(WV_data$log_RMHI, WV_data$unemployment)
+```
+
+The correlation between the logarithm of the real median household income and unemployment in West Virginia is -0.6322822. This large negative correlation suggests that as the log of the median household income increases, the unemployment tends to decrease. 
 
 ```{r WV boxplot unemployment}
-par(mfrow=c(1, 2))  # divide graph area in 2 columns
-boxplot(WV_data$value, main="WV Unemployment", sub=paste("Outlier rows: ", boxplot.stats(WV_data$value)$out))  # box plot for 'Unemployment'
+par(mfrow=c(1, 2))  
+boxplot(WV_data$unemployment, main="Boxplot of Unemployment \n in West Virginia", sub=paste("Outlier rows: ", boxplot.stats(WV_data$unemployment)$out)) 
 ```
 
-The box plot for the unemployment in the state of West Virginia shows that the median or second quartile for the unemployment rate within the state to be about 7%. Between the first and third quartile range we find the first quartile to be 5% and the third quartile to be at around 9%. This is where most of the unemployment between the years 1984 and 2019 tend to recide. The outliers for unemployment occur at times of economic instability that are found throughout the entire United States.
+A box plot for unemployment in the state of West Virginia shows that the median for the unemployment rate is around 7%. The interquartile range (IQR) spans from 5% on the low end to 9% at the upper end of the third quartile. Most of the unemployment data points for West Virginia between the years 1984 and 2019 reside within the IQR. There is one outlier in the West Virginia data set that occurs in 1985 with an unemloyment rate of 14.4%. 
 
-
-There is one outlier in the data based upon the boxplot, 1985 with an unemployment rate of 14.4%.
 ```{r WV boxplot poverty}
-boxplot(WV_data$poverty, main="WV Poverty", sub=paste("Outlier rows: ", boxplot.stats(WV_data$poverty)$out))  # box plot for 'Poverty'
-#create box plot for poverty level and unemployment level
+par(mfrow=c(1, 2)) 
+boxplot(WV_data$poverty, main="Boxplot of Poverty \nin West Virginia", sub=paste("Outlier rows: ", boxplot.stats(WV_data$poverty)$out)) 
 ```
 
-The poverty level within the state of West Virginia for the second quartile range is around 17%. THe first quartile begins at about 15.5% and the third quartile range is at 19%. The outliers for the data are similar to the outliers of the unemployment rate which occur at times of economic instability within the state, but also the entire United States. 
+The median of the poverty level within the state of West Virginia is around 17%. The first quartile begins at about 15.5% and the third quartile ends at 18.5%. There are not outliers in the poverty rate for the state of West Virginia over the time period the data was collected.
 
 ```{r WV linear regression all}
 #run multiple linear model for data
-WV_reg1 <- lm(value ~ poverty + RMHI + HPI + population + sp500, data = WV_data)
+WV_reg1 <- lm(unemployment ~ poverty + RMHI + HPI + population + sp500, data = WV_data)
 summary(WV_reg1)
 anova(WV_reg1)
 ```
 
 ```{r WV linear regression log all}
-WV_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = WV_data)
+WV_reg2 <- lm(unemployment ~ poverty + log_RMHI + HPI + log_pop + sp500, data = WV_data)
 summary(WV_reg2)
 anova(WV_reg2)
 ```
 
 ```{r WV linear significant variables}
-WV_linearModelSignificant <- lm(value ~ poverty + log_pop, data = WV_data)
+WV_linearModelSignificant <- lm(unemployment ~ poverty + log_pop, data = WV_data)
 summary(WV_linearModelSignificant)
 ```
 
 
 
-Next, the data we collected is considered a time series as it was measured on an annual basis.  We used the unemployment data that was collected for each state and implemented a time series forecast using the Holt Method.  
+The unemployment data we collected is considered a time series as it was measured on an annual basis.  To further expand on the cyclical nature of our data we implemented a time series forecast using the Holt Method.  
 
 Time series data typically contains four components: trend, seasonal, cyclical, and random components.  Trend is represented by the long-term movements in a data series, whether that be upward or downward.  Seasonality is normally represented by repetitions that occur within a single year time period, whereas the cyclical component represents long-term trends that are usually a factor the economy.  Typically, seasonal trends are easier to identify than cyclical trends because the time period of a seasonal trend is often known ahead of time.  Random components represent the random and unexplained movements within the time series data.
 
-As the unemployment data we collected is shown on an annual basis, we will be focusing on the trend, cyclical, random components in our analysis.  The type of analysis we have chosen to focus on is called Holt Exponential Smoothing Method.  This method is characterized by incorporating large upward and downward fluctuations in data series.  This method is especially relevant because the dataset lacks seasonal variation.  
+As the unemployment data we collected is shown on an annual basis, we will be focusing on the trend, cyclical, random components in our analysis.  The type of analysis we have chosen to focus on is called Holt Exponential Smoothing Method.  This method is characterized by incorporating large upward and downward fluctuations in data series.  Holt Exponential Smoothing is especially relevant because the dataset lacks seasonal variation.  
 
 ```{r IL Holt Analysis}
 
-IL_TS <- ts(IL_data$value, start = c(1984), end = c(2018), frequency = 1)
+IL_TS <- ts(IL_data$unemployment, start = c(1984), end = c(2018), frequency = 1)
 #Stores start, end, and frequency of timeseries data
 
 IL_TData <- window(IL_TS, end = c(2004))
@@ -349,9 +383,9 @@ IL_VData <- window(IL_TS, start = c(2005))
 #Partitions the training and validation sets
 ```
 
-In the above section of code, we begin our Holt analysis of IL by creating the time series with the TS function.  We set the start and end values of our times series data equal to the time span our data stretches and set the frequency equal to one.
+In the above section of code, we begin our Holt analysis of Illinois by creating the time series with the TS function. We set the start and end values of our times series data equal to the time span our data stretches and set the frequency equal to one.
 
-Using the window function we partition our dataset into a training set, IL_TData, and a validation set, IL_VData.
+Using the window function we partition our data into a training set, IL_TData, and a validation set, IL_VData.
 
 ```{r IL Holt Analysis User}
 IL_HUser <- ets(IL_TData, model = "AAN", alpha = 0.2, beta = 0.15)
@@ -359,7 +393,7 @@ summary(IL_HUser)
 #Training data set using user based parameters for alpha and beta for smoothing.
 ```
 
-It is common for practitioners to provide user supplied values for alpha and beta (smoothing parameters) due to the fact that the computer generated values are known to over-fit models where the data performed well in the sample period, but does not exhibit the same performance in the future.  In our data, we compare both user supplied and computer generated smoothing parameters.  We then compare the error measures to determine which model is a better fit to our data.  We used an alpha = 0.2 and beta = 0.15 when creating the user supplier parameters model.
+It is common for practitioners to provide user supplied values for alpha and beta (smoothing parameters) due to the fact that the computer generated values are known to over-fit models where the data perform well in the sample period, but does not exhibit the same performance in the future.  In our data, we compare both user supplied and computer generated smoothing parameters.  We then compare the error measures to determine which model is a better fit to our data.  We used an alpha = 0.2 and beta = 0.15 when creating the user supplier parameters model.
 
 The ets function above denotes the error, trend, and seasonality of the training set. The first letter in the model string represents that we want the error to be additive, the second letter represents that fact that we expect the trend type to be additive, and the third letter, "N", represents the fact that we do not intend on incorporating seasonality into our model.
 
@@ -370,7 +404,7 @@ summary(IL_HCmp)
 #Training data set using computer based parameters for alpha and beta for smoothing.
 ```
 
-We replicated the ets function using the computer generated smoothing parameters and obtained the output above. By comparing the root mean squared error(RMSE) and the mean absolute percentage error(MAPE) we can assess the fitness of the user supplier and computer generate models.  The user supplied model has a higher RMSE and MAPE indicating that the computer generated model provides a better overall fit for making a forecast. 
+This is then replicated using the computer generated smoothing parameters and we obtain the output above. By comparing the root mean squared error(RMSE) and the mean absolute percentage error(MAPE) we can assess the fitness of the user supplier and computer generate models. The user supplied model has a higher RMSE and MAPE indicating that the computer generated model provides a better overall fit for making a forecast. 
 
 ```{r IL Holt Set Forecast}
 IL_nV <- length(IL_VData)
@@ -400,7 +434,7 @@ Finally, everything is brought together with the ets and forecast functions to f
 
 ```{r WV Holt Analysis}
 
-WV_TS <- ts(WV_data$value, start = c(1984), end = c(2018), frequency = 1)
+WV_TS <- ts(WV_data$unemployment, start = c(1984), end = c(2018), frequency = 1)
 #Stores start, end, and frequency of timeseries data
 
 WV_TData <- window(WV_TS, end = c(2004))
