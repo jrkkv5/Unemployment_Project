@@ -3,8 +3,8 @@ title: "Unemployment Presentation"
 author: "https://github.com/jrkkv5/FIN6572Fall2020/blob/master/National%20Debt/importNationalDebt.Rmd"
 date: "11/24/2020"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ```{r packages}

@@ -1,0 +1,2645 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Unemployment Report},
+  pdfauthor={Jeff Krueger, Corey Lund, Fred Mwangi, and Nemanja Orescanin},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Unemployment Report}
+\author{Jeff Krueger, Corey Lund, Fred Mwangi, and Nemanja Orescanin}
+\date{12/2/2020}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(devtools)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: usethis
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(blsAPI)}
+\KeywordTok{library}\NormalTok{(rjson)}
+\KeywordTok{library}\NormalTok{(curl)}
+\KeywordTok{library}\NormalTok{(RCurl)}
+\KeywordTok{library}\NormalTok{(knitr)}
+\KeywordTok{library}\NormalTok{(readr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'readr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:curl':
+## 
+##     parse_date
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching packages --------------------------------------------------------------------------- tidyverse 1.3.0 --
+\end{verbatim}
+
+\begin{verbatim}
+## v ggplot2 3.3.2     v purrr   0.3.4
+## v tibble  3.0.3     v stringr 1.4.0
+## v tidyr   1.1.2     v forcats 0.5.0
+\end{verbatim}
+
+\begin{verbatim}
+## -- Conflicts ------------------------------------------------------------------------------ tidyverse_conflicts() --
+## x tidyr::complete()   masks RCurl::complete()
+## x dplyr::filter()     masks stats::filter()
+## x dplyr::lag()        masks stats::lag()
+## x readr::parse_date() masks curl::parse_date()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(rmarkdown)}
+\KeywordTok{library}\NormalTok{(pastecs)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'pastecs'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:tidyr':
+## 
+##     extract
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:dplyr':
+## 
+##     first, last
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(corrplot)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## corrplot 0.84 loaded
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(lmtest)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: zoo
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'zoo'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     as.Date, as.Date.numeric
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'lmtest'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:RCurl':
+## 
+##     reset
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(forecast)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Registered S3 method overwritten by 'quantmod':
+##   method            from
+##   as.zoo.data.frame zoo
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(olsrr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'olsrr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:datasets':
+## 
+##     rivers
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(readr)}
+\CommentTok{#loads the necessary packages}
+\end{Highlighting}
+\end{Shaded}
+
+First we need to load the libraries that we will be using into our
+report. The above code should load the proper libraries. R Studio will
+prompt you to install the packages if necessary.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{merged_final <-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"csv files/mergedFinal.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## -- Column specification --------------------------------------------------------------------------------------------
+## cols(
+##   year = col_double(),
+##   period = col_character(),
+##   periodName = col_character(),
+##   value = col_double(),
+##   state = col_character(),
+##   quarter = col_double(),
+##   annual = col_double(),
+##   HPI = col_double(),
+##   MHI = col_double(),
+##   RMHI = col_double(),
+##   poverty = col_double(),
+##   population = col_double(),
+##   sp500 = col_double(),
+##   log_pop = col_double(),
+##   log_RMHI = col_double()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Reads final file into merged dataframe}
+
+\KeywordTok{names}\NormalTok{(merged_final)[}\DecValTok{4}\NormalTok{] <-}\StringTok{ "unemployment"}
+
+\NormalTok{merged_final}\OperatorTok{$}\NormalTok{log_pop =}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{log}\NormalTok{(merged_final}\OperatorTok{$}\NormalTok{population))}
+
+\NormalTok{merged_final}\OperatorTok{$}\NormalTok{log_RMHI =}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{log}\NormalTok{(merged_final}\OperatorTok{$}\NormalTok{RMHI))}
+\end{Highlighting}
+\end{Shaded}
+
+As a final step in scrubbing our data, we created new variables to log
+the population and median household income variables and store it in our
+dataframe. By taking the logarithmic values, these variables become more
+comparable to the existing variables we have within our dataset.
+
+Below you can see the table output once all of our data has been merged.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{kable}\NormalTok{(merged_final[}\DecValTok{1}\OperatorTok{:}\DecValTok{6}\NormalTok{,], }\DataTypeTok{caption =} \StringTok{"Table Including All Variables"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}rllrlrrrrrrrrrr@{}}
+\caption{Table Including All Variables}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.03\columnwidth}\raggedleft
+year\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+period\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+periodName\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedleft
+unemployment\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+state\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedleft
+quarter\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedleft
+annual\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedleft
+HPI\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedleft
+MHI\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedleft
+RMHI\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedleft
+poverty\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedleft
+population\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedleft
+sp500\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedleft
+log\_pop\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedleft
+log\_RMHI\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.03\columnwidth}\raggedleft
+year\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedright
+period\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedright
+periodName\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedleft
+unemployment\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedright
+state\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedleft
+quarter\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedleft
+annual\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedleft
+HPI\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedleft
+MHI\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedleft
+RMHI\strut
+\end{minipage} & \begin{minipage}[b]{0.04\columnwidth}\raggedleft
+poverty\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedleft
+population\strut
+\end{minipage} & \begin{minipage}[b]{0.03\columnwidth}\raggedleft
+sp500\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedleft
+log\_pop\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\raggedleft
+log\_RMHI\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.03\columnwidth}\raggedleft
+1984\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+M12\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+December\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedleft
+9.3\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+AK\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+153.82\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+32356\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+74689\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+9.6\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft
+513702\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+1.40\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedleft
+13.14940\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedleft
+11.22109\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedleft
+1985\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+M12\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+December\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedleft
+10.1\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+AK\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+143.07\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+34782\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+77625\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+8.7\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft
+532495\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+26.33\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedleft
+13.18533\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedleft
+11.25964\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedleft
+1986\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+M12\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+December\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedleft
+11.0\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+AK\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+138.24\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+31356\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+68775\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+11.4\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft
+544268\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+14.62\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedleft
+13.20720\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedleft
+11.13860\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedleft
+1987\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+M12\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+December\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedleft
+9.5\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+AK\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+106.02\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+33233\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+70468\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+12.0\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft
+539309\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+2.03\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedleft
+13.19804\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedleft
+11.16291\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedleft
+1988\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+M12\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+December\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedleft
+8.0\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+AK\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+133.16\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+33103\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+67745\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+11.0\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft
+541983\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+12.40\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedleft
+13.20299\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedleft
+11.12351\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.03\columnwidth}\raggedleft
+1989\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedright
+M12\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedright
+December\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedleft
+7.1\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedright
+AK\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+102.92\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+36006\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+70599\strut
+\end{minipage} & \begin{minipage}[t]{0.04\columnwidth}\raggedleft
+10.5\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft
+547159\strut
+\end{minipage} & \begin{minipage}[t]{0.03\columnwidth}\raggedleft
+27.25\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedleft
+13.21249\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\raggedleft
+11.16477\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Descriptive Statistics}
+\KeywordTok{stat.desc}\NormalTok{(merged_final)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                      year period periodName unemployment state quarter annual
+## nbr.val      1.800000e+03     NA         NA 1.800000e+03    NA    1800   1800
+## nbr.null     0.000000e+00     NA         NA 0.000000e+00    NA       0      0
+## nbr.na       0.000000e+00     NA         NA 0.000000e+00    NA       0      0
+## min          1.984000e+03     NA         NA 1.800000e+00    NA       4      1
+## max          2.018000e+03     NA         NA 1.440000e+01    NA       4      1
+## range        3.400000e+01     NA         NA 1.260000e+01    NA       0      0
+## sum          3.602250e+06     NA         NA 9.793800e+03    NA    7200   1800
+## median       2.001500e+03     NA         NA 5.100000e+00    NA       4      1
+## mean         2.001250e+03     NA         NA 5.441000e+00    NA       4      1
+## SE.mean      2.373587e-01     NA         NA 4.648803e-02    NA       0      0
+## CI.mean.0.95 4.655278e-01     NA         NA 9.117621e-02    NA       0      0
+## var          1.014105e+02     NA         NA 3.890047e+00    NA       0      0
+## std.dev      1.007028e+01     NA         NA 1.972320e+00    NA       0      0
+## coef.var     5.031994e-03     NA         NA 3.624922e-01    NA       0      0
+##                       HPI          MHI         RMHI      poverty   population
+## nbr.val      1.800000e+03 1.800000e+03 1.800000e+03 1.800000e+03 1.800000e+03
+## nbr.null     0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00
+## nbr.na       0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00
+## min          7.925000e+01 1.543000e+04 3.491600e+04 2.900000e+00 4.536900e+05
+## max          7.968600e+02 8.634500e+04 8.634500e+04 2.720000e+01 3.955705e+07
+## range        7.176100e+02 7.091500e+04 5.142900e+04 2.430000e+01 3.910336e+07
+## sum          4.682747e+05 7.505899e+07 1.037364e+08 2.312780e+04 1.018931e+10
+## median       2.396650e+02 4.109850e+04 5.678950e+04 1.230000e+01 3.904475e+06
+## mean         2.601526e+02 4.169944e+04 5.763133e+04 1.284878e+01 5.660728e+06
+## SE.mean      2.820962e+00 3.137450e+02 2.245659e+02 8.704734e-02 1.475374e+05
+## CI.mean.0.95 5.532707e+00 6.153429e+02 4.404374e+02 1.707245e-01 2.893626e+05
+## var          1.432409e+04 1.771846e+08 9.077371e+07 1.363903e+01 3.918109e+13
+## std.dev      1.196833e+02 1.331107e+04 9.527524e+03 3.693106e+00 6.259480e+06
+## coef.var     4.600503e-01 3.192147e-01 1.653185e-01 2.874286e-01 1.105773e+00
+##                      sp500      log_pop     log_RMHI
+## nbr.val       1800.0000000 1.800000e+03 1.800000e+03
+## nbr.null        50.0000000 0.000000e+00 0.000000e+00
+## nbr.na           0.0000000 0.000000e+00 0.000000e+00
+## min            -38.4900000 1.302517e+01 1.046070e+01
+## max             34.1100000 1.749325e+01 1.136611e+01
+## range           72.6000000 4.468085e+00 9.054057e-01
+## sum          17061.0000000 2.711241e+04 1.970673e+04
+## median          11.8950000 1.517763e+01 1.094711e+01
+## mean             9.4783333 1.506245e+01 1.094819e+01
+## SE.mean          0.3699741 2.388216e-02 3.901516e-03
+## CI.mean.0.95     0.7256242 4.683969e-02 7.651979e-03
+## var            246.3855447 1.026644e+00 2.739929e-02
+## std.dev         15.6966730 1.013234e+00 1.655273e-01
+## coef.var         1.6560583 6.726890e-02 1.511915e-02
+\end{verbatim}
+
+The dependent variable, unemployment, has a mean of 5.44\% and a
+standard deviation of 1.97\%. Connecticut and Virginia have the lowest
+unemployment rates in 2000 at 1.8\%, while West Virginia has the highest
+rate in 1984 at 14.4\%. The mean HPI is 260.15, with a standard
+deviation of 119.68. The lowest HPI can be found in Wyoming in 1987 at
+79.25, while the highest is in Massachusetts in 2018 at 796.86. Poverty
+rate has a mean of 12.85\% and a standard deviation of 3.69\%. In 1989,
+Connecticut has the lowest rate of poverty at 2.9\%, and Mississippi has
+the highest at 27.2\% in 1988. The change in the S\&P 500 index has a
+mean of 9.48, and the standard deviation was 15.70. In 2008, the index
+had its sharpest decrease at -38.4, while its greatest increase
+registered in 1995 at 34.11. The logarithmic value of the population has
+a mean of 15.06, and the standard deviation is 1.01. Wyoming shows the
+lowest log population at 13.025 in 1990 with California having the
+highest in 2018 at 17.49. The logarithmic real median household income
+has a mean of 10.95 and a standard deviation of 0.17. In 2013,
+Mississippi has the lowest log\_RMHI at 10.46, while Massachusetts shows
+the highest in 2018 at 11.37.
+
+This project uses the ordinary least squares method to estimate the
+relationship between the independent variable and the dependent
+variables. The following model was estimated using OLS:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{US_reg1 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(unemployment }\OperatorTok{~}\StringTok{ }\NormalTok{HPI }\OperatorTok{+}\StringTok{ }\NormalTok{poverty }\OperatorTok{+}\StringTok{ }\NormalTok{sp500 }\OperatorTok{+}\StringTok{ }\NormalTok{log_pop }\OperatorTok{+}\StringTok{ }\NormalTok{log_RMHI , }\DataTypeTok{data =}\NormalTok{ merged_final)}
+\KeywordTok{summary}\NormalTok{(US_reg1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = unemployment ~ HPI + poverty + sp500 + log_pop + 
+##     log_RMHI, data = merged_final)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.4723 -1.2499 -0.3406  0.9330  7.7282 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -2.745e+01  5.229e+00  -5.249 1.71e-07 ***
+## HPI         -6.959e-04  4.125e-04  -1.687  0.09173 .  
+## poverty      3.330e-01  1.952e-02  17.057  < 2e-16 ***
+## sp500       -3.824e-03  2.604e-03  -1.469  0.14210    
+## log_pop      1.140e-01  4.290e-02   2.657  0.00795 ** 
+## log_RMHI     2.476e+00  4.765e-01   5.197 2.26e-07 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.709 on 1794 degrees of freedom
+## Multiple R-squared:  0.2511, Adjusted R-squared:  0.249 
+## F-statistic: 120.3 on 5 and 1794 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(US_reg1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: unemployment
+##             Df Sum Sq Mean Sq F value    Pr(>F)    
+## HPI          1   56.8   56.82  19.450 1.094e-05 ***
+## poverty      1 1567.3 1567.30 536.518 < 2.2e-16 ***
+## sp500        1    3.6    3.63   1.241    0.2654    
+## log_pop      1   50.8   50.84  17.405 3.165e-05 ***
+## log_RMHI     1   78.9   78.89  27.006 2.259e-07 ***
+## Residuals 1794 5240.7    2.92                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ols_coll_diag}\NormalTok{(US_reg1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Tolerance and Variance Inflation Factor
+## ---------------------------------------
+##   Variables Tolerance      VIF
+## 1       HPI 0.6663864 1.500631
+## 2   poverty 0.3124067 3.200956
+## 3     sp500 0.9722612 1.028530
+## 4   log_pop 0.8594747 1.163501
+## 5  log_RMHI 0.2610110 3.831256
+## 
+## 
+## Eigenvalue and Condition Index
+## ------------------------------
+##     Eigenvalue Condition Index    intercept         HPI      poverty
+## 1 5.084306e+00        1.000000 2.260510e-06 0.003830323 0.0008573464
+## 2 7.057245e-01        2.684097 8.309778e-07 0.007536975 0.0001713296
+## 3 1.629915e-01        5.585130 5.822419e-06 0.492530632 0.0376522800
+## 4 4.410114e-02       10.737198 1.625945e-04 0.254881390 0.2979309140
+## 5 2.846922e-03       42.259862 3.318598e-03 0.010335689 0.0184470508
+## 6 2.980417e-05      413.025926 9.965099e-01 0.230884991 0.6449410792
+##          sp500      log_pop     log_RMHI
+## 1 0.0096374541 1.473821e-04 2.269970e-06
+## 2 0.9272088469 5.768935e-05 8.654638e-07
+## 3 0.0540411332 3.334540e-04 3.680338e-06
+## 4 0.0046490202 7.420650e-03 1.977518e-04
+## 5 0.0003590656 9.471835e-01 2.962749e-03
+## 6 0.0041044801 4.485731e-02 9.968327e-01
+\end{verbatim}
+
+The first multiple regression for US is conducted with five independent
+variables, four of the coefficients on the predictor variables have the
+expected signs except the real median household income (log). The
+Logarithm of real median household income has a positive sign when it is
+expected have a negative sign. The wrong sign could be explained partly
+by it having the highest variance inflation factor (VIF) of 3.831, but
+it is not high enough to indicate multicollinearity.
+
+According to the low VIF values, between 1.029 and 3.831, the variables
+are not correlated with each other. With VIF values being so low, the
+p-value becomes a reliable way to test significance of the independent
+variables on the dependent variable, unemployment. The p values of our
+sample indicate that three of the variables are statistically
+significant at the 5\% level of significance. Using the p values we find
+that the house price index (HPI) and change in the S\&P 500 index are
+insignificant.
+
+The overall fit of the estimated model using all of our independent
+variables does not appear to be good because the coefficient of
+determination (R-squared) and the coefficient of multiple determination
+(Adjusted R-squared) of the model are low. The model has an R-squared
+value of 0.2511 and the Adjusted R-squared is 0.249 which indicates that
+the model explains 25.11\% of the variation in the unemployment rate
+data around its mean.
+
+A second regression will be executed to exclude the S\&P 500 and HPI
+data improve the model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{US_linearModelSignificant <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(unemployment }\OperatorTok{~}\StringTok{ }\NormalTok{poverty }\OperatorTok{+}\StringTok{ }\NormalTok{log_pop }\OperatorTok{+}\StringTok{ }\NormalTok{log_RMHI , }\DataTypeTok{data =}\NormalTok{ merged_final)}
+\KeywordTok{summary}\NormalTok{(US_linearModelSignificant)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = unemployment ~ poverty + log_pop + log_RMHI, data = merged_final)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.3504 -1.2408 -0.3391  0.9613  7.6779 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -23.30218    4.59719  -5.069 4.42e-07 ***
+## poverty       0.32451    0.01900  17.081  < 2e-16 ***
+## log_pop       0.11148    0.04286   2.601  0.00936 ** 
+## log_RMHI      2.09117    0.41764   5.007 6.07e-07 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.71 on 1796 degrees of freedom
+## Multiple R-squared:  0.2493, Adjusted R-squared:  0.2481 
+## F-statistic: 198.8 on 3 and 1796 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(US_linearModelSignificant)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: unemployment
+##             Df Sum Sq Mean Sq F value    Pr(>F)    
+## poverty      1 1612.0 1612.05 551.110 < 2.2e-16 ***
+## log_pop      1   59.4   59.36  20.292 7.076e-06 ***
+## log_RMHI     1   73.3   73.33  25.071 6.069e-07 ***
+## Residuals 1796 5253.5    2.93                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ols_coll_diag}\NormalTok{(US_linearModelSignificant)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Tolerance and Variance Inflation Factor
+## ---------------------------------------
+##   Variables Tolerance      VIF
+## 1   poverty 0.3303144 3.027418
+## 2   log_pop 0.8623005 1.159688
+## 3  log_RMHI 0.3402174 2.939297
+## 
+## 
+## Eigenvalue and Condition Index
+## ------------------------------
+##     Eigenvalue Condition Index    intercept     poverty     log_pop
+## 1 3.9384950164        1.000000 4.932158e-06 0.001552346 0.000248892
+## 2 0.0585781558        8.199688 1.010865e-04 0.324619112 0.004032120
+## 3 0.0028880793       36.928409 4.492658e-03 0.013337209 0.922054556
+## 4 0.0000387485      318.814245 9.954013e-01 0.660491333 0.073664432
+##       log_RMHI
+## 1 4.975997e-06
+## 2 1.424391e-04
+## 3 3.869113e-03
+## 4 9.959835e-01
+\end{verbatim}
+
+The result of our second regression shows that log\_RHMI variable still
+has the incorrect sign. With the two variables excluded, the VIF value
+range decreases, ranging between 1.160 and 3.027, indicating no
+multicollinearity among the independent variables. The p-values were
+still statistically significant at the 5\% level of significance.
+Log\_pop is the least significant variable, but it has the lowest VIF
+value. The overall fit of the estimated model does not appear to be good
+because the coefficient of determination for the regression is low. The
+models R-squared is 0.2493 and the Adjusted R-squared is 0.2481 which
+shows a slight decrease when compared to the original regression.
+
+A possible explanation for the low coefficients of determination is
+because the data we collected is measured at the state level. As the
+economy of each state varies widely, we expect the R-squared and
+Adjusted R-squared values to increase when measured at the state level.
+To accurately model the regression at the national level it would be
+helpful to pull data at the national level.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{hist}\NormalTok{(merged_final}\OperatorTok{$}\NormalTok{unemployment,}
+     \DataTypeTok{main=}\StringTok{"Histogram of Unemployment }\CharTok{\textbackslash{}n}\StringTok{in the United States from 1984-2018"}\NormalTok{,}
+     \DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{800}\NormalTok{),}
+     \DataTypeTok{xlab=}\StringTok{"Unemployment Rate"}\NormalTok{,}
+     \DataTypeTok{breaks =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/Histogram Unemployment-1.pdf}
+
+Histograms graphically summarize the frequency distribution of a data
+set. In the United States, from 1984 to 2018, the annual unemployment
+rate ranges from 1.8\%-14.4\%. The histogram displays a slight positive
+skew. Overall the most frequent unemployment rate in the United States
+over this time period hovers around 5\%.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{hist}\NormalTok{(merged_final}\OperatorTok{$}\NormalTok{poverty,}
+     \DataTypeTok{main=}\StringTok{"Histogram of Poverty }\CharTok{\textbackslash{}n}\StringTok{in the United States from 1984-2018"}\NormalTok{,}
+     \DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1000}\NormalTok{),}
+     \DataTypeTok{xlab=}\StringTok{"Poverty Rate"}\NormalTok{,}
+     \DataTypeTok{breaks =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/Histogram Pov-1.pdf}
+The histogram of the poverty rate in the United States graphically shows
+much more of a normal distribution. This is demonstrated by the bell
+curve that is formed in the graph above. In the United States, from 1984
+to 2018, the annual poverty rate ranges from 2.9\%-27.2\%. Based on the
+normal distribution it can be assumed that the observations for poverty
+rate are evenly distributed around the mean 12.85\%.
+
+After all of the data is merged we binned the states into groups based
+on the mean population of the years in our dataframe (1984-2018). Below
+are the bins that were created:
+
+Population \textless{} 2,000,000 WV, NM, NE, ID, ME, HI, NH, RI, MT, DE,
+SD, ND, AK, VT, WY
+
+2,000,000 \textless{} Population \textless{} 5,000,000 MN, AL, LA, CO,
+SC, KY, OK, OR, CT, IA, MS, KS, AR, UT, NV
+
+5,000,000 \textless{} Population \textless{} 10,000,000 MI, NJ, GA, NC,
+VA, MA, IN, WA, TN, MO, WI, MD, AZ
+
+Population \textgreater{} 10,000,000 CA, TX, NY, FL, PA, IL, OH
+
+Each member of our group performed some basic analysis on the states
+within one of the bins. After performing our initial analysis we chose
+to focus on 2 states: Illinois and West Virginia. The remaineder of the
+analysis in this report will center around the state of West Virginia
+and Illinois.
+
+Below are some of the highlights along with commentary for the states we
+have chosen to focus on.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{IL_data <-}\StringTok{ }\NormalTok{merged_final[ merged_final}\OperatorTok{$}\NormalTok{state }\OperatorTok{==}\StringTok{ "IL"}\NormalTok{, ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Descriptive statistics}
+\KeywordTok{stat.desc}\NormalTok{(IL_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                      year period periodName unemployment state quarter annual
+## nbr.val      3.600000e+01     NA         NA   36.0000000    NA      36     36
+## nbr.null     0.000000e+00     NA         NA    0.0000000    NA       0      0
+## nbr.na       0.000000e+00     NA         NA    0.0000000    NA       0      0
+## min          1.984000e+03     NA         NA    4.1000000    NA       4      1
+## max          2.018000e+03     NA         NA   11.0000000    NA       4      1
+## range        3.400000e+01     NA         NA    6.9000000    NA       0      0
+## sum          7.204500e+04     NA         NA  231.7000000    NA     144     36
+## median       2.001500e+03     NA         NA    6.1000000    NA       4      1
+## mean         2.001250e+03     NA         NA    6.4361111    NA       4      1
+## SE.mean      1.701715e+00     NA         NA    0.3023493    NA       0      0
+## CI.mean.0.95 3.454665e+00     NA         NA    0.6138018    NA       0      0
+## var          1.042500e+02     NA         NA    3.2909444    NA       0      0
+## std.dev      1.021029e+01     NA         NA    1.8140960    NA       0      0
+## coef.var     5.101956e-03     NA         NA    0.2818621    NA       0      0
+##                      HPI          MHI         RMHI     poverty   population
+## nbr.val        36.000000 3.600000e+01 3.600000e+01  36.0000000 3.600000e+01
+## nbr.null        0.000000 0.000000e+00 0.000000e+00   0.0000000 0.000000e+00
+## nbr.na          0.000000 0.000000e+00 0.000000e+00   0.0000000 0.000000e+00
+## min           112.800000 2.375200e+04 5.482800e+04   9.9000000 1.138726e+07
+## max           371.210000 7.014500e+04 7.014500e+04  15.6000000 1.289827e+07
+## range         258.410000 4.639300e+04 1.531700e+04   5.7000000 1.511012e+06
+## sum          9218.510000 1.587843e+06 2.204043e+06 451.4000000 4.422845e+08
+## median        276.190000 4.607050e+04 6.109050e+04  12.6000000 1.250700e+07
+## mean          256.069722 4.410675e+04 6.122342e+04  12.5388889 1.228568e+07
+## SE.mean        13.176322 1.969590e+03 6.769020e+02   0.2635917 9.375302e+04
+## CI.mean.0.95   26.749355 3.998480e+03 1.374184e+03   0.5351197 1.903288e+05
+## var          6250.156368 1.396542e+08 1.649507e+07   2.5013016 3.164266e+11
+## std.dev        79.057930 1.181754e+04 4.061412e+03   1.5815504 5.625181e+05
+## coef.var        0.308736 2.679304e-01 6.633756e-02   0.1261316 4.578648e-02
+##                   sp500      log_pop     log_RMHI
+## nbr.val       36.000000 3.600000e+01 3.600000e+01
+## nbr.null       1.000000 0.000000e+00 0.000000e+00
+## nbr.na         0.000000 0.000000e+00 0.000000e+00
+## min          -38.490000 1.624801e+01 1.091196e+01
+## max           34.110000 1.637260e+01 1.115832e+01
+## range         72.600000 1.245982e-01 2.463635e-01
+## sum          341.220000 5.876247e+02 3.967264e+02
+## median        11.895000 1.634180e+01 1.102010e+01
+## mean           9.478333 1.632291e+01 1.102018e+01
+## SE.mean        2.652485 7.733796e-03 1.093321e-02
+## CI.mean.0.95   5.384831 1.570044e-02 2.219560e-02
+## var          253.284340 2.153217e-03 4.303264e-03
+## std.dev       15.914909 4.640277e-02 6.559927e-02
+## coef.var       1.679083 2.842801e-03 5.952651e-03
+\end{verbatim}
+
+The dependent variable, unemployment in the state of Illinois, has a
+mean of 6.44\% and a standard deviation of 1.81\%. The lowest
+unemployment the state has is in 1998 and 1999 at 4.1\%. In 2009 it
+registered its highest unemployment rate at 11.00\%. This coincides with
+the height of The Great Recession. The mean Housing Price Index (HPI) is
+256.07, with a standard deviation of 79.06. The lowest HPI for the state
+occured in 1984 at 112.80, while the highest can be seen in 2018 at
+371.21. Poverty rate shows a mean value of 12.54\% and a standard
+deviation of 1.58\%. In 1999, the state had its lowest rate of 9.9\%,
+and the highest was 15.6 in 1992. The change in the S\&P 500 index
+cannot be measured at the state level and thus it is the same for all
+states. It has a mean of 9.48, and the standard deviation was 15.70. In
+2008, the index had its sharpest decrease at -38.4, while its greatest
+increase registered in 1995 at 34.11. The logarithmic value of the
+population mean for the state of Illinois is 16.32, and the standard
+deviation is 0.046. The measure shows its lowest value at 16.248 in
+1986, and the highest in 2013 at 16.373. Real median household income
+(log) has a mean of 11.02 and a standard deviation of 0.066. In 1984,
+Illinois shows its lowest log\_RMHI at 10.91, while the highest is in
+2018 at 11.16.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#pairwise correlations}
+\KeywordTok{sapply}\NormalTok{(IL_data, class)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         year       period   periodName unemployment        state      quarter 
+##    "numeric"  "character"  "character"    "numeric"  "character"    "numeric" 
+##       annual          HPI          MHI         RMHI      poverty   population 
+##    "numeric"    "numeric"    "numeric"    "numeric"    "numeric"    "numeric" 
+##        sp500      log_pop     log_RMHI 
+##    "numeric"    "numeric"    "numeric"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sapply}\NormalTok{(IL_data, is.factor)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         year       period   periodName unemployment        state      quarter 
+##        FALSE        FALSE        FALSE        FALSE        FALSE        FALSE 
+##       annual          HPI          MHI         RMHI      poverty   population 
+##        FALSE        FALSE        FALSE        FALSE        FALSE        FALSE 
+##        sp500      log_pop     log_RMHI 
+##        FALSE        FALSE        FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cor}\NormalTok{(IL_data[}\KeywordTok{sapply}\NormalTok{(IL_data, }\ControlFlowTok{function}\NormalTok{(x) }\OperatorTok{!}\KeywordTok{is.character}\NormalTok{(x))])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in cor(IL_data[sapply(IL_data, function(x) !is.character(x))]): the
+## standard deviation is zero
+\end{verbatim}
+
+\begin{verbatim}
+##                      year unemployment quarter annual         HPI        MHI
+## year          1.000000000  0.006748569      NA     NA  0.91598238  0.9754798
+## unemployment  0.006748569  1.000000000      NA     NA -0.08115831 -0.1343498
+## quarter                NA           NA       1     NA          NA         NA
+## annual                 NA           NA      NA      1          NA         NA
+## HPI           0.915982382 -0.081158315      NA     NA  1.00000000  0.9020434
+## MHI           0.975479844 -0.134349785      NA     NA  0.90204345  1.0000000
+## RMHI          0.369670810 -0.659000548      NA     NA  0.39861034  0.5518278
+## poverty      -0.360502692  0.697578917      NA     NA -0.47108192 -0.5052706
+## population    0.955653199  0.020119683      NA     NA  0.93700387  0.9194634
+## sp500        -0.138529275  0.031097916      NA     NA -0.21926746 -0.1520508
+## log_pop       0.953215398  0.011231165      NA     NA  0.93704886  0.9183431
+## log_RMHI      0.373224106 -0.660277555      NA     NA  0.40824269  0.5536662
+##                     RMHI     poverty  population       sp500     log_pop
+## year          0.36967081 -0.36050269  0.95565320 -0.13852928  0.95321540
+## unemployment -0.65900055  0.69757892  0.02011968  0.03109792  0.01123117
+## quarter               NA          NA          NA          NA          NA
+## annual                NA          NA          NA          NA          NA
+## HPI           0.39861034 -0.47108192  0.93700387 -0.21926746  0.93704886
+## MHI           0.55182782 -0.50527064  0.91946339 -0.15205085  0.91834308
+## RMHI          1.00000000 -0.86935532  0.36060017 -0.04610779  0.36698125
+## poverty      -0.86935532  1.00000000 -0.40348032  0.08946888 -0.41069905
+## population    0.36060017 -0.40348032  1.00000000 -0.15320230  0.99988750
+## sp500        -0.04610779  0.08946888 -0.15320230  1.00000000 -0.15281783
+## log_pop       0.36698125 -0.41069905  0.99988750 -0.15281783  1.00000000
+## log_RMHI      0.99934815 -0.87399522  0.36621331 -0.04538721  0.37261639
+##                 log_RMHI
+## year          0.37322411
+## unemployment -0.66027755
+## quarter               NA
+## annual                NA
+## HPI           0.40824269
+## MHI           0.55366622
+## RMHI          0.99934815
+## poverty      -0.87399522
+## population    0.36621331
+## sp500        -0.04538721
+## log_pop       0.37261639
+## log_RMHI      1.00000000
+\end{verbatim}
+
+This project uses the ordinary least squares method to estimate the
+relationship between the independent variable and the dependent
+variable. The following model was estimated using OLS:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{IL_reg2 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(unemployment }\OperatorTok{~}\StringTok{ }\NormalTok{HPI }\OperatorTok{+}\StringTok{ }\NormalTok{poverty }\OperatorTok{+}\StringTok{ }\NormalTok{sp500 }\OperatorTok{+}\StringTok{ }\NormalTok{log_pop }\OperatorTok{+}\StringTok{ }\NormalTok{log_RMHI , }\DataTypeTok{data =}\NormalTok{ IL_data)}
+\KeywordTok{summary}\NormalTok{(IL_reg2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = unemployment ~ HPI + poverty + sp500 + log_pop + 
+##     log_RMHI, data = IL_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.5575 -0.7142 -0.0868  0.7908  3.6217 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)  
+## (Intercept) -2.701e+02  2.170e+02  -1.245   0.2228  
+## HPI         -4.554e-03  7.999e-03  -0.569   0.5733  
+## poverty      6.973e-01  2.810e-01   2.481   0.0189 *
+## sp500        5.088e-04  1.349e-02   0.038   0.9702  
+## log_pop      2.113e+01  1.303e+01   1.621   0.1154  
+## log_RMHI    -6.889e+00  6.524e+00  -1.056   0.2994  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.222 on 30 degrees of freedom
+## Multiple R-squared:  0.6109, Adjusted R-squared:  0.546 
+## F-statistic: 9.418 on 5 and 30 DF,  p-value: 1.773e-05
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(IL_reg2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: unemployment
+##           Df Sum Sq Mean Sq F value    Pr(>F)    
+## HPI        1  0.759   0.759  0.5078    0.4816    
+## poverty    1 64.356  64.356 43.0732 2.924e-07 ***
+## sp500      1  0.076   0.076  0.0507    0.8234    
+## log_pop    1  3.503   3.503  2.3446    0.1362    
+## log_RMHI   1  1.666   1.666  1.1149    0.2994    
+## Residuals 30 44.823   1.494                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ols_coll_diag}\NormalTok{(IL_reg2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Tolerance and Variance Inflation Factor
+## ---------------------------------------
+##   Variables Tolerance      VIF
+## 1       HPI 0.1067566 9.367099
+## 2   poverty 0.2160991 4.627507
+## 3     sp500 0.9256652 1.080304
+## 4   log_pop 0.1167693 8.563894
+## 5  log_RMHI 0.2330766 4.290436
+## 
+## 
+## Eigenvalue and Condition Index
+## ------------------------------
+##     Eigenvalue Condition Index    intercept          HPI      poverty
+## 1 5.212873e+00        1.000000 3.213087e-08 0.0003060912 1.182875e-04
+## 2 7.048766e-01        2.719456 1.255808e-08 0.0004722352 3.265087e-05
+## 3 7.437527e-02        8.371906 2.975512e-07 0.0901005088 8.114782e-03
+## 4 7.869031e-03       25.738188 1.135669e-05 0.0538621804 2.598235e-01
+## 5 5.223247e-06      999.006459 2.739175e-02 0.0291556497 7.311859e-01
+## 6 4.635005e-07     3353.617259 9.725966e-01 0.8261033348 7.249027e-04
+##         sp500      log_pop     log_RMHI
+## 1 0.008655549 3.343795e-08 2.925772e-07
+## 2 0.890894671 1.324855e-08 1.153413e-07
+## 3 0.068542989 2.746554e-07 2.334526e-06
+## 4 0.004916631 1.138634e-05 1.356666e-04
+## 5 0.001329368 3.367494e-02 9.912410e-01
+## 6 0.025660791 9.663134e-01 8.620576e-03
+\end{verbatim}
+
+The first multiple regression for Illinois is conducted with all five
+independent variables. Four of the coefficients of the predictor
+variables have the expected signs with the exception of the sp500
+variable. The change in the S\&P 500 index has a positive sign when it
+is expected to have a negative one. The incorrect direction of the sign
+could be explained partly by the high VIF values. The high VIF values
+indicate that some variables show high multicollinearity within the
+model.
+
+The VIF values range from 1.080 and 9.367 signifying the variables are
+correlated with each other. The high VIF values suggest the p-value is
+unreliable to test significance of the independent variables.
+
+The overall fit of the estimated regression model appears to be good
+because the R-squared value is reaching mid-level. The models
+coefficient of determination is 0.6109 and the Adjusted R-sq is 0.546,
+which indicates that the model explains approximately 54.6-61.09\% of
+the variation in the unemployment rate data around its mean.
+
+A second regression is made excluding the HPI, which has the highest VIF
+value, in order to improve the model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{IL_linearModelSignificant <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(unemployment }\OperatorTok{~}\StringTok{ }\NormalTok{poverty }\OperatorTok{+}\StringTok{ }\NormalTok{sp500 }\OperatorTok{+}\StringTok{ }\NormalTok{log_pop }\OperatorTok{+}\StringTok{ }\NormalTok{log_RMHI, }\DataTypeTok{data =}\NormalTok{ IL_data)}
+\KeywordTok{summary}\NormalTok{(IL_linearModelSignificant)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = unemployment ~ poverty + sp500 + log_pop + log_RMHI, 
+##     data = IL_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.4952 -0.8111 -0.0466  0.7237  3.5540 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)   
+## (Intercept) -1.629e+02  1.069e+02  -1.525  0.13746   
+## poverty      7.314e-01  2.716e-01   2.693  0.01131 * 
+## sp500        2.163e-03  1.303e-02   0.166  0.86924   
+## log_pop      1.426e+01  4.874e+00   2.925  0.00638 **
+## log_RMHI    -6.582e+00  6.430e+00  -1.024  0.31394   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.209 on 31 degrees of freedom
+## Multiple R-squared:  0.6066, Adjusted R-squared:  0.5559 
+## F-statistic: 11.95 on 4 and 31 DF,  p-value: 5.449e-06
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{ (IL_linearModelSignificant)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: unemployment
+##           Df Sum Sq Mean Sq F value    Pr(>F)    
+## poverty    1 56.050  56.050 38.3498 7.099e-07 ***
+## sp500      1  0.114   0.114  0.0779   0.78202    
+## log_pop    1 12.180  12.180  8.3337   0.00703 ** 
+## log_RMHI   1  1.531   1.531  1.0478   0.31394    
+## Residuals 31 45.308   1.462                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ols_coll_diag}\NormalTok{(IL_linearModelSignificant)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Tolerance and Variance Inflation Factor
+## ---------------------------------------
+##   Variables Tolerance      VIF
+## 1   poverty 0.2263803 4.417345
+## 2     sp500 0.9706798 1.030206
+## 3   log_pop 0.8164408 1.224829
+## 4  log_RMHI 0.2346725 4.261257
+## 
+## 
+## Eigenvalue and Condition Index
+## ------------------------------
+##     Eigenvalue Condition Index    intercept      poverty       sp500
+## 1 4.312444e+00        1.000000 1.880054e-07 0.0001812932 0.014707177
+## 2 6.757467e-01        2.526212 1.215539e-07 0.0001007135 0.958529764
+## 3 1.179962e-02       19.117355 2.149252e-05 0.2199264942 0.005274288
+## 4 6.991162e-06      785.393072 3.571135e-03 0.2965228112 0.018359682
+## 5 2.391996e-06     1342.707940 9.964071e-01 0.4832686879 0.003129089
+##        log_pop     log_RMHI
+## 1 3.391958e-07 4.273829e-07
+## 2 2.207621e-07 2.771424e-07
+## 3 4.189301e-05 6.777289e-05
+## 4 4.167257e-01 6.223448e-01
+## 5 5.832319e-01 3.775867e-01
+\end{verbatim}
+
+The second regression result show that sp500 variable still has the
+incorrect sign, however with the HPI variable excluded, the VIF values
+significantly decrease ranging between 1.030 and 4.417. This indicates
+less multicollinearity exists among the independent variables in the
+second model for Illinois. The p-values are statistically significant at
+the 5\% level of significance for poverty and log\_pop variables. Sp500
+and Log\_RMHI are not statistically significant according to their
+p-values.
+
+The overall fit of the estimated model appears to be good because the
+R-squared value of the regression is again in the mid-level range. The
+model has a coefficient of determination of 0.6066 which is decreased
+slightly compared to the first regression, but the adjusted R-squared,
+0.5559, increased compared to the first regression model. Overall the
+explanatory value of the second model is increased compared to the first
+regression analysis for the state of Illinois. There is a marked
+increase in the R-squared and Adjusted R-squared values compared to the
+initial model that included all of the states. This is indicative that
+the dataset has more explanatory power at the state level.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{hist}\NormalTok{(IL_data}\OperatorTok{$}\NormalTok{unemployment,}
+     \DataTypeTok{main=}\StringTok{"Histogram of Unemployment in Illinois from 1984-2018"}\NormalTok{,}
+     \DataTypeTok{xlim=}\KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{11}\NormalTok{),}
+     \DataTypeTok{xlab=}\StringTok{"Unemployment Rate"}\NormalTok{,}
+     \DataTypeTok{breaks =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/IL Histogram Unemployment-1.pdf}
+
+In Illinois, from 1984 to 2018, the annual unemployment rates ranged
+from 4.1-11.0\%. The histogram displays a positively skewed
+distribution. An unemployment rate that fell within the first two
+intervals, 4.0-4.9\% \& 5.0-5.9\%, occurred 18 out of the 36 years
+examined.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{hist}\NormalTok{(IL_data}\OperatorTok{$}\NormalTok{poverty,}
+     \DataTypeTok{main=}\StringTok{"Histogram of Poverty in Illinois from 1984-2018"}\NormalTok{,}
+     \DataTypeTok{xlim=}\KeywordTok{c}\NormalTok{(}\DecValTok{9}\NormalTok{,}\DecValTok{16}\NormalTok{),}
+     \DataTypeTok{xlab=}\StringTok{"Poverty Rate"}\NormalTok{,}
+     \DataTypeTok{breaks =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/Histogram Poverty-1.pdf}
+
+In Illinois, from 1984 to 2018, the poverty levels range from
+9.9-15.6\%. The histogram pictured above displays a relatively normal
+distribution. Illinois registered an poverty rate between 12.0-12.9\%
+most frequently during this time period. In 14 of the 36 years examined,
+the poverty rate in Illinois was between 13-15.9\%.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{scatter.smooth}\NormalTok{(IL_data}\OperatorTok{$}\NormalTok{year, IL_data}\OperatorTok{$}\NormalTok{unemployment, }\DataTypeTok{main=}\StringTok{"Illinois Unemployment Rate by Year"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Year"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"Unemployment"}\NormalTok{, }\DataTypeTok{span =} \DecValTok{2}\OperatorTok{/}\DecValTok{8}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/IL scatter unemployment-1.pdf}
+
+A scatter plot displays the relationship between two numeric variables.
+This plot demonstrates the relationship between the annual unemployment
+rate and the year, from 1984 to 2018. In Illinois, there is no linear
+relationship, however, there is an observable cyclical pattern. The
+annual unemployment rate in Illinois was lowest around 1999 and peaked
+in 2008. The upper peaks in the scatter plot coincide with the economic
+recessions that occurred throughout the timeperiod. The most notable of
+which is the Great Recession which spanned from 2007-2009. The state of
+Illinois had an unemployment nearing 11\% in 2009. Additionally, the
+recession of the early 1990's and the 1981-1982 recession show peak
+unemployment levels nearing 9\% in the state of Illinois. To a lesser
+extent a small peak can be seen around 2001/2002 which corresponds with
+the tech bubble of the early 2000s.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{scatter.smooth}\NormalTok{(IL_data}\OperatorTok{$}\NormalTok{year, IL_data}\OperatorTok{$}\NormalTok{HPI, }\DataTypeTok{main=}\StringTok{"Illinois House Price Index (HPI) by Year"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Year"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"HPI"}\NormalTok{, }\DataTypeTok{span =} \DecValTok{2}\OperatorTok{/}\DecValTok{8}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/IL scatter HPI-1.pdf}
+
+This plot represents the relationship between Illinois' house price
+index (HPI) and the year. From 1984 to 2008 the relationship appears to
+be linear until the HPI dipped in 2008-2013. Since then, the HPI has
+continued its increase in a linear fashion. This pattern is observed
+consistently when examining many other states and, through inference,
+can mainly be attributed to the fallout the Great Recession caused in
+the housing market.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{scatter.smooth}\NormalTok{(}\DataTypeTok{x=}\NormalTok{IL_data}\OperatorTok{$}\NormalTok{year, }\DataTypeTok{y=}\NormalTok{IL_data}\OperatorTok{$}\NormalTok{poverty, }\DataTypeTok{main=}\StringTok{"Illinois % of People }\CharTok{\textbackslash{}n}\StringTok{Below Poverty Level"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Year"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"Poverty Rate"}\NormalTok{, }\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{20}\NormalTok{), }\DataTypeTok{span =} \DecValTok{2}\OperatorTok{/}\DecValTok{8}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/IL scatter poverty-1.pdf}
+
+The percentage of individuals living below the poverty rate in Illinois
+does not display a clear pattern. Although, a slight cyclical pattern
+can be observed in the data. Overall, there has been slight decrease of
+roughly 4\% from 1984 to 2018. Poverty levels for the state of Illinois
+peaked in 1992.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#IL_data$log_RMHI <- as.integer(IL_data$log_RMHI)}
+\KeywordTok{scatter.smooth}\NormalTok{(}\DataTypeTok{x=}\NormalTok{IL_data}\OperatorTok{$}\NormalTok{year, }\DataTypeTok{y=}\NormalTok{IL_data}\OperatorTok{$}\NormalTok{log_RMHI, }\DataTypeTok{main=}\StringTok{"Illinois Real Median }\CharTok{\textbackslash{}n}\StringTok{ Household Income (Log) by Year"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Year"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"RMHI (log)"}\NormalTok{, }\DataTypeTok{span =} \DecValTok{2}\OperatorTok{/}\DecValTok{8}\NormalTok{ )}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/IL scatter log RMHI-1.pdf}
+
+The median household income in Illinois increases dramatically from
+1984-2018. The lowest and highest values recorded fall at the beginning
+and the end of the time period, respectively. There are several peaks
+and valleys that can be observed in the scatter plot. Again, as this is
+a financial measure, the cyclical nature of this graph follows the ebb
+and flow of the United States economy.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#IL_data$log_pop <- as.integer(IL_data$log_pop)}
+\KeywordTok{scatter.smooth}\NormalTok{(}\DataTypeTok{x=}\NormalTok{IL_data}\OperatorTok{$}\NormalTok{year, }\DataTypeTok{y=}\NormalTok{IL_data}\OperatorTok{$}\NormalTok{log_pop, }\DataTypeTok{main=}\StringTok{"Illinois Population (Log) by Year"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Year"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"Population (Log)"}\NormalTok{, }\DataTypeTok{span =} \DecValTok{2}\OperatorTok{/}\DecValTok{8}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/IL scatter log population-1.pdf}
+
+The logarithmic population of Illinois decreased slightly from 1984-1988
+before increasing in a relatively linear fashion from 1988 to its peak
+in 2013. From 2013-2018 there is a gradual decline in population within
+the state.
+
+A correlation function is used to illustrate the relationship between
+our independent variable and our dependent variable. The closer the
+correlation is to 1 or -1 the stronger the correlation between the two
+variables. For a correlation of 1, it signifies that there is a perfect
+positive correlation. For a -1 correlation there is a perfect inverse
+relationship between the two variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cor}\NormalTok{(IL_data}\OperatorTok{$}\NormalTok{HPI, IL_data}\OperatorTok{$}\NormalTok{unemployment)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.08115831
+\end{verbatim}
+
+The correlation between HPI (House Price Index) and our dependent
+variable, unemployment, in Illinois is -0.08115831. The correlation
+shows that there is a weak negative relationship between the housing
+price and unemployment in the State of Illinois.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cor}\NormalTok{(IL_data}\OperatorTok{$}\NormalTok{poverty, IL_data}\OperatorTok{$}\NormalTok{unemployment)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.6975789
+\end{verbatim}
+
+The correlation between the poverty rate, the percentage of the
+population under the poverty line, and unemployment in Illinois is
+0.6975789. This correlation shows a much stronger positive relationship
+between the two variables. As unemployment increases there is a much
+stronger possibility that the percentage of the population under the
+poverty line increases as well.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cor}\NormalTok{(IL_data}\OperatorTok{$}\NormalTok{sp500, IL_data}\OperatorTok{$}\NormalTok{unemployment)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.03109792
+\end{verbatim}
+
+The correlation between the change in the S\&P 500 and unemployment in
+Illinois is 0.03109792. The correlation between the S\&P 500 and
+unemployment shows a weak positive correlation. With the correlation
+being extremely close to 0 it signifies that there is not much of an
+explanatory relationship between the two variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cor}\NormalTok{(IL_data}\OperatorTok{$}\NormalTok{log_pop, IL_data}\OperatorTok{$}\NormalTok{unemployment)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.01123117
+\end{verbatim}
+
+The correlation between the log of the population and unemployment in
+Illinois is 0.01123117. The correlation between the log of the
+population and unemployment is extremely close to 0, which signifies
+there is almost no correlation between the two variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cor}\NormalTok{(IL_data}\OperatorTok{$}\NormalTok{log_RMHI, IL_data}\OperatorTok{$}\NormalTok{unemployment)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.6602776
+\end{verbatim}
+
+The correlation between the log of real median household income and
+unemployment in Illinois is -0.6602776. The relationship between the log
+of median household income and unemployment represents a strong negative
+correlation. This suggests that the two variables move in inverse
+directions of each other. In this case, with a correlation of -0.66,
+there is enough evidence to suggest that in most cases the two variables
+move in inverse directions of each other due to the proximity of -0.66
+to -1, which is a perfect negative relationship .
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))  }\CommentTok{# divide graph area in 2 columns}
+\KeywordTok{boxplot}\NormalTok{(IL_data}\OperatorTok{$}\NormalTok{unemployment, }\DataTypeTok{main=}\StringTok{"Boxplot of Unemployment }\CharTok{\textbackslash{}n}\StringTok{ in Illinois"}\NormalTok{, }\DataTypeTok{sub=}\KeywordTok{paste}\NormalTok{(}\StringTok{"Outlier rows: "}\NormalTok{, }\KeywordTok{boxplot.stats}\NormalTok{(IL_data}\OperatorTok{$}\NormalTok{unemployment)}\OperatorTok{$}\NormalTok{out))  }\CommentTok{# box plot for 'Unemployment'}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/IL boxplot unemployment-1.pdf}
+
+The annual unemployment rate in Illinois ranges from 4\%-11\% during the
+time period of 1984-2018. The boxplot for unemployment rate displays a
+positively skewed distribution. This shows us that the mean is greater
+than the median. There were no outliers in the Unemployment data
+collected from 1984-2018 based upon the boxplot results.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))  }\CommentTok{# divide graph area in 2 columns}
+\KeywordTok{boxplot}\NormalTok{(IL_data}\OperatorTok{$}\NormalTok{poverty, }\DataTypeTok{main=}\StringTok{"Boxplot of Poverty }\CharTok{\textbackslash{}n}\StringTok{in Illinois"}\NormalTok{, }\DataTypeTok{sub=}\KeywordTok{paste}\NormalTok{(}\StringTok{"Outlier rows: "}\NormalTok{, }\KeywordTok{boxplot.stats}\NormalTok{(IL_data}\OperatorTok{$}\NormalTok{poverty)}\OperatorTok{$}\NormalTok{out))  }\CommentTok{# box plot for 'Poverty'}
+\CommentTok{#create box plot for poverty level and unemployment level}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/IL boxplot poverty-1.pdf}
+
+The poverty levels in Illinois ranged from roughly 9\% to just under
+14\% from 1984-2018. The median poverty rate is displayed at roughly
+12.5\%.The plot displays a relatively normal distribution meaning the
+mean and median are close the same value. There are no outliers in the
+Poverty data collected from 1984-2018 based upon the boxplot results.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#run multiple linear model for data}
+\NormalTok{IL_reg1 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(unemployment }\OperatorTok{~}\StringTok{ }\NormalTok{poverty }\OperatorTok{+}\StringTok{ }\NormalTok{RMHI }\OperatorTok{+}\StringTok{ }\NormalTok{HPI }\OperatorTok{+}\StringTok{ }\NormalTok{population }\OperatorTok{+}\StringTok{ }\NormalTok{sp500, }\DataTypeTok{data =}\NormalTok{ IL_data)}
+\KeywordTok{summary}\NormalTok{(IL_reg1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = unemployment ~ poverty + RMHI + HPI + population + 
+##     sp500, data = IL_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.5866 -0.7214 -0.0935  0.7777  3.6103 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)  
+## (Intercept) -1.676e+01  1.379e+01  -1.215   0.2337  
+## poverty      6.896e-01  2.776e-01   2.484   0.0188 *
+## RMHI        -1.113e-04  1.033e-04  -1.077   0.2901  
+## HPI         -5.417e-03  8.027e-03  -0.675   0.5050  
+## population   1.851e-06  1.075e-06   1.723   0.0952 .
+## sp500        2.284e-04  1.343e-02   0.017   0.9865  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.217 on 30 degrees of freedom
+## Multiple R-squared:  0.6143, Adjusted R-squared:  0.5501 
+## F-statistic: 9.558 on 5 and 30 DF,  p-value: 1.561e-05
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(IL_reg1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: unemployment
+##            Df Sum Sq Mean Sq F value    Pr(>F)    
+## poverty     1 56.050  56.050 37.8541 9.109e-07 ***
+## RMHI        1  1.303   1.303  0.8798   0.35574    
+## HPI         1  8.899   8.899  6.0102   0.02026 *  
+## population  1  4.510   4.510  3.0461   0.09117 .  
+## sp500       1  0.000   0.000  0.0003   0.98654    
+## Residuals  30 44.420   1.481                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{IL_reg2 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(unemployment }\OperatorTok{~}\StringTok{ }\NormalTok{poverty }\OperatorTok{+}\StringTok{ }\NormalTok{log_RMHI }\OperatorTok{+}\StringTok{ }\NormalTok{HPI }\OperatorTok{+}\StringTok{ }\NormalTok{log_pop }\OperatorTok{+}\StringTok{ }\NormalTok{sp500, }\DataTypeTok{data =}\NormalTok{ IL_data)}
+\KeywordTok{summary}\NormalTok{(IL_reg2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = unemployment ~ poverty + log_RMHI + HPI + log_pop + 
+##     sp500, data = IL_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.5575 -0.7142 -0.0868  0.7908  3.6217 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)  
+## (Intercept) -2.701e+02  2.170e+02  -1.245   0.2228  
+## poverty      6.973e-01  2.810e-01   2.481   0.0189 *
+## log_RMHI    -6.889e+00  6.524e+00  -1.056   0.2994  
+## HPI         -4.554e-03  7.999e-03  -0.569   0.5733  
+## log_pop      2.113e+01  1.303e+01   1.621   0.1154  
+## sp500        5.088e-04  1.349e-02   0.038   0.9702  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.222 on 30 degrees of freedom
+## Multiple R-squared:  0.6109, Adjusted R-squared:  0.546 
+## F-statistic: 9.418 on 5 and 30 DF,  p-value: 1.773e-05
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(IL_reg2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: unemployment
+##           Df Sum Sq Mean Sq F value   Pr(>F)    
+## poverty    1 56.050  56.050 37.5138 9.84e-07 ***
+## log_RMHI   1  1.249   1.249  0.8358  0.36789    
+## HPI        1  9.011   9.011  6.0310  0.02007 *  
+## log_pop    1  4.048   4.048  2.7091  0.11022    
+## sp500      1  0.002   0.002  0.0014  0.97017    
+## Residuals 30 44.823   1.494                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{IL_linearModelSignificant <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(unemployment }\OperatorTok{~}\StringTok{ }\NormalTok{poverty }\OperatorTok{+}\StringTok{ }\NormalTok{log_pop, }\DataTypeTok{data =}\NormalTok{ IL_data)}
+\KeywordTok{summary}\NormalTok{(IL_linearModelSignificant)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = unemployment ~ poverty + log_pop, data = IL_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.4468 -0.7344 -0.1555  0.7208  3.3382 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -234.2508    78.4390  -2.986  0.00529 ** 
+## poverty        0.9689     0.1397   6.937  6.3e-08 ***
+## log_pop       14.0011     4.7604   2.941  0.00594 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.192 on 33 degrees of freedom
+## Multiple R-squared:  0.5932, Adjusted R-squared:  0.5686 
+## F-statistic: 24.06 on 2 and 33 DF,  p-value: 3.581e-07
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{WV_data <-}\StringTok{ }\NormalTok{merged_final[ merged_final}\OperatorTok{$}\NormalTok{state }\OperatorTok{==}\StringTok{ "WV"}\NormalTok{, ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Descriptive statistics}
+\KeywordTok{stat.desc}\NormalTok{(WV_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                      year period periodName unemployment state quarter annual
+## nbr.val      3.600000e+01     NA         NA   36.0000000    NA      36     36
+## nbr.null     0.000000e+00     NA         NA    0.0000000    NA       0      0
+## nbr.na       0.000000e+00     NA         NA    0.0000000    NA       0      0
+## min          1.984000e+03     NA         NA    4.2000000    NA       4      1
+## max          2.018000e+03     NA         NA   14.4000000    NA       4      1
+## range        3.400000e+01     NA         NA   10.2000000    NA       0      0
+## sum          7.204500e+04     NA         NA  260.6000000    NA     144     36
+## median       2.001500e+03     NA         NA    6.8000000    NA       4      1
+## mean         2.001250e+03     NA         NA    7.2388889    NA       4      1
+## SE.mean      1.701715e+00     NA         NA    0.4132388    NA       0      0
+## CI.mean.0.95 3.454665e+00     NA         NA    0.8389194    NA       0      0
+## var          1.042500e+02     NA         NA    6.1475873    NA       0      0
+## std.dev      1.021029e+01     NA         NA    2.4794329    NA       0      0
+## coef.var     5.101956e-03     NA         NA    0.3425157    NA       0      0
+##                       HPI          MHI         RMHI     poverty   population
+## nbr.val        36.0000000 3.600000e+01 3.600000e+01  36.0000000 3.600000e+01
+## nbr.null        0.0000000 0.000000e+00 0.000000e+00   0.0000000 0.000000e+00
+## nbr.na          0.0000000 0.000000e+00 0.000000e+00   0.0000000 0.000000e+00
+## min            87.2800000 1.598300e+04 3.566200e+04  14.2000000 1.792548e+06
+## max           230.8600000 5.057300e+04 5.110100e+04  22.4000000 1.927697e+06
+## range         143.5800000 3.459000e+04 1.543900e+04   8.2000000 1.351490e+05
+## sum          5907.9000000 1.140958e+06 1.561645e+06 633.5000000 6.597333e+07
+## median        164.2650000 2.954200e+04 4.301200e+04  16.9500000 1.823254e+06
+## mean          164.1083333 3.169328e+04 4.337903e+04  17.5972222 1.832592e+06
+## SE.mean         8.1120264 1.692733e+03 7.148259e+02   0.4040762 4.925293e+03
+## CI.mean.0.95   16.4682892 3.436430e+03 1.451174e+03   0.8203183 9.998876e+03
+## var          2368.9790257 1.031524e+08 1.839514e+07   5.8779921 8.733063e+08
+## std.dev        48.6721586 1.015640e+04 4.288955e+03   2.4244571 2.955176e+04
+## coef.var        0.2965855 3.204590e-01 9.887163e-02   0.1377750 1.612566e-02
+##                   sp500      log_pop     log_RMHI
+## nbr.val       36.000000 3.600000e+01 3.600000e+01
+## nbr.null       1.000000 0.000000e+00 0.000000e+00
+## nbr.na         0.000000 0.000000e+00 0.000000e+00
+## min          -38.490000 1.439915e+01 1.048184e+01
+## max           34.110000 1.447184e+01 1.084156e+01
+## range         72.600000 7.268795e-02 3.597184e-01
+## sum          341.220000 5.191602e+02 3.842244e+02
+## median        11.895000 1.441613e+01 1.066923e+01
+## mean           9.478333 1.442112e+01 1.067290e+01
+## SE.mean        2.652485 2.659874e-03 1.669191e-02
+## CI.mean.0.95   5.384831 5.399832e-03 3.388637e-02
+## var          253.284340 2.546975e-04 1.003031e-02
+## std.dev       15.914909 1.595925e-02 1.001514e-01
+## coef.var       1.679083 1.106658e-03 9.383714e-03
+\end{verbatim}
+
+The dependent variable, unemployment, has a mean of 7.25\% and a
+standard deviation of 2.48\%. The lowest unemployment rate occurred in
+2006 at 4.2\% while the highest was in 1984 at 14.40\%. The mean HPI
+registered at 164.11, with a standard deviation of 48.67. The lowest HPI
+is in 1984 at 87.28, while the highest is seen in 2018 at 230.86.
+Poverty rate has a mean of 17.60\% and a standard deviation of 2.42\%.
+In 2004, the lowest rate can be seen at 14.2\%, and the highest is
+22.4\% in 1986. The change in the S\&P 500 index cannot be measured at
+the state level and thus it is the same for all states. It has a mean of
+9.48, and the standard deviation is 15.70. In 2008, the index had its
+sharpest decrease at -38.4, while its greatest increase registered in
+1995 at 34.11. The logarithmic value of the population has a mean of
+14.42, and a standard deviation of 0.016. The lowest population is 14.40
+in 1990, and the highest is in 1984 at 14.47. Real median household
+income (log) has a mean of 10.67 and a standard deviation of 0.10. In
+1992, West Virginia has its lowest RMHI (log) at 10.48, while its
+highest is in 2007 at 10.84.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#pairwise correlations}
+\KeywordTok{sapply}\NormalTok{(WV_data, class)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         year       period   periodName unemployment        state      quarter 
+##    "numeric"  "character"  "character"    "numeric"  "character"    "numeric" 
+##       annual          HPI          MHI         RMHI      poverty   population 
+##    "numeric"    "numeric"    "numeric"    "numeric"    "numeric"    "numeric" 
+##        sp500      log_pop     log_RMHI 
+##    "numeric"    "numeric"    "numeric"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sapply}\NormalTok{(WV_data, is.factor)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         year       period   periodName unemployment        state      quarter 
+##        FALSE        FALSE        FALSE        FALSE        FALSE        FALSE 
+##       annual          HPI          MHI         RMHI      poverty   population 
+##        FALSE        FALSE        FALSE        FALSE        FALSE        FALSE 
+##        sp500      log_pop     log_RMHI 
+##        FALSE        FALSE        FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cor}\NormalTok{(WV_data[}\KeywordTok{sapply}\NormalTok{(WV_data, }\ControlFlowTok{function}\NormalTok{(x) }\OperatorTok{!}\KeywordTok{is.character}\NormalTok{(x))])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in cor(WV_data[sapply(WV_data, function(x) !is.character(x))]): the
+## standard deviation is zero
+\end{verbatim}
+
+\begin{verbatim}
+##                    year unemployment quarter annual         HPI         MHI
+## year          1.0000000   -0.6830875      NA     NA  0.97971522  0.98286504
+## unemployment -0.6830875    1.0000000      NA     NA -0.71386948 -0.64676220
+## quarter              NA           NA       1     NA          NA          NA
+## annual               NA           NA      NA      1          NA          NA
+## HPI           0.9797152   -0.7138695      NA     NA  1.00000000  0.97903651
+## MHI           0.9828650   -0.6467622      NA     NA  0.97903651  1.00000000
+## RMHI          0.8376848   -0.6170457      NA     NA  0.87205819  0.91397010
+## poverty      -0.5003150    0.6996082      NA     NA -0.55206136 -0.54467318
+## population   -0.1232569    0.5144306      NA     NA -0.08724377 -0.08789167
+## sp500        -0.1385293    0.1979507      NA     NA -0.16786502 -0.11281889
+## log_pop      -0.1170711    0.5093770      NA     NA -0.08085322 -0.08195948
+## log_RMHI      0.8388360   -0.6322822      NA     NA  0.87065335  0.91113096
+##                     RMHI    poverty  population       sp500     log_pop
+## year          0.83768478 -0.5003150 -0.12325691 -0.13852928 -0.11707114
+## unemployment -0.61704566  0.6996082  0.51443058  0.19795068  0.50937703
+## quarter               NA         NA          NA          NA          NA
+## annual                NA         NA          NA          NA          NA
+## HPI           0.87205819 -0.5520614 -0.08724377 -0.16786502 -0.08085322
+## MHI           0.91397010 -0.5446732 -0.08789167 -0.11281889 -0.08195948
+## RMHI          1.00000000 -0.7093226 -0.14833523 -0.02144328 -0.14370564
+## poverty      -0.70932258  1.0000000  0.42128203  0.19613672  0.41901962
+## population   -0.14833523  0.4212820  1.00000000  0.09952714  0.99993588
+## sp500        -0.02144328  0.1961367  0.09952714  1.00000000  0.10072129
+## log_pop      -0.14370564  0.4190196  0.99993588  0.10072129  1.00000000
+## log_RMHI      0.99860531 -0.7294518 -0.16973197 -0.02206507 -0.16515363
+##                 log_RMHI
+## year          0.83883601
+## unemployment -0.63228217
+## quarter               NA
+## annual                NA
+## HPI           0.87065335
+## MHI           0.91113096
+## RMHI          0.99860531
+## poverty      -0.72945180
+## population   -0.16973197
+## sp500        -0.02206507
+## log_pop      -0.16515363
+## log_RMHI      1.00000000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{hist}\NormalTok{(WV_data}\OperatorTok{$}\NormalTok{unemployment,}
+     \DataTypeTok{main=}\StringTok{"Histogram of Unemployment in }\CharTok{\textbackslash{}n}\StringTok{West Virginia from 1984-2018"}\NormalTok{,}
+     \DataTypeTok{xlab=}\StringTok{"Unemployment Rate"}\NormalTok{,}
+     \DataTypeTok{breaks =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/WV Histogram Unemployment-1.pdf}
+
+In West Virginia,from 1984 to 2018, the unemployment rate ranges from
+4.2-14.4\%. The histogram displays a positively skewed distribution. 15
+out of the 36 years were characterized by unemployment rates in the
+lowest interval, 4.0-5.9\%.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{hist}\NormalTok{(WV_data}\OperatorTok{$}\NormalTok{poverty,}
+     \DataTypeTok{main=}\StringTok{"Histogram of Poverty in }\CharTok{\textbackslash{}n}\StringTok{West Virginia from 1984-2018"}\NormalTok{,}
+     \DataTypeTok{xlab=}\StringTok{"Poverty Rate"}\NormalTok{,}
+     \DataTypeTok{breaks =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/WV Histogram Poverty-1.pdf}
+
+In West Virginia, from 1984 to 2018, the annual poverty rate ranges from
+14.0\% to 23.9\%. This range represents one of the highest ranges out of
+all states. Although this range has larger values comparatively, the
+histogram displays a positively skewed distribution. 25 out of the 36
+years were characterized by unemployment rates that fell into the first
+two intervals, 14.0-15.9\% \& 16-17.9\%.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{scatter.smooth}\NormalTok{(WV_data}\OperatorTok{$}\NormalTok{year, WV_data}\OperatorTok{$}\NormalTok{unemployment, }\DataTypeTok{main=}\StringTok{"West Virginia Unemployment by Year"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Year"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"Unemployment"}\NormalTok{, }\DataTypeTok{span =} \DecValTok{2}\OperatorTok{/}\DecValTok{8}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/WV scatter unemployment-1.pdf}
+
+Unemployment in the state of West Virginia from 1984-2007 shows a
+gradual decline with a cyclical pattern that is representative of most
+financial measures. One possible explanation for this phenomenon is that
+the job market is healthy and the state is in good standing. Leading up
+to the Great Recession in 2008-2009, we notice that the unemployment
+rate begins to creep up. It shoots up drastically following the stock
+market crash. Since that time the unemployment declined to the low
+levels seen before the 2008 market crash.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{scatter.smooth}\NormalTok{(WV_data}\OperatorTok{$}\NormalTok{year, WV_data}\OperatorTok{$}\NormalTok{HPI, }\DataTypeTok{main=}\StringTok{"West Virginia House Price Index (HPI) by Year"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Year"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"HPI"}\NormalTok{, }\DataTypeTok{span =} \DecValTok{2}\OperatorTok{/}\DecValTok{8}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/WV scatter HPI-1.pdf}
+
+The house price index in the state of West Virginia is much different
+than that of the poverty level and household income. The HPI steadily
+increases within the state starting in 1984. There is one small dip in
+the HPI that intersects with the time period of the Great Recession. As
+the scatter plot shows, the HPI dropped down for about two years and
+since then it has continued to increase at a steady pace. The scatter
+plot of housing price index approximates a positive linear relationship
+over the time period we examine.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{scatter.smooth}\NormalTok{(}\DataTypeTok{x=}\NormalTok{WV_data}\OperatorTok{$}\NormalTok{year, }\DataTypeTok{y=}\NormalTok{WV_data}\OperatorTok{$}\NormalTok{poverty, }\DataTypeTok{main=}\StringTok{"West Virginia % of People Below Poverty Level"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Year"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"Poverty"}\NormalTok{,  }\DataTypeTok{span =} \DecValTok{2}\OperatorTok{/}\DecValTok{8}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/WV scatter poverty-1.pdf}
+
+The poverty rate in West Virginia is consistent with the other scatter
+plots. There is a definite cyclical trend to the data. As we can see in
+the scatter plot, the recession in the 1980s, the recession of the early
+1990s, and the Great Recession all equate to a rise in the poverty
+level. The 2008 stock market crash affected the poverty level negatively
+for a few years until the stock market rebounded.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#WV_data$log_RMHI <- as.integer(WV_data$log_RMHI)}
+\KeywordTok{scatter.smooth}\NormalTok{(}\DataTypeTok{x=}\NormalTok{WV_data}\OperatorTok{$}\NormalTok{year, }\DataTypeTok{y=}\NormalTok{WV_data}\OperatorTok{$}\NormalTok{log_RMHI, }\DataTypeTok{main=}\StringTok{"West Virginia Real Median }\CharTok{\textbackslash{}n}\StringTok{ Household Income (Log) by Year"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Year"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"RMHI (log)"}\NormalTok{, }\DataTypeTok{span =} \DecValTok{2}\OperatorTok{/}\DecValTok{8}\NormalTok{ )}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/WV scatter log RMHI-1.pdf}
+
+As the scatter plot suggests for the state of West Virginia, the real
+median household income does fluctuate from year to year, but also shows
+a consistent increasing trend throughout the years. The dips on the
+median household income seem to come at times of economic recession. In
+the 1990s, the recession caused a drop in the median household income.
+Additionally, the stock market crash that occurred in 2008-2009 caused a
+drop in the median household income. Other than those two instances the
+median household income within the state has increased steadily.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#WV_data$log_pop <- as.integer(WV_data$log_pop)}
+\KeywordTok{scatter.smooth}\NormalTok{(}\DataTypeTok{x=}\NormalTok{WV_data}\OperatorTok{$}\NormalTok{year, }\DataTypeTok{y=}\NormalTok{WV_data}\OperatorTok{$}\NormalTok{log_pop, }\DataTypeTok{main=}\StringTok{"West Virginia Population (Log) by Year"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Year"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"Population (Log)"}\NormalTok{, }\DataTypeTok{span =} \DecValTok{2}\OperatorTok{/}\DecValTok{8}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/WV scatter log population-1.pdf}
+
+The logarithmic value of the population's scatter plot for the state of
+West Virginia shows a steep decline from 1984-1992. From 1990 to 1995 a
+slight increase in the population began, but after 1995 the population
+started to dwindle down again until 2001. From 2001, the population
+continues to increase steadily until 2012 and has been declining
+slightly ever since.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cor}\NormalTok{(WV_data}\OperatorTok{$}\NormalTok{HPI, WV_data}\OperatorTok{$}\NormalTok{unemployment)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.7138695
+\end{verbatim}
+
+The correlation between the house price index (HPI) and unemployment in
+West Virginia is -0.7138695. The correlation between HPI and
+unemployment is that of a strong negative correlation suggesting there
+is a significant inverse relationship between the two variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cor}\NormalTok{(WV_data}\OperatorTok{$}\NormalTok{poverty, WV_data}\OperatorTok{$}\NormalTok{unemployment)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.6996082
+\end{verbatim}
+
+The correlation between poverty, the proportion of the population below
+the poverty line, and unemployment in West Virginia is 0.6996082. The
+correlation between poverty and unemployment is that of a large positive
+correlation. A large positive correlation suggests that the two
+variables tend to move in the same direction unlike the housing price
+index. It also suggests that there is a significant relationship between
+the two variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cor}\NormalTok{(WV_data}\OperatorTok{$}\NormalTok{sp500, WV_data}\OperatorTok{$}\NormalTok{unemployment)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1979507
+\end{verbatim}
+
+The correlation between the change in the S\&P 500 index and
+unemployment in West Virginia is 0.1979507. The correlation between the
+S\&P 500 and unemployment is a small positive correlation. This shows
+that there is a small positive relationship between the two variables
+signifying that the two variables tend to move in the same direction,
+however there is little evidence that there is significant interplay
+between the two variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cor}\NormalTok{(WV_data}\OperatorTok{$}\NormalTok{log_pop, WV_data}\OperatorTok{$}\NormalTok{unemployment)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.509377
+\end{verbatim}
+
+The correlation between the log of the population and unemployment in
+West Virginia is 0.509377. A positive correlation of 0.509377 suggests
+that these two variables maintain somewhat of a positive linear
+relationship.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cor}\NormalTok{(WV_data}\OperatorTok{$}\NormalTok{log_RMHI, WV_data}\OperatorTok{$}\NormalTok{unemployment)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.6322822
+\end{verbatim}
+
+The correlation between the logarithm of the real median household
+income and unemployment in West Virginia is -0.6322822. This large
+negative correlation suggests that as the log of the median household
+income increases, the unemployment tends to decrease.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))  }
+\KeywordTok{boxplot}\NormalTok{(WV_data}\OperatorTok{$}\NormalTok{unemployment, }\DataTypeTok{main=}\StringTok{"Boxplot of Unemployment }\CharTok{\textbackslash{}n}\StringTok{ in West Virginia"}\NormalTok{, }\DataTypeTok{sub=}\KeywordTok{paste}\NormalTok{(}\StringTok{"Outlier rows: "}\NormalTok{, }\KeywordTok{boxplot.stats}\NormalTok{(WV_data}\OperatorTok{$}\NormalTok{unemployment)}\OperatorTok{$}\NormalTok{out)) }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/WV boxplot unemployment-1.pdf}
+
+A box plot for unemployment in the state of West Virginia shows that the
+median for the unemployment rate is around 7\%. The interquartile range
+(IQR) spans from 5\% on the low end to 9\% at the upper end of the third
+quartile. Most of the unemployment data points for West Virginia between
+the years 1984 and 2019 reside within the IQR. There is one outlier in
+the West Virginia data set that occurs in 1985 with an unemloyment rate
+of 14.4\%.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{)) }
+\KeywordTok{boxplot}\NormalTok{(WV_data}\OperatorTok{$}\NormalTok{poverty, }\DataTypeTok{main=}\StringTok{"Boxplot of Poverty }\CharTok{\textbackslash{}n}\StringTok{in West Virginia"}\NormalTok{, }\DataTypeTok{sub=}\KeywordTok{paste}\NormalTok{(}\StringTok{"Outlier rows: "}\NormalTok{, }\KeywordTok{boxplot.stats}\NormalTok{(WV_data}\OperatorTok{$}\NormalTok{poverty)}\OperatorTok{$}\NormalTok{out)) }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Unemployment_Report_Final_files/figure-latex/WV boxplot poverty-1.pdf}
+
+The median of the poverty level within the state of West Virginia is
+around 17\%. The first quartile begins at about 15.5\% and the third
+quartile ends at 18.5\%. There are not outliers in the poverty rate for
+the state of West Virginia over the time period the data was collected.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#run multiple linear model for data}
+\NormalTok{WV_reg1 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(unemployment }\OperatorTok{~}\StringTok{ }\NormalTok{poverty }\OperatorTok{+}\StringTok{ }\NormalTok{RMHI }\OperatorTok{+}\StringTok{ }\NormalTok{HPI }\OperatorTok{+}\StringTok{ }\NormalTok{population }\OperatorTok{+}\StringTok{ }\NormalTok{sp500, }\DataTypeTok{data =}\NormalTok{ WV_data)}
+\KeywordTok{summary}\NormalTok{(WV_reg1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = unemployment ~ poverty + RMHI + HPI + population + 
+##     sp500, data = WV_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.8385 -0.7966 -0.3535  0.4722  3.0570 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -5.897e+01  1.377e+01  -4.281 0.000176 ***
+## poverty      4.883e-01  1.418e-01   3.443 0.001719 ** 
+## RMHI         3.567e-04  1.278e-04   2.792 0.009038 ** 
+## HPI         -4.956e-02  9.317e-03  -5.320 9.45e-06 ***
+## population   2.750e-05  7.756e-06   3.545 0.001310 ** 
+## sp500       -1.221e-02  1.416e-02  -0.862 0.395348    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.195 on 30 degrees of freedom
+## Multiple R-squared:  0.8009, Adjusted R-squared:  0.7677 
+## F-statistic: 24.14 on 5 and 30 DF,  p-value: 1.105e-09
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(WV_reg1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: unemployment
+##            Df  Sum Sq Mean Sq F value    Pr(>F)    
+## poverty     1 105.313 105.313 73.7581 1.396e-09 ***
+## RMHI        1   6.319   6.319  4.4257  0.043891 *  
+## HPI         1  41.472  41.472 29.0460 7.757e-06 ***
+## population  1  18.165  18.165 12.7220  0.001236 ** 
+## sp500       1   1.062   1.062  0.7436  0.395348    
+## Residuals  30  42.835   1.428                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{WV_reg2 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(unemployment }\OperatorTok{~}\StringTok{ }\NormalTok{poverty }\OperatorTok{+}\StringTok{ }\NormalTok{log_RMHI }\OperatorTok{+}\StringTok{ }\NormalTok{HPI }\OperatorTok{+}\StringTok{ }\NormalTok{log_pop }\OperatorTok{+}\StringTok{ }\NormalTok{sp500, }\DataTypeTok{data =}\NormalTok{ WV_data)}
+\KeywordTok{summary}\NormalTok{(WV_reg2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = unemployment ~ poverty + log_RMHI + HPI + log_pop + 
+##     sp500, data = WV_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.6926 -0.7540 -0.3264  0.4607  3.0139 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -9.132e+02  2.079e+02  -4.393 0.000129 ***
+## poverty      5.165e-01  1.477e-01   3.496 0.001492 ** 
+## log_RMHI     1.609e+01  5.719e+00   2.814 0.008561 ** 
+## HPI         -5.035e-02  9.467e-03  -5.319 9.47e-06 ***
+## log_pop      5.187e+01  1.431e+01   3.624 0.001061 ** 
+## sp500       -1.345e-02  1.431e-02  -0.940 0.354765    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.195 on 30 degrees of freedom
+## Multiple R-squared:  0.801,  Adjusted R-squared:  0.7678 
+## F-statistic: 24.15 on 5 and 30 DF,  p-value: 1.1e-09
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(WV_reg2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: unemployment
+##           Df  Sum Sq Mean Sq F value    Pr(>F)    
+## poverty    1 105.313 105.313 73.7787 1.392e-09 ***
+## log_RMHI   1   6.839   6.839  4.7912  0.036524 *  
+## HPI        1  40.058  40.058 28.0632 1.006e-05 ***
+## log_pop    1  18.872  18.872 13.2208  0.001027 ** 
+## sp500      1   1.261   1.261  0.8835  0.354765    
+## Residuals 30  42.823   1.427                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{WV_linearModelSignificant <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(unemployment }\OperatorTok{~}\StringTok{ }\NormalTok{poverty }\OperatorTok{+}\StringTok{ }\NormalTok{log_pop, }\DataTypeTok{data =}\NormalTok{ WV_data)}
+\KeywordTok{summary}\NormalTok{(WV_linearModelSignificant)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = unemployment ~ poverty + log_pop, data = WV_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.3284 -0.9962 -0.2468  1.0728  4.7333 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -590.9981   288.4061  -2.049   0.0485 *  
+## poverty        0.6031     0.1321   4.566 6.59e-05 ***
+## log_pop       40.7475    20.0659   2.031   0.0504 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.72 on 33 degrees of freedom
+## Multiple R-squared:  0.5462, Adjusted R-squared:  0.5187 
+## F-statistic: 19.86 on 2 and 33 DF,  p-value: 2.182e-06
+\end{verbatim}
+
+\hypertarget{time-series-analysis-on-unemployment}{%
+\section{Time Series Analysis on
+Unemployment}\label{time-series-analysis-on-unemployment}}
+
+The unemployment data we collected is considered a time series as it was
+measured on an annual basis. To further expand on the cyclical nature of
+our data we implemented a time series forecast using the Holt Method.
+
+Time series data typically contains four components: trend, seasonal,
+cyclical, and random components. Trend is represented by the long-term
+movements in a data series, whether that be upward or downward.
+Seasonality is normally represented by repetitions that occur within a
+single year time period, whereas the cyclical component represents
+long-term trends that are usually a factor the economy. Typically,
+seasonal trends are easier to identify than cyclical trends because the
+time period of a seasonal trend is often known ahead of time. Random
+components represent the random and unexplained movements within the
+time series data.
+
+As the unemployment data we collected is shown on an annual basis, we
+will be focusing on the trend, cyclical, random components in our
+analysis. The type of analysis we have chosen to focus on is called Holt
+Exponential Smoothing Method. This method is characterized by
+incorporating large upward and downward fluctuations in data series.
+Holt Exponential Smoothing is especially relevant because the dataset
+lacks seasonal variation.
+
+\#\# Time Series: Illinois
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{IL_TS <-}\StringTok{ }\KeywordTok{ts}\NormalTok{(IL_data}\OperatorTok{$}\NormalTok{unemployment, }\DataTypeTok{start =} \KeywordTok{c}\NormalTok{(}\DecValTok{1984}\NormalTok{), }\DataTypeTok{end =} \KeywordTok{c}\NormalTok{(}\DecValTok{2018}\NormalTok{), }\DataTypeTok{frequency =} \DecValTok{1}\NormalTok{)}
+\CommentTok{#Stores start, end, and frequency of timeseries data}
+
+\NormalTok{IL_TData <-}\StringTok{ }\KeywordTok{window}\NormalTok{(IL_TS, }\DataTypeTok{end =} \KeywordTok{c}\NormalTok{(}\DecValTok{2004}\NormalTok{))}
+\NormalTok{IL_VData <-}\StringTok{ }\KeywordTok{window}\NormalTok{(IL_TS, }\DataTypeTok{start =} \KeywordTok{c}\NormalTok{(}\DecValTok{2005}\NormalTok{))}
+\CommentTok{#Partitions the training and validation sets}
+\end{Highlighting}
+\end{Shaded}
+
+In the above section of code, we begin our Holt analysis of Illinois by
+creating the time series with the TS function. We set the start and end
+values of our times series data equal to the time span our data
+stretches and set the frequency equal to one.
+
+Using the window function we partition our data into a training set,
+IL\_TData, and a validation set, IL\_VData.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{IL_HUser <-}\StringTok{ }\KeywordTok{ets}\NormalTok{(IL_TData, }\DataTypeTok{model =} \StringTok{"AAN"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{beta =} \FloatTok{0.15}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(IL_HUser)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ETS(A,Ad,N) 
+## 
+## Call:
+##  ets(y = IL_TData, model = "AAN", alpha = 0.2, beta = 0.15) 
+## 
+##   Smoothing parameters:
+##     alpha = 0.2 
+##     beta  = 0.15 
+##     phi   = 0.8 
+## 
+##   Initial states:
+##     l = 9.1038 
+##     b = -0.492 
+## 
+##   sigma:  1.3058
+## 
+##      AIC     AICc      BIC 
+## 77.43215 79.93215 81.61024 
+## 
+## Training set error measures:
+##                      ME     RMSE       MAE       MPE     MAPE    MASE      ACF1
+## Training set 0.01280128 1.139837 0.8591663 -1.525969 14.65093 1.26348 0.5841472
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Training data set using user based parameters for alpha and beta for smoothing.}
+\end{Highlighting}
+\end{Shaded}
+
+It is common for practitioners to provide user supplied values for alpha
+and beta (smoothing parameters) due to the fact that the computer
+generated values are known to over-fit models where the data perform
+well in the sample period, but does not exhibit the same performance in
+the future. In our data, we compare both user supplied and computer
+generated smoothing parameters. We then compare the error measures to
+determine which model is a better fit to our data. We used an alpha =
+0.2 and beta = 0.15 when creating the user supplier parameters model.
+
+The ets function above denotes the error, trend, and seasonality of the
+training set. The first letter in the model string represents that we
+want the error to be additive, the second letter represents that fact
+that we expect the trend type to be additive, and the third letter,
+``N'', represents the fact that we do not intend on incorporating
+seasonality into our model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{IL_HCmp <-}\StringTok{ }\KeywordTok{ets}\NormalTok{(IL_TData, }\DataTypeTok{model =} \StringTok{"AAN"}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(IL_HCmp)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ETS(A,A,N) 
+## 
+## Call:
+##  ets(y = IL_TData, model = "AAN") 
+## 
+##   Smoothing parameters:
+##     alpha = 0.9999 
+##     beta  = 1e-04 
+## 
+##   Initial states:
+##     l = 8.3553 
+##     b = -0.2338 
+## 
+##   sigma:  0.9784
+## 
+##      AIC     AICc      BIC 
+## 68.58121 72.58121 73.80382 
+## 
+## Training set error measures:
+##                     ME      RMSE       MAE      MPE     MAPE      MASE
+## Training set 0.1120952 0.8803193 0.6387882 1.287488 10.53478 0.9393944
+##                   ACF1
+## Training set 0.0652965
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Training data set using computer based parameters for alpha and beta for smoothing.}
+\end{Highlighting}
+\end{Shaded}
+
+This is then replicated using the computer generated smoothing
+parameters and we obtain the output above. By comparing the root mean
+squared error(RMSE) and the mean absolute percentage error(MAPE) we can
+assess the fitness of the user supplier and computer generate models.
+The user supplied model has a higher RMSE and MAPE indicating that the
+computer generated model provides a better overall fit for making a
+forecast.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{IL_nV <-}\StringTok{ }\KeywordTok{length}\NormalTok{(IL_VData)}
+\NormalTok{IL_fUser <-}\StringTok{ }\KeywordTok{forecast}\NormalTok{(IL_HUser, }\DataTypeTok{h =}\NormalTok{ IL_nV)}
+\NormalTok{IL_fCmp <-}\StringTok{ }\KeywordTok{forecast}\NormalTok{(IL_HCmp, }\DataTypeTok{h =}\NormalTok{ IL_nV)}
+\end{Highlighting}
+\end{Shaded}
+
+The length function is used to set the number of observations equal to
+the length of the validation set. Then the forecast function is utilized
+to make a forecast based on the observations in our training set.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{accuracy}\NormalTok{(IL_fUser,IL_VData)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                      ME     RMSE       MAE       MPE     MAPE     MASE
+## Training set 0.01280128 1.139837 0.8591663 -1.525969 14.65093 1.263480
+## Test set     0.22556242 2.075490 1.8905876 -5.598974 27.98416 2.780276
+##                   ACF1 Theil's U
+## Training set 0.5841472        NA
+## Test set     0.6727078  1.402801
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{accuracy}\NormalTok{(IL_fCmp,IL_VData)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                     ME      RMSE       MAE       MPE     MAPE      MASE
+## Training set 0.1120952 0.8803193 0.6387882  1.287488 10.53478 0.9393944
+## Test set     3.0944149 3.8292855 3.3229011 37.967956 43.12811 4.8866193
+##                   ACF1 Theil's U
+## Training set 0.0652965        NA
+## Test set     0.6934401  2.220317
+\end{verbatim}
+
+The accuracy function is used to test the error term outputs that were
+created using the training set. When comparing the accuracy function
+results we see conflicting results in our validation set. The test set
+shows that the RMSE and MAPE of the user generated model provides a
+better fit for the performance of our data. Ultimately, we decided to
+continue the process using the computer generated model, but the user
+supplied model would work just as well.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{IL_HFinal <-}\StringTok{ }\KeywordTok{ets}\NormalTok{(IL_TS, }\DataTypeTok{model =} \StringTok{"AAN"}\NormalTok{)}
+\KeywordTok{forecast}\NormalTok{(IL_HFinal, }\DataTypeTok{h=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95
+## 2019        4.41789 2.851058 5.984722 2.021628 6.814152
+\end{verbatim}
+
+Finally, everything is brought together with the ets and forecast
+functions to forecast the unemployment level for the next period, 2019.
+The forecast generated shows that the expected value of the Illinois
+unemployment level in December 2019 is equal to 4.42\% based on the
+trends that is observed in our model. Based on the forecast we expect
+that the unemployment will range from 2.85\% to 5.98\% at a 80\%
+confidence interval. Additionally, we can be 95\% confident that the
+unemployment value will fall between 2.02\% and 6.81\%. Based on the
+actual unemployment rate in IL for December 2019 of 3.5\% our model was
+accurate at predicting the unemployment value at both the 95\% and 80\%
+confidence intervals.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{WV_TS <-}\StringTok{ }\KeywordTok{ts}\NormalTok{(WV_data}\OperatorTok{$}\NormalTok{unemployment, }\DataTypeTok{start =} \KeywordTok{c}\NormalTok{(}\DecValTok{1984}\NormalTok{), }\DataTypeTok{end =} \KeywordTok{c}\NormalTok{(}\DecValTok{2018}\NormalTok{), }\DataTypeTok{frequency =} \DecValTok{1}\NormalTok{)}
+\CommentTok{#Stores start, end, and frequency of timeseries data}
+
+\NormalTok{WV_TData <-}\StringTok{ }\KeywordTok{window}\NormalTok{(WV_TS, }\DataTypeTok{end =} \KeywordTok{c}\NormalTok{(}\DecValTok{2004}\NormalTok{))}
+\NormalTok{WV_VData <-}\StringTok{ }\KeywordTok{window}\NormalTok{(WV_TS, }\DataTypeTok{start =} \KeywordTok{c}\NormalTok{(}\DecValTok{2005}\NormalTok{))}
+\CommentTok{#Partitions the training and validation sets}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{WV_HUser <-}\StringTok{ }\KeywordTok{ets}\NormalTok{(WV_TData, }\DataTypeTok{model =} \StringTok{"AAN"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{beta =} \FloatTok{0.15}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(WV_HUser)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ETS(A,Ad,N) 
+## 
+## Call:
+##  ets(y = WV_TData, model = "AAN", alpha = 0.2, beta = 0.15) 
+## 
+##   Smoothing parameters:
+##     alpha = 0.2 
+##     beta  = 0.15 
+##     phi   = 0.8 
+## 
+##   Initial states:
+##     l = 12.7771 
+##     b = -1.5609 
+## 
+##   sigma:  1.6369
+## 
+##      AIC     AICc      BIC 
+## 86.92211 89.42211 91.10020 
+## 
+## Training set error measures:
+##                      ME     RMSE      MAE       MPE     MAPE     MASE     ACF1
+## Training set -0.1320942 1.428802 1.148726 -3.883647 14.15979 1.228584 0.504785
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Training data set using user based parameters for alpha and beta for smoothing.}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{WV_HCmp <-}\StringTok{ }\KeywordTok{ets}\NormalTok{(WV_TData, }\DataTypeTok{model =} \StringTok{"AAN"}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(WV_HCmp)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ETS(A,Ad,N) 
+## 
+## Call:
+##  ets(y = WV_TData, model = "AAN") 
+## 
+##   Smoothing parameters:
+##     alpha = 0.9999 
+##     beta  = 2e-04 
+##     phi   = 0.8417 
+## 
+##   Initial states:
+##     l = 15.9638 
+##     b = -1.8651 
+## 
+##   sigma:  1.1154
+## 
+##      AIC     AICc      BIC 
+## 74.81012 80.81012 81.07726 
+## 
+## Training set error measures:
+##                       ME      RMSE       MAE       MPE     MAPE      MASE
+## Training set -0.07675973 0.9735733 0.6947987 -1.828428 8.590638 0.7431002
+##                  ACF1
+## Training set 0.271826
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Training data set using computer based parameters for alpha and beta for smoothing.}
+\end{Highlighting}
+\end{Shaded}
+
+With West Virginia, we setup the datasets and partitioned them into
+training and validation sets following similar steps to Illinois.
+
+The user supplied model for the state of West Virginia has a higher RMSE
+and MAPE at 1.4288 and 14.1598, respectively. The computer generated
+model has a RMSE of 0.9736 and a MAPE of 8.5906 indicating that the
+computer generated model provides a better overall fit to our forecast.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{WV_nV <-}\StringTok{ }\KeywordTok{length}\NormalTok{(WV_VData)}
+\NormalTok{WV_fUser <-}\StringTok{ }\KeywordTok{forecast}\NormalTok{(WV_HUser, }\DataTypeTok{h =}\NormalTok{ WV_nV)}
+\NormalTok{WV_fCmp <-}\StringTok{ }\KeywordTok{forecast}\NormalTok{(WV_HCmp, }\DataTypeTok{h =}\NormalTok{ WV_nV)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{accuracy}\NormalTok{(WV_fUser,WV_VData)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                      ME     RMSE      MAE       MPE     MAPE     MASE      ACF1
+## Training set -0.1320942 1.428802 1.148726 -3.883647 14.15979 1.228584 0.5047850
+## Test set      1.7441115 2.355068 1.857933 23.491691 26.16469 1.987094 0.7058261
+##              Theil's U
+## Training set        NA
+## Test set      1.672258
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{accuracy}\NormalTok{(WV_fCmp,WV_VData)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                       ME      RMSE       MAE       MPE      MAPE      MASE
+## Training set -0.07675973 0.9735733 0.6947987 -1.828428  8.590638 0.7431002
+## Test set      1.62448769 2.2608082 1.7776928 21.469084 25.065397 1.9012758
+##                   ACF1 Theil's U
+## Training set 0.2718260        NA
+## Test set     0.7051023  1.604304
+\end{verbatim}
+
+The accuracy function confirms that the computer generated model is a
+better overall fit to the data we are using to create the model. This is
+due to the fact that once again the validation set exhibits a lower RMSE
+and MAPE under the computer generated model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{WV_HFinal <-}\StringTok{ }\KeywordTok{ets}\NormalTok{(WV_TS, }\DataTypeTok{model =} \StringTok{"AAN"}\NormalTok{)}
+\KeywordTok{forecast}\NormalTok{(WV_HFinal, }\DataTypeTok{h=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      Point Forecast    Lo 80    Hi 80    Lo 95   Hi 95
+## 2019       4.699914 3.200919 6.198909 2.407398 6.99243
+\end{verbatim}
+
+The forecast for West Virginia shows us that the expected value of the
+unemployment level in December 2019 is equal to 4.70\% based on the
+trends that were observed in the computer generated model. At an 80\%
+confidence interval we expect West Virginia's unemployment level to
+range from 3.20\% to 6.20\%. Additionally, we can be 95\% confident that
+the unemployment rate will be in the 2.41\% to 6.99\% level. The actual
+unemployment rate for the State of West Virginia in December 2019 is
+5\%. Our model is accurate at both the 95\% and 80\% confidence
+intervals. 5\% is also fairly close to the point estimate at 4.7\%
+further signifying that our model produces accurate results.
+
+\end{document}
