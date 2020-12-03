@@ -2,7 +2,9 @@
 title: "Unemployment Report"
 author: "Jeff Krueger, Corey Lund, Fred Mwangi, and Nemanja Orescanin"
 date: "11/29/2020"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r packages}
@@ -181,7 +183,7 @@ anova(IL_reg1)
 ```
 
 ```{r IL linear regression log all}
-IL_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = IL_data)
+IL_reg2 <- lm(value ~ HPI + poverty + sp500 + log_pop + log_RMHI , data = IL_data)
 summary(IL_reg2)
 anova(IL_reg2)
 ```
@@ -304,7 +306,7 @@ anova(TX_reg1)
 ```
 
 ```{r TX linear regression log all}
-TX_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = TX_data)
+TX_reg2 <- lm(value ~ HPI + poverty + sp500 + log_pop + log_RMHI, data = TX_data)
 summary(TX_reg2)
 anova(TX_reg2)
 ```
@@ -425,7 +427,7 @@ anova(MO_reg1)
 ```
 
 ```{r MO linear regression log all}
-MO_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = MO_data)
+MO_reg2 <- lm(value ~ HPI + poverty + sp500 + log_pop + log_RMHI, data = MO_data)
 summary(MO_reg2)
 anova(MO_reg2)
 ```
@@ -543,7 +545,7 @@ anova(WA_reg1)
 ```
 
 ```{r WA linear regression log all}
-WA_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = WA_data)
+WA_reg2 <- lm(value ~ HPI + poverty + sp500 + log_pop + log_RMHI, data = WA_data)
 summary(WA_reg2)
 anova(WA_reg2)
 ```
@@ -663,7 +665,7 @@ anova(OR_reg1)
 ```
 
 ```{r OR linear regression log all}
-OR_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = OR_data)
+OR_reg2 <- lm(value ~ HPI + poverty + sp500 + log_pop + log_RMHI, data = OR_data)
 summary(OR_reg2)
 anova(OR_reg2)
 ```
@@ -781,7 +783,7 @@ anova(CO_reg1)
 ```
 
 ```{r CO linear regression log all}
-CO_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = CO_data)
+CO_reg2 <- lm(value ~ HPI + poverty + sp500 + log_pop + log_RMHI, data = CO_data)
 summary(CO_reg2)
 anova(CO_reg2)
 ```
@@ -900,7 +902,7 @@ anova(WV_reg1)
 ```
 
 ```{r WV linear regression log all}
-WV_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = WV_data)
+WV_reg2 <- lm(value ~ HPI + poverty + sp500 + log_pop + log_RMHI, data = WV_data)
 summary(WV_reg2)
 anova(WV_reg2)
 ```
@@ -1019,7 +1021,7 @@ anova(ME_reg1)
 ```
 
 ```{r ME linear regression log all}
-ME_reg2 <- lm(value ~ poverty + log_RMHI + HPI + log_pop + sp500, data = ME_data)
+ME_reg2 <- lm(value ~ HPI + poverty + sp500 + log_pop + log_RMHI, data = ME_data)
 summary(ME_reg2)
 anova(ME_reg2)
 ```
