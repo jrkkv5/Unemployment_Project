@@ -30,8 +30,8 @@ library(readr)
 
 ```
 
-First we need to load the libraries that we will be using into our report. The above code should load the proper libraries. R Studio will prompt you to install the packages if necessary.
-
+center> <h1>Introduction</h1> </center>
+The focus of this report is to examine unemployment within the United States.  With unemployment as the dependent variable we examine its relationship with the house price index (HPI), real median household income (RMHI), poverty rate, population, and change in the S&P 500 index. The unemployment rates encompassed within our dataset are measured at the state level. In the ensuing report we provide a brief overview of all of the observations in the dataset and move on to examine two states, Illinois and West Virginia, at a more detailed level. This report seeks to prove that house price index (HPI), real median household income (RMHI), poverty rate, population, and change in the S&P 500 index have no direct effect on the unemployment rate at the state level.   
 
 ``` {r log variables, message=FALSE}
 merged_final <- read_csv("csv files/mergedFinal.csv")
@@ -44,10 +44,11 @@ merged_final$log_pop = as.numeric(log(merged_final$population))
 merged_final$log_RMHI = as.numeric(log(merged_final$RMHI))
 ```
 
-As a final step in scrubbing our data, we created new variables to log the population and median household income variables and store it in our dataframe. By taking the logarithmic values, these variables become more comparable to the existing variables we have within our dataset.
+In the above code section the data is imported into R Studio and stored in the dataframe named merged_final.
 
-Below you can see the table output once all of our data has been merged.
-``` {r merged_final_table}
+As a final step before analyzing the data, two new variables are created to provide the logarithmic values of population and RMHI. By taking the logarithmic values, these variables become more comparable to the existing variables we have within our dataset. Below you can see the table output once all of our data has been merged.
+
+``` {r merged_final_table, }
 
 kable(merged_final[1:6,], caption = "Table Including All Variables")
 ```
@@ -554,3 +555,6 @@ forecast(WV_HFinal, h=1)
 ```
 
 The forecast for West Virginia shows us that the expected value of the unemployment level in December 2019 is equal to 4.70% based on the trends that were observed in the computer generated model. At an 80% confidence interval we expect West Virginia's unemployment level to range from 3.20% to 6.20%.  Additionally, we can be 95% confident that the unemployment rate will be in the 2.41% to 6.99% level. The actual unemployment rate for the State of West Virginia in December 2019 is 5%. Our model is accurate at both the 95% and 80% confidence intervals.  5% is also fairly close to the point estimate at 4.7% further signifying that our model produces accurate results.
+
+<center> <h1>Conclusion</h1> </center>
+In conclusion, our null hypothesis did not hold up against the data sample.  While there did not appear to be a significant relationship between the independent variables and unemployment rate at the state level, the explanatory variables did appear to have some effect on the unemployment rate. In this case we reject the null hypothesis as the other variables did appear to have an effect on the response variable, unemployment.  Further data is needed in order to improve the dataset and explore the null hypothesis further. Additional variables that could improve the model include the following demographics: sex, age, ethnicity, and education level. 
